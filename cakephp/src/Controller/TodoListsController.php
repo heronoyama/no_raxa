@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+
 /**
  * TodoLists Controller
  *
@@ -65,14 +66,18 @@ class TodoListsController extends AppController
     }
 
     public function addActivity($id = null){
+        $this->loadModel('Activities');
+        $activity = $this->Activities->newEntity();
         if ($this->request->is('post')) {
-          /*  $activity = new Activity('nome' -> $this->request->getData()['nome'],
-                'todo_lists_id' => $id);*/
-            print_r($this->request->getData());
-
+            $activity = $this->Activities->patchEntity($activity, $this->request->getData());
+            if ($this->Activities->save($activity)){
+                $this->Flash->success(__('The activity has been saved.'));
+                return $this->redirect(['action'=>'view',$id]);
+            }
+            $this->Flash->error(__('The activity could not be saved. Please, try again.'));
         }
-        $this->setAction('view',$id);
 
+        $this->redirect(['action'=>'view',$id]);
     }
 
     /**

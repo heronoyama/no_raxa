@@ -41,11 +41,12 @@
         </tbody>
     </table>
 
-    <?= $this->Form->create($activity,['url'=>['action' =>'addActivity']]) ?>
+    <?= $this->Form->create('Activities',['url'=>['action' =>'addActivity',$todoList->id],'method'=>'post']) ?>
     <fieldset>
         <legend><?= __('Add Activity') ?></legend>
         <?php
-            echo $this->Form->control('activity.nome');
+            echo $this->Form->control('nome');
+            echo $this->Form->hidden('todo_lists_id',['value'=>$todoList->id]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
