@@ -43,6 +43,11 @@ use Cake\Routing\Route\DashedRoute;
  */
 Router::defaultRouteClass(DashedRoute::class);
 
+Router::prefix('api',function(RouteBuilder $routes){
+    $routes->extensions(['json']);
+    $routes->resources('Activities');
+});
+
 Router::scope('/', function (RouteBuilder $routes) {
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
@@ -72,8 +77,12 @@ Router::scope('/', function (RouteBuilder $routes) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
+    
     $routes->fallbacks(DashedRoute::class);
+
 });
+
+
 
 /**
  * Load all plugin routes. See the Plugin documentation on
