@@ -70,4 +70,22 @@ class ActivitiesController extends AppController{
         return $this->redirect(['action' => 'index']);
     }
 
+    public function toggleStatus($id){
+        $activity = $this->Activities->get($id);
+        if ($this->request->is(['put'])) {
+            $activity->toggleStatus();
+            if($this->Activities->save($activity)){
+                $message = 'Atualizado';
+            } else {
+                $message = 'Deu ruim!';
+            }
+        }
+
+        $this->set([
+            'message' => $message,
+            '_serialize' => ['message']
+        ]);
+
+    }
+
 }

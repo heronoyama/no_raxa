@@ -37,8 +37,7 @@
         <?= $this->fetch('content') ?>
 
     </div>
-    <?= $this->Html->script('/js/'.$this->name.'/'.$this->view); ?>
-    
+   
     <footer>
     </footer>
 

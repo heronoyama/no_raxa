@@ -34,4 +34,8 @@ class Activity extends Entity
     public function isConcludedLabel(){
         return $this->concluded ? 'TRUE':'FALSE';
     }
+
+    public function toggleStatus(){
+        $this->concluded = !$this->concluded;
+    }
 }

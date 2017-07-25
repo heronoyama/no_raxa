@@ -43,10 +43,7 @@ use Cake\Routing\Route\DashedRoute;
  */
 Router::defaultRouteClass(DashedRoute::class);
 
-Router::prefix('api',function(RouteBuilder $routes){
-    $routes->extensions(['json']);
-    $routes->resources('Activities');
-});
+
 
 Router::scope('/', function (RouteBuilder $routes) {
     /**
@@ -82,6 +79,20 @@ Router::scope('/', function (RouteBuilder $routes) {
 
 });
 
+
+Router::scope('/api',function(RouteBuilder $routes){
+    $routes->extensions(['json']);
+
+    $routes->resources('Activities',[
+       'map' => [
+           'toggle_status/:id' => [
+               'action' => 'toggleStatus',
+               'method' => 'PUT'
+           ]
+        ]
+   ]);
+   $routes->resources('TodoLists');
+});
 
 
 /**

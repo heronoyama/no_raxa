@@ -27,6 +27,3 @@
         </tr>
     </table>
 </div>
-<?php
-    echo $this->Html->script('/js/Activities/view');
-?>
