@@ -1,15 +1,3 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\TodoList[]|\Cake\Collection\CollectionInterface $todoLists
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Todo List'), ['action' => 'add']) ?></li>
-    </ul>
-</nav>
 <div class="todoLists index large-9 medium-8 columns content">
     <h3><?= __('Todo Lists') ?></h3>
     <table cellpadding="0" cellspacing="0">

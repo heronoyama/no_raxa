@@ -30,4 +30,8 @@ class Activity extends Entity
         '*' => true,
         'id' => false
     ];
+
+    public function isConcludedLabel(){
+        return $this->concluded ? 'TRUE':'FALSE';
+    }
 }

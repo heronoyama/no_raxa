@@ -62,6 +62,10 @@ class ActivitiesTable extends Table
             ->requirePresence('nome', 'create')
             ->notEmpty('nome');
 
+        $validator
+            ->requirePresence('concluded','create')
+            ->notEmpty('concluded');
+
         return $validator;
     }
 
