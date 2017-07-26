@@ -15,11 +15,17 @@
         </thead>
         <tbody>
             <?php foreach ($todoList->activities as $activity): ?>
-            <tr <?= $activity->concluded? 'class="concludedActivity"' : ''?>
-                <?= "id=activity-".$activity->id?> >
-                <td><?= $this->Number->format($activity->id) ?></td>
+            <tr class='activity'
+                <?= "data-id=".$activity->id ?>
+                <?php 
+                    $isConcludedText = $activity->concluded?'true':'false';
+                    echo "data-isconcluded=".$isConcludedText;
+                ?>
+            >                
+                <td data-bind='text:id'> </td>
                 <td><?= h($activity->nome) ?></td>
-                <td><?= $this->Form->checkbox('concluded',['checked'=>$activity->concluded,'onclick'=>'toggleActivity('.$activity->id.')']) ?></td>
+                <td> <input type='checkbox' data-bind='checked:isConcluded, click:toggleStatus' />
+                </td>
                 <td><?= h($activity->created) ?></td>
                 <td><?= h($activity->modified) ?></td>
                 <td class="actions">
@@ -42,5 +48,5 @@
 
 </div>
 <?php
-    echo $this->Html->script('/js/TodoLists/edit');
+    echo $this->Html->script('/js/TodoLists/view');
 ?>
