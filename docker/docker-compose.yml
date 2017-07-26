@@ -21,6 +21,19 @@ no_raxa-mysql:
   volumes:
     - ../mysql:/var/lib/mysql
 
+no_raxa-mysql-test:
+  image: mysql
+  container_name: no_raxa-mysql-test
+  environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=no_raxa
+    - MYSQL_USER=no_raxa
+    - MYSQL_PASSWORD=no_raxa
+  ports:
+    - "8107:3306"
+  volumes:
+    - ../mysql:/var/lib/mysql_test
+
 no_raxa-nginx:
   image: phpdockerio/nginx:latest
   container_name: no_raxa-nginx
@@ -42,3 +55,4 @@ no_raxa-php-fpm:
   links:
     - no_raxa-mailhog
     - no_raxa-mysql
+    - no_raxa-mysql-test
