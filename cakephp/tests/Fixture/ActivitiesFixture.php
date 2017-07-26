@@ -22,6 +22,7 @@ class ActivitiesFixture extends TestFixture
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'todo_lists_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'concluded' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
         '_indexes' => [
             'todo_lists_id' => ['type' => 'index', 'columns' => ['todo_lists_id'], 'length' => []],
         ],
@@ -45,9 +46,10 @@ class ActivitiesFixture extends TestFixture
         [
             'id' => 1,
             'nome' => 'Lorem ipsum dolor sit amet',
-            'created' => '2017-07-20 17:47:35',
-            'modified' => '2017-07-20 17:47:35',
-            'todo_lists_id' => 1
+            'created' => '2017-07-26 21:10:08',
+            'modified' => '2017-07-26 21:10:08',
+            'todo_lists_id' => 1,
+            'concluded' => 1
         ],
     ];
 }

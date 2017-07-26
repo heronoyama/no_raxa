@@ -5,80 +5,110 @@ use App\Model\Table\ActivitiesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
-/**
- * App\Model\Table\ActivitiesTable Test Case
- */
-class ActivitiesTableTest extends TestCase
-{
+class ActivitiesTableTest extends TestCase {
 
-    /**
-     * Test subject
-     *
-     * @var \App\Model\Table\ActivitiesTable
-     */
+
     public $Activities;
 
-    /**
-     * Fixtures
-     *
-     * @var array
-     */
     public $fixtures = [
-        'app.activities',
-        'app.todo_lists'
+        'app.todo_lists',
+        'app.activities'
     ];
 
-    /**
-     * setUp method
-     *
-     * @return void
-     */
-    public function setUp()
-    {
+
+    public function setUp() {
         parent::setUp();
         $config = TableRegistry::exists('Activities') ? [] : ['className' => ActivitiesTable::class];
         $this->Activities = TableRegistry::get('Activities', $config);
     }
 
-    /**
-     * tearDown method
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
+    public function tearDown() {
         unset($this->Activities);
 
         parent::tearDown();
     }
 
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testValidationDefault() {
+        $data = [
+            'nome' => 'Teste',
+            'todo_lists_id' =>1
+        ];
+
+        $activity = $this->Activities->newEntity($data);
+        $this->assertEmpty($activity->errors());
     }
 
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testNaoCriaSemNome() {
+        $data = [
+            'todo_lists_id' =>1
+        ];
+
+        $activity = $this->Activities->newEntity($data);
+        $this->assertNotEmpty($activity->errors());
+
+        $message = $this->getMessageError('nome','_required',$activity->errors());
+        $this->assertEquals($message,'Uma atividade deve ter um nome.');
     }
 
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testNaoCriaNomeVazio() {
+        $data = [
+            'nome' =>'',
+            'todo_lists_id' =>1
+        ];
+
+        $activity = $this->Activities->newEntity($data);
+        $this->assertNotEmpty($activity->errors());
+
+        $message = $this->getMessageError('nome','_empty',$activity->errors());
+        $this->assertEquals($message,'Uma atividade deve ter um nome.');
     }
+
+     public function testNaoCriaSemLista() {
+        $data = [
+            'nome' =>'Teste'
+        ];
+
+        $activity = $this->Activities->newEntity($data);
+        $this->assertNotEmpty($activity->errors());
+
+        $message = $this->getMessageError('todo_lists_id','_required',$activity->errors());
+        $this->assertEquals($message,'Uma atividade deve estar associada à uma lista.');
+    }
+
+    public function testNaoCriaListaVazia() {
+        $data = [
+            'nome' =>'Teste',
+            'todo_lists_id' => ''
+        ];
+
+        $activity = $this->Activities->newEntity($data);
+        $this->assertNotEmpty($activity->errors());
+
+        $message = $this->getMessageError('todo_lists_id','_empty',$activity->errors());
+        $this->assertEquals($message,'Uma atividade deve estar associada à uma lista.');
+    }
+
+    public function testSalvaAtividade(){
+        $data = [
+        'nome' => 'Teste',
+        'todo_lists_id' => 1
+        ];
+        
+        $activity = $this->Activities->newEntity($data);
+        $this->assertEmpty($activity->errors());
+        $this->Activities->save($activity);
+
+
+        $recoveredActivity = $this->Activities->get(2);
+        $this->assertEquals($recoveredActivity->id,2); //A primeira veio da fixture
+        $this->assertEquals($recoveredActivity->nome,'Teste');
+        $this->assertFalse($recoveredActivity->concluded);
+
+
+    }
+
+    private function getMessageError($attribute,$key,$errors){
+        return $errors[$attribute][$key];
+    }
+
 }

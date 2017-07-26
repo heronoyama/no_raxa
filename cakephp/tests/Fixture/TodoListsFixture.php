@@ -31,11 +31,6 @@ class TodoListsFixture extends TestFixture
     ];
     // @codingStandardsIgnoreEnd
 
-    /**
-     * Records
-     *
-     * @var array
-     */
     public $records = [
         [
             'id' => 1,
