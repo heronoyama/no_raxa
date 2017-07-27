@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Error\Debugger;
 
 
 class TodoListsController extends AppController{
@@ -24,18 +25,29 @@ class TodoListsController extends AppController{
     }
 
     public function add() {
-        $todoList = $this->TodoLists->newEntity();
+       $todoList = $this->TodoLists->newEntity();
         if ($this->request->is('post')) {
-            $todoList = $this->TodoLists->patchEntity($todoList, $this->request->getData());
+            $todoList = $this->TodoLists->patchEntity($todoList,$this->getParsedData());
             if ($this->TodoLists->save($todoList)) {
-                $this->Flash->success(__('The todo list has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                if(!$this->request->is('json')){
+                    $this->Flash->success(__('The todo list has been saved.'));
+                    return $this->redirect(['action' => 'index']);
+                }
             }
-            $this->Flash->error(__('The todo list could not be saved. Please, try again.'));
+            if(!$this->request->is('json'))
+               $this->Flash->error(__('The todo list could not be saved.
+                Please, try again.'));
         }
         $this->set(compact('todoList'));
         $this->set('_serialize', ['todoList']);
+    }
+
+    private function getParsedData(){
+        if($this->request->is('json'))
+            //The best i could manage
+            return json_decode($this->request->getData()[0],true);
+        
+        return $this->request->getData();
     }
 
     public function addActivity($id = null){
@@ -58,13 +70,15 @@ class TodoListsController extends AppController{
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $todoList = $this->TodoLists->patchEntity($todoList, $this->request->getData());
+            $todoList = $this->TodoLists->patchEntity($todoList, $this->getParsedData());
             if ($this->TodoLists->save($todoList)) {
+                if(!$this->request->is('json')){
                 $this->Flash->success(__('The todo list has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
+                }
             }
-            $this->Flash->error(__('The todo list could not be saved. Please, try again.'));
+            if(!$this->request->is('json'))
+                $this->Flash->error(__('The todo list could not be saved. Please, try again.'));
         }
         $this->set(compact('todoList'));
         $this->set('_serialize', ['todoList']);
@@ -74,11 +88,13 @@ class TodoListsController extends AppController{
         $this->request->allowMethod(['post', 'delete']);
         $todoList = $this->TodoLists->get($id);
         if ($this->TodoLists->delete($todoList)) {
-            $this->Flash->success(__('The todo list has been deleted.'));
+            if(!$this->request->is('json'))
+                $this->Flash->success(__('The todo list has been deleted.'));
         } else {
-            $this->Flash->error(__('The todo list could not be deleted. Please, try again.'));
+            if(!$this->request->is('json'))
+                $this->Flash->error(__('The todo list could not be deleted. Please, try again.'));
         }
-
-        return $this->redirect(['action' => 'index']);
+        if(!$this->request->is('json'))
+            return $this->redirect(['action' => 'index']);
     }
 }

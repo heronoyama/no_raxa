@@ -4,69 +4,35 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\ActivitiesController;
 use Cake\TestSuite\IntegrationTestCase;
 
-/**
- * App\Controller\ActivitiesController Test Case
- */
-class ActivitiesControllerTest extends IntegrationTestCase
-{
 
-    /**
-     * Fixtures
-     *
-     * @var array
-     */
+class ActivitiesControllerTest extends IntegrationTestCase {
+
     public $fixtures = [
         'app.activities',
         'app.todo_lists'
     ];
 
-    /**
-     * Test index method
-     *
-     * @return void
-     */
-    public function testIndex()
-    {
+
+    public function testIndex() {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
-    /**
-     * Test view method
-     *
-     * @return void
-     */
-    public function testView()
-    {
+    public function testView() {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
-    /**
-     * Test add method
-     *
-     * @return void
-     */
-    public function testAdd()
-    {
+    
+    public function testAdd() {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
+    
+    public function testEdit() {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
+    
+    public function testDelete() {
         $this->markTestIncomplete('Not implemented yet.');
     }
 }

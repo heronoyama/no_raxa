@@ -45,7 +45,7 @@ class ActivitiesFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'nome' => 'Lorem ipsum dolor sit amet',
+            'nome' => 'Activity: Lorem ipsum dolor sit amet',
             'created' => '2017-07-26 21:10:08',
             'modified' => '2017-07-26 21:10:08',
             'todo_lists_id' => 1,

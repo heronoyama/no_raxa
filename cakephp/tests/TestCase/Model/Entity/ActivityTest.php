@@ -48,7 +48,6 @@ class ActivityTest extends TestCase {
     	$this->Activities->save($activity);
     	$this->assertTrue($activity->concluded);
     	$this->AssertEquals($activity->isConcludedLabel(),"TRUE");
-
-    }
+   	}
 
 }

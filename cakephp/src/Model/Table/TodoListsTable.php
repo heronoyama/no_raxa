@@ -18,7 +18,9 @@ class TodoListsTable extends Table {
         $this->addBehavior('Timestamp');
         $this->hasMany('Activities',[
             'foreignKey' => 'todo_lists_id',
-            'joinType' => 'INNER']);
+            'joinType' => 'INNER',
+            'dependent' => true,
+            'cascadeCallbacks'=>true]);
     }
 
     public function validationDefault(Validator $validator) {
