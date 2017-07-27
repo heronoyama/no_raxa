@@ -49,7 +49,7 @@ class ActivitiesFixture extends TestFixture
             'created' => '2017-07-26 21:10:08',
             'modified' => '2017-07-26 21:10:08',
             'todo_lists_id' => 1,
-            'concluded' => 1
+            'concluded' => 0
         ],
     ];
 }
