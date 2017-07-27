@@ -4,8 +4,8 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\TodoListsController;
 use Cake\TestSuite\IntegrationTestCase;
 use App\Model\Table\TodoListsTable;
+use App\Model\Table\ActivitiesTable;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 
 
 
@@ -20,6 +20,9 @@ class TodoListsControllerTest extends IntegrationTestCase {
         parent::setUp();
         $config = TableRegistry::exists('TodoLists') ? [] : ['className' => TodoListsTable::class];
         $this->TodoLists = TableRegistry::get('TodoLists', $config);
+
+        $config = TableRegistry::exists('Activities') ? [] : ['className' => ActivitiesTable::class];
+        $this->Activities = TableRegistry::get('Activities', $config);
     }
 
     public function testIndex_html() {
@@ -152,14 +155,43 @@ class TodoListsControllerTest extends IntegrationTestCase {
         $this->assertEquals(0, $query->count());
     }
 
-    /*
     public function testAddActivity_html(){
+        $query = $this->Activities->find('all');
+        $this->assertEquals(1,$query->count());
 
+        $data = ['nome'=>'Atividade nova'];
+        $this->post('/todo-lists/add-activity/1',$data);
+        $this->assertResponseSuccess();
+
+        $query = $this->Activities->find('all');
+        $this->assertEquals(2,$query->count());
+
+        $activity = $this->Activities->get(2);
+        $this->assertEquals("Atividade nova",$activity->nome);
     }
 
     public function testAddActivity_json(){
 
-    }*/
+        $query = $this->Activities->find('all');
+        $this->assertEquals(1,$query->count());
 
+        
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+ 
+        $data = "{\"nome\":\"Atividade Nova\"}";
+        $this->post('/api/todo_lists/add_activity/1.json',json_encode($data));
+        $this->assertResponseSuccess();
 
+        $query = $this->Activities->find('all');
+        $this->assertEquals(2,$query->count());
+
+        $activity = $this->Activities->get(2);
+        $this->assertEquals("Atividade Nova",$activity->nome);
+
+    }
 }

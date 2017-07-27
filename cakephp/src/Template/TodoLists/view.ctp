@@ -40,7 +40,6 @@
         <legend><?= __('Add Activity') ?></legend>
         <?php
             echo $this->Form->control('nome');
-            echo $this->Form->hidden('todo_lists_id',['value'=>$todoList->id]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

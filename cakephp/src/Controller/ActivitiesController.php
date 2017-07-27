@@ -27,13 +27,16 @@ class ActivitiesController extends AppController{
     public function add(){
         $activity = $this->Activities->newEntity();
         if ($this->request->is('post')) {
-            $activity = $this->Activities->patchEntity($activity, $this->request->getData());
+            $activity = $this->Activities->patchEntity($activity, $this->getParsedData());
             if ($this->Activities->save($activity)) {
-                $this->Flash->success(__('The activity has been saved.'));
+                if(!$this->request->is('json')){
+                    $this->Flash->success(__('The activity has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['action' => 'index']);
+                }
             }
-            $this->Flash->error(__('The activity could not be saved. Please, try again.'));
+            if(!$this->request->is('json'))
+                $this->Flash->error(__('The activity could not be saved. Please, try again.'));
         }
         $todoLists = $this->Activities->TodoLists->find('list', ['limit' => 200]);
         $this->set(compact('activity', 'todoLists'));
@@ -45,13 +48,16 @@ class ActivitiesController extends AppController{
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $activity = $this->Activities->patchEntity($activity, $this->request->getData());
+            $activity = $this->Activities->patchEntity($activity, $this->getParsedData());
             if ($this->Activities->save($activity)) {
-                $this->Flash->success(__('The activity has been saved.'));
+                if(!$this->request->is('json')){
+                    $this->Flash->success(__('The activity has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['action' => 'index']);
+                }
             }
-            $this->Flash->error(__('The activity could not be saved. Please, try again.'));
+            if(!$this->request->is('json'))
+                $this->Flash->error(__('The activity could not be saved. Please, try again.'));
         }
         $todoLists = $this->Activities->TodoLists->find('list', ['limit' => 200]);
         $this->set(compact('activity', 'todoLists'));
@@ -62,12 +68,15 @@ class ActivitiesController extends AppController{
         $this->request->allowMethod(['post', 'delete']);
         $activity = $this->Activities->get($id);
         if ($this->Activities->delete($activity)) {
-            $this->Flash->success(__('The activity has been deleted.'));
+            if(!$this->request->is('json'))
+                $this->Flash->success(__('The activity has been deleted.'));
         } else {
-            $this->Flash->error(__('The activity could not be deleted. Please, try again.'));
+            if(!$this->request->is('json'))
+                $this->Flash->error(__('The activity could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        if(!$this->request->is('json'))
+            return $this->redirect(['action' => 'index']);
     }
 
     public function toggleStatus($id){

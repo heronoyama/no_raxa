@@ -4,7 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Error\Debugger;
 
-
+//TODO refatorar
 class TodoListsController extends AppController{
 
     public function index()
@@ -42,27 +42,28 @@ class TodoListsController extends AppController{
         $this->set('_serialize', ['todoList']);
     }
 
-    private function getParsedData(){
-        if($this->request->is('json'))
-            //The best i could manage
-            return json_decode($this->request->getData()[0],true);
-        
-        return $this->request->getData();
-    }
+    
 
     public function addActivity($id = null){
+
         $this->loadModel('Activities');
         $activity = $this->Activities->newEntity();
         if ($this->request->is('post')) {
-            $activity = $this->Activities->patchEntity($activity, $this->request->getData());
+            $data = $this->getParsedData();
+            $data['todo_lists_id'] = $id;
+            $activity = $this->Activities->patchEntity($activity, $data);
             if ($this->Activities->save($activity)){
-                $this->Flash->success(__('The activity has been saved.'));
-                return $this->redirect(['action'=>'view',$id]);
+                if(!$this->request->is('json')){
+                    $this->Flash->success(__('The activity has been saved.'));
+                    return $this->redirect(['action'=>'view',$id]);
+                }
             }
-            $this->Flash->error(__('The activity could not be saved. Please, try again.'));
+            if(!$this->request->is('json'))
+                $this->Flash->error(__('The activity could not be saved. Please, try again.'));
         }
 
-        $this->redirect(['action'=>'view',$id]);
+        if(!$this->request->is('json'))
+            $this->redirect(['action'=>'view',$id]);
     }
 
     public function edit($id = null) {

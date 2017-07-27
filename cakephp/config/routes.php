@@ -91,7 +91,15 @@ Router::scope('/api',function(RouteBuilder $routes){
            ]
         ]
    ]);
-   $routes->resources('TodoLists');
+
+   $routes->resources('TodoLists',[
+        'map' => [
+            'add_activity/:id' =>[
+                'action' => 'addActivity',
+                'method' => 'POST'
+            ]
+        ]
+    ]);
 });
 
 
