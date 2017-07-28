@@ -32,16 +32,23 @@ class AppController extends Controller {
     }
 
     protected function getParsedData(){
-        if($this->request->is('json'))
+
+        if($this->request->is('json')){
             //The best i could manage
             return json_decode($this->request->getData()[0],true);
+            //TODO testar sem o enconde nos testes
+        }
         
         return $this->request->getData();
     }
 
     protected function save($model,$destiny){
-        $model = $this->controller()->patchEntity($model, $this->getParsedData());
-        if ($this->controller()->save($model)) {
+        $this->saveGivenDataAndController($this->controller(),$model,$this->getParsedData(),$destiny);
+    }
+
+    protected function saveGivenDataAndController($controller,$model,$data,$destiny){
+        $model = $controller->patchEntity($model,$data);
+        if ($controller->save($model)) {
             if(!$this->request->is('json')){
                 $this->flashSucess();
                 return $this->redirect($destiny);
@@ -50,6 +57,7 @@ class AppController extends Controller {
 
         if(!$this->request->is('json'))
             $this->flashError();
+
     }
 
     protected function deleteModel($model,$destiny){

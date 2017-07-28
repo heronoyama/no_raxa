@@ -125,6 +125,30 @@ class ActivitiesControllerTest extends IntegrationTestCase {
         $this->assertEquals("Teste Edit",$current->nome);
     }
 
+    public function testEdit_json_onlyName() {
+        $query = $this->Activities->find()->where(['nome' => 'Teste Edit']);
+        $this->assertEquals(0, $query->count());
+
+        $current = $this->Activities->get(1);
+        $this->assertEquals("Activity: Lorem ipsum dolor sit amet",$current->nome);
+
+         $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+ 
+        $data = "{\"nome\":\"Teste Edit\",\"todo_lists_id\":1}";
+        $this->put('/api/activities/1.json',json_encode($data));
+        $this->assertResponseSuccess();
+
+        $query = $this->Activities->find()->where(['nome' => 'Teste Edit']);
+        $this->assertEquals(1, $query->count());
+        $current = $this->Activities->get(1);
+        $this->assertEquals("Teste Edit",$current->nome);
+    }
+
     public function testDelete_html() {
 
         $query = $this->Activities->find()->where(['nome' => "Activity: Lorem ipsum dolor sit amet"]);

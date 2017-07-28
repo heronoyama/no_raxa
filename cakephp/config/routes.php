@@ -100,7 +100,14 @@ Router::scope('/api',function(RouteBuilder $routes){
             ]
         ]
     ]);
-   $routes->resources('Eventos');
+   $routes->resources('Eventos',[
+        'map' =>[
+            'add_consumable/:id' =>[
+                'action' => 'addConsumable',
+                'method' => 'POST'
+            ]
+        ]
+    ]);
    $routes->resources('Consumables');
 });
 

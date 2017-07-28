@@ -4,20 +4,26 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\EventosController;
 use Cake\TestSuite\IntegrationTestCase;
 use App\Model\Table\EventosTable;
+use App\Model\Table\ConsumablesTable;
 use Cake\ORM\TableRegistry;
 
 class EventosControllerTest extends IntegrationTestCase {
 
     public $fixtures = [
-        'app.eventos'
+        'app.eventos',
+        'app.consumables'
     ];
+ 
 
     public function setUp() {
         parent::setUp();
         $config = TableRegistry::exists('Eventos') ? [] : ['className' => EventosTable::class];
         $this->Eventos = TableRegistry::get('Eventos', $config);
+
+        $config = TableRegistry::exists('Consumables') ? [] : ['className' => ConsumablesTable::class];
+        $this->Consumables = TableRegistry::get('Consumables', $config);
     }
-    
+
     public function testIndex_html() {
         $this->get('/eventos');
         $this->assertResponseOK();
@@ -35,7 +41,7 @@ class EventosControllerTest extends IntegrationTestCase {
     public function testView_html() {
         $this->get('/eventos/view/1');
         $this->assertResponseOK();
-        $this->assertResponseContains('<h3>Evento Teste Fixture (1)</h3>');
+        $this->assertResponseContains('<h3 data-id=1> Evento Teste Fixture (1)</h3>');
 
     }
 
@@ -145,6 +151,46 @@ class EventosControllerTest extends IntegrationTestCase {
 
         $query = $this->Eventos->find()->where(['nome' => "Evento Teste Fixture"]);
         $this->assertEquals(0, $query->count());
+    }
+
+    public function testAddConsumable_html(){
+        $query = $this->Consumables->find('all');
+        $this->assertEquals(1,$query->count());
+
+        $data = ['nome'=>'Consumable novo'];
+        $this->post('/eventos/add-consumable/1',$data);
+        $this->assertResponseSuccess();
+
+        $query = $this->Consumables->find('all');
+        $this->assertEquals(2,$query->count());
+
+        $activity = $this->Consumables->get(2);
+        $this->assertEquals("Consumable novo",$activity->nome);
+    }
+
+    public function testAddConsumable_json(){
+
+        $query = $this->Consumables->find('all');
+        $this->assertEquals(1,$query->count());
+
+        
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+ 
+        $data = "{\"nome\":\"Consumable Novo\"}";
+        $this->post('/api/eventos/add_consumable/1.json',json_encode($data));
+        $this->assertResponseSuccess();
+
+        $query = $this->Consumables->find('all');
+        $this->assertEquals(2,$query->count());
+
+        $activity = $this->Consumables->get(2);
+        $this->assertEquals("Consumable Novo",$activity->nome);
+
     }
     
 }

@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Error\Debugger;
 
 class EventosController extends AppController {
 
@@ -14,7 +15,7 @@ class EventosController extends AppController {
 
     public function view($id = null) {
         $evento = $this->Eventos->get($id, [
-            'contain' => []
+            'contain' => ['Consumables']
         ]);
 
         $this->set('evento', $evento);
@@ -46,6 +47,25 @@ class EventosController extends AppController {
         $this->request->allowMethod(['post', 'delete']);
         $evento = $this->Eventos->get($id);
         $this->deleteModel($evento,['action' => 'index']);
+    }
+
+    public function addConsumable($id = null){
+        
+        $this->loadModel('Consumables');
+        $consumable = $this->Consumables->newEntity();
+        
+        if ($this->request->is('post')) {
+
+            $this->log("TESTE",'debug');
+            $this->log($this->request->getData(),'debug');
+            $data = $this->getParsedData();
+            $data['eventos_id'] = $id;
+            $this->log($data,'debug');
+            $this->saveGivenDataAndController($this->Consumables,$consumable,$data,['action'=>'view',$id]);
+        }
+
+        $this->set('consumable', $consumable);
+        $this->set('_serialize', ['consumable']);
     }
 
     protected function controller(){
