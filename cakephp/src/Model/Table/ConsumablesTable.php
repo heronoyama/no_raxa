@@ -6,23 +6,21 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-class EventosTable extends Table {
+class ConsumablesTable extends Table {
 
-    
     public function initialize(array $config) {
         parent::initialize($config);
 
-        $this->setTable('eventos');
+        $this->setTable('consumables');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('Consumables',[
+        $this->belongsTo('Eventos', [
             'foreignKey' => 'eventos_id',
-            'joinType' => 'INNER',
-            'dependent' => true,
-            'cascadeCallbacks'=>true]);
+            'joinType' => 'INNER'
+        ]);
     }
 
     public function validationDefault(Validator $validator) {
@@ -34,18 +32,12 @@ class EventosTable extends Table {
             ->requirePresence('nome', 'create')
             ->notEmpty('nome');
 
-        $validator
-            ->dateTime('data')
-            ->requirePresence('data', 'create')
-            ->notEmpty('data');
-
-        $validator
-            ->allowEmpty('localizacao');
-
-        $validator
-            ->integer('pessoas_previstas')
-            ->allowEmpty('pessoas_previstas');
-
         return $validator;
+    }
+
+    public function buildRules(RulesChecker $rules) {
+        $rules->add($rules->existsIn(['eventos_id'], 'Eventos'));
+
+        return $rules;
     }
 }

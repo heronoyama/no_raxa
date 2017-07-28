@@ -26,6 +26,7 @@ class EventosController extends AppController {
         if ($this->request->is('post')) {
             $this->save($evento,['action' => 'index']);
         }
+        
         $this->set(compact('evento'));
         $this->set('_serialize', ['evento']);
     }

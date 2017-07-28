@@ -8,7 +8,6 @@ use Cake\ORM\TableRegistry;
 
 class EventosControllerTest extends IntegrationTestCase {
 
-    
     public $fixtures = [
         'app.eventos'
     ];

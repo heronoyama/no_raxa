@@ -101,6 +101,7 @@ Router::scope('/api',function(RouteBuilder $routes){
         ]
     ]);
    $routes->resources('Eventos');
+   $routes->resources('Consumables');
 });
 
 
