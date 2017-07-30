@@ -22,6 +22,7 @@ use Cake\Core\Plugin;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
+use App\Routing\Route\EventoRoute;
 
 /**
  * The default class to use for all routes
@@ -58,6 +59,35 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
+    $routes->connect('/:controller/:id',
+        ['action'=>'view'],
+        ['id' => '\d+', 'pass' => ['id']]);
+
+
+    $routes->connect(
+        '/eventos/:idEvento/:controller',
+        ['action'=>'index'],
+        ['idEvento' => '\d+', 'pass' => ['idEvento'],'routeClass'=>'EventoRoute']  
+    );
+    
+     $routes->connect(
+        '/eventos/:idEvento/:controller/:action/:id',
+        [],
+        ['id'=>'\d+',
+        'idEvento'=>'\d+',
+        'pass'=>['id','idEvento'],
+        'routeClass'=>'EventoRoute']
+    );
+
+    $routes->connect('/eventos/:idEvento/:controller/:action/*', 
+        [], 
+        ['idEvento'=>'\d+',
+        'pass'=>['idEvento'],
+        'routeClass'=>'EventoRoute']);
+
+
+    //TODO #HERON beautifull routing para RESTful
+
     /**
      * Connect catchall routes for all controllers.
      *
@@ -79,28 +109,9 @@ Router::scope('/', function (RouteBuilder $routes) {
 
 });
 
-
-Router::scope('/api',function(RouteBuilder $routes){
+Router::prefix('api',function (RouteBuilder $routes){
     $routes->extensions(['json']);
-
-    $routes->resources('Activities',[
-       'map' => [
-           'toggle_status/:id' => [
-               'action' => 'toggleStatus',
-               'method' => 'PUT'
-           ]
-        ]
-   ]);
-
-   $routes->resources('TodoLists',[
-        'map' => [
-            'add_activity/:id' =>[
-                'action' => 'addActivity',
-                'method' => 'POST'
-            ]
-        ]
-    ]);
-   $routes->resources('Eventos',[
+     $routes->resources('Eventos',[
         'map' =>[
             'add_consumable/:id' =>[
                 'action' => 'addConsumable',
@@ -108,9 +119,11 @@ Router::scope('/api',function(RouteBuilder $routes){
             ]
         ]
     ]);
-   $routes->resources('Consumables');
+    $routes->resources('Consumables');
+    
+    $routes->fallbacks(DashedRoute::class);
+    
 });
-
 
 /**
  * Load all plugin routes. See the Plugin documentation on

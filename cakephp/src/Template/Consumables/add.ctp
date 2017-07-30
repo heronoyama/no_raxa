@@ -4,7 +4,7 @@
         <legend><?= __('Add Consumable') ?></legend>
         <?php
             echo $this->Form->control('nome');
-            echo $this->Form->control('eventos_id', ['options' => $eventos]);
+            echo $this->Form->hidden('eventos_id', ['value' => $evento->id]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

@@ -32,44 +32,43 @@ class AppController extends Controller {
     }
 
     protected function getParsedData(){
-
-        if($this->request->is('json')){
-            //The best i could manage
-            return json_decode($this->request->getData()[0],true);
-            //TODO testar sem o enconde nos testes
-        }
-        
         return $this->request->getData();
     }
 
-    protected function save($model,$destiny){
-        $this->saveGivenDataAndController($this->controller(),$model,$this->getParsedData(),$destiny);
+    protected function saveModel($model){
+        $this->saveData($this->controller(),$model,$this->getParsedData());
     }
-
-    protected function saveGivenDataAndController($controller,$model,$data,$destiny){
+    
+    protected function saveData($controller,$model,$data){
         $model = $controller->patchEntity($model,$data);
-        if ($controller->save($model)) {
-            if(!$this->request->is('json')){
+        return $controller->save($model);
+    }
+    
+    protected function deleteModel($model){
+        return $this->controller()->delete($model);
+    }
+    
+    protected function saveRedirect($model,$destiny){
+        $this->saveDataRedirect($this->controller(),$model,$this->getParsedData(),$destiny);
+    }
+    
+    protected function saveDataRedirect($controller,$model,$data,$destiny){
+        if($this->saveData($controller,$model,$data)){
                 $this->flashSucess();
                 return $this->redirect($destiny);
-            }
         }
-
-        if(!$this->request->is('json'))
-            $this->flashError();
-
+        $this->flashError();
     }
-
-    protected function deleteModel($model,$destiny){
-        $sucess = $this->controller()->delete($model);
-        if ($this->request->is('json'))
+    
+    protected function deleteModelRedirect($model,$destiny){
+        $success = $this->deleteModel($model);
+         if ($this->request->is('json'))
             return;
         
-        if($sucess)    
+        if($success)    
             $this->flashSucess();
         else
             $this->flashError();
-        
         return $this->redirect($destiny);
     }
 
@@ -78,7 +77,7 @@ class AppController extends Controller {
     }
 
     private function flashError(){
-        $this->Flash->success(__("Oops, algo deu errado. Por favor, tente novamente."));   
+        $this->Flash->error(__("Oops, algo deu errado. Por favor, tente novamente."));   
     }
 
     protected function controller(){

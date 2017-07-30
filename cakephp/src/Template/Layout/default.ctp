@@ -31,7 +31,14 @@
     </nav>
     <?= $this->Flash->render() ?>
     <div class="container clearfix" id="container">
-        <?php echo $this->element('menuLateral');?>
+        <?php 
+            $session = $this->request->session();
+            if($session->check('Evento.id'))
+                echo $this->element('menuEventos');
+            else
+                echo $this->element('menuLateral');
+
+        ?>
 
 
         <?= $this->fetch('content') ?>

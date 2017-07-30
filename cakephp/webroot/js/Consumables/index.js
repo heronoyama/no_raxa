@@ -81,7 +81,6 @@ function EventoModel(idEvento){
 			});
 			self.consumiveis(mappedConsumables);
 		});
-
 }
 
 var idEvento = $('h3[data-id]').data('id');

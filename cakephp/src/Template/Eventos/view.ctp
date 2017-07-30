@@ -1,5 +1,6 @@
 <div class="eventos view large-9 medium-8 columns content"  id="EventoModel">
     <h3 <?= 'data-id='.$evento->id?>> <?= h($evento->nome).' ('.h($evento->id).')' ?></h3>
+    <?= $this->Html->link("Editar dados do evento",'/eventos/edit/'.$evento->id) ?>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Localizacao') ?></th>
@@ -14,40 +15,40 @@
             <td><?= h($evento->data) ?></td>
         </tr>
     </table>
-
-    <h4>Consumiveis</h4>
-
+       
+    <div class='medium-6 column'>
+    <h5>Consumiveis</h5>
     <table cellpadding="0" cellspacing="0">
     <thead>
             <tr>
                 <th>Nome</th>
-                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-        <!-- ko foreach: consumiveis -->
+        <?php foreach ($consumables as $consumable): ?>
             <tr class='consumables'>
-                <td>
-                    <b data-bind="visible: !editing(), text: nome, click: edit">&nbsp;</b>
-                    <input data-bind="visible: editing, value: nome, hasFocus: editing"/>
-                </td>    
-                <td>
-                    <input type='hidden' data-bind='value:id'/>
-                    <a data-bind='click: deletar'>Deletar</a>
-                </td>
+                <td><?= h($consumable->nome) ?></td>
             </tr>
-        <!-- /ko -->
+        <?php endforeach; ?>
         </tbody>
     </table>
-
-    <form data-bind='submit: criaConsumable' method="POST">
-        <label>Nome</label>
-        <input type='text' name='nomeConsumivel' data-bind='value: nomeConsumivel' required/>
-        <button type='submit'> Criar </button>
-    </form>
-
+    </div>
+    <div class='medium-6 column'>
+    <h5>Participantes</h5>
+    <table cellpadding="0" cellspacing="0">
+    <thead>
+            <tr>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($consumables as $consumable): ?>
+            <tr class='consumables'>
+                <td><?= h($consumable->nome) ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    </div>
+    
 </div>
-
-<?php
-    echo $this->Html->script('/js/Eventos/view');
-?>

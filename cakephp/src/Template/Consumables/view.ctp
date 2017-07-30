@@ -3,7 +3,7 @@
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Evento') ?></th>
-            <td><?= $consumable->has('evento') ? $this->Html->link($consumable->evento->nome, ['controller' => 'Eventos', 'action' => 'view', $consumable->evento->id]) : '' ?></td>
+            <td><?= $consumable->has('evento') ? $this->Html->link($evento->nome, ['controller' => 'Eventos', 'action' => 'view', $evento->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>

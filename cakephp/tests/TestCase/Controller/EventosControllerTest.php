@@ -1,7 +1,6 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\EventosController;
 use Cake\TestSuite\IntegrationTestCase;
 use App\Model\Table\EventosTable;
 use App\Model\Table\ConsumablesTable;
@@ -14,7 +13,6 @@ class EventosControllerTest extends IntegrationTestCase {
         'app.consumables'
     ];
  
-
     public function setUp() {
         parent::setUp();
         $config = TableRegistry::exists('Eventos') ? [] : ['className' => EventosTable::class];
@@ -30,14 +28,6 @@ class EventosControllerTest extends IntegrationTestCase {
         $this->assertResponseContains('<td>Evento Teste Fixture</td>');
     }
 
-    public function testIndex_json(){
-        $this->get('/api/eventos.json');
-        $this->assertResponseOK();
-        $this->assertHeader('Content-type','application/json; charset=UTF-8','Resposta deveria ser json');
-
-        $this->assertResponseContains('"nome": "Evento Teste Fixture"');
-    }
-
     public function testView_html() {
         $this->get('/eventos/view/1');
         $this->assertResponseOK();
@@ -51,7 +41,6 @@ class EventosControllerTest extends IntegrationTestCase {
         $this->assertHeader('Content-type','application/json; charset=UTF-8','Resposta deveria ser json');
         $this->assertResponseContains('"nome": "Evento Teste Fixture"');
     }
-    
 
     public function testAdd_html() {
         $data = ['nome'=>'Evento Teste','data'=>'2017-07-29 17:00:00'];
@@ -65,28 +54,6 @@ class EventosControllerTest extends IntegrationTestCase {
         $query = $this->Eventos->find()->where(['nome' => $data['nome']]);
         $this->assertEquals(1, $query->count());
     }
-
-    public function testAdd_json() {
-        $query = $this->Eventos->find()->where(['nome' => 'Teste REST']);
-        $this->assertEquals(0, $query->count());
-
-        $this->configRequest([
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json'
-            ]
-        ]);
- 
-        $data = "{\"nome\":\"Teste REST\",\"data\":\"2017-07-29 17:00:00\"}";
-
-        $this->post('/api/eventos.json',json_encode($data));
-        $this->assertResponseSuccess();
-
-        $query = $this->Eventos->find()->where(['nome' => 'Teste REST']);
-        $this->assertEquals(1, $query->count());
-    }
-    
-    
     public function testEdit_html() {
         $data = ['nome'=>'Evento Edit'];
 
@@ -105,30 +72,6 @@ class EventosControllerTest extends IntegrationTestCase {
         $this->assertEquals("Evento Edit",$current->nome);
     }
     
-    public function testEdit_json() {
-        $query = $this->Eventos->find()->where(['nome' => 'Teste Edit']);
-        $this->assertEquals(0, $query->count());
-
-        $current = $this->Eventos->get(1);
-        $this->assertEquals("Evento Teste Fixture",$current->nome);
-
-         $this->configRequest([
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json'
-            ]
-        ]);
- 
-        $data = "{\"nome\":\"Teste Edit\"}";
-        $this->put('/api/eventos/1.json',json_encode($data));
-        $this->assertResponseSuccess();
-
-        $query = $this->Eventos->find()->where(['nome' => 'Teste Edit']);
-        $this->assertEquals(1, $query->count());
-        $current = $this->Eventos->get(1);
-        $this->assertEquals("Teste Edit",$current->nome);
-    }
-  
     public function testDelete_html() {
 
         $query = $this->Eventos->find()->where(['nome' => "Evento Teste Fixture"]);
@@ -139,33 +82,6 @@ class EventosControllerTest extends IntegrationTestCase {
 
         $query = $this->Eventos->find()->where(['nome' => "Evento Teste Fixture"]);
         $this->assertEquals(0, $query->count());
-    }
-
-    public function testDelete_json() {
-
-        $query = $this->Eventos->find()->where(['nome' => "Evento Teste Fixture"]);
-        $this->assertEquals(1, $query->count());
-
-        $this->delete('/api/eventos/1.json');
-        $this->assertResponseSuccess();
-
-        $query = $this->Eventos->find()->where(['nome' => "Evento Teste Fixture"]);
-        $this->assertEquals(0, $query->count());
-    }
-
-    public function testAddConsumable_html(){
-        $query = $this->Consumables->find('all');
-        $this->assertEquals(1,$query->count());
-
-        $data = ['nome'=>'Consumable novo'];
-        $this->post('/eventos/add-consumable/1',$data);
-        $this->assertResponseSuccess();
-
-        $query = $this->Consumables->find('all');
-        $this->assertEquals(2,$query->count());
-
-        $activity = $this->Consumables->get(2);
-        $this->assertEquals("Consumable novo",$activity->nome);
     }
 
     public function testAddConsumable_json(){

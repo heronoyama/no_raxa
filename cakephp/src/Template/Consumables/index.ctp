@@ -1,43 +1,37 @@
-<div class="consumables index large-9 medium-8 columns content">
-    <h3><?= __('Consumables') ?></h3>
-    <div><?= $this->Html->link(__('New Consumable'), ['action' => 'add']) ?></div>
+<div class="eventos view large-9 medium-8 columns content"  id="EventoModel">
+    <h3 <?= 'data-id='.$evento->id?>> <?= h($evento->nome).' ('.h($evento->id).')' ?> > Consumíveis</h3>
     
     <table cellpadding="0" cellspacing="0">
-        <thead>
+    <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('nome') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('eventos_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th>Nome</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($consumables as $consumable): ?>
-            <tr>
-                <td><?= $this->Number->format($consumable->id) ?></td>
-                <td><?= h($consumable->nome) ?></td>
-                <td><?= $consumable->has('evento') ? $this->Html->link($consumable->evento->nome, ['controller' => 'Eventos', 'action' => 'view', $consumable->evento->id]) : '' ?></td>
-                <td><?= h($consumable->created) ?></td>
-                <td><?= h($consumable->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $consumable->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $consumable->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $consumable->id], ['confirm' => __('Are you sure you want to delete # {0}?', $consumable->id)]) ?>
+        <!-- ko foreach: consumiveis -->
+            <tr class='consumables'>
+                <td>
+                    <b data-bind="visible: !editing(), text: nome, click: edit">&nbsp;</b>
+                    <input data-bind="visible: editing, value: nome, hasFocus: editing"/>
+                </td>    
+                <td>
+                    <input type='hidden' data-bind='value:id'/>
+                    <a data-bind='click: deletar'>Deletar</a>
                 </td>
             </tr>
-            <?php endforeach; ?>
+        <!-- /ko -->
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+
+    <form data-bind='submit: criaConsumable' method="POST">
+        <label>Nome</label>
+        <input type='text' name='nomeConsumivel' data-bind='value: nomeConsumivel' required/>
+        <button type='submit'> Criar </button>
+    </form>
+
 </div>
+
+<?php
+    echo $this->Html->script('/js/Consumables/index');
+?>

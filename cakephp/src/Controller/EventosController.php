@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Error\Debugger;
+
 
 class EventosController extends AppController {
 
@@ -11,6 +11,7 @@ class EventosController extends AppController {
 
         $this->set(compact('eventos'));
         $this->set('_serialize', ['eventos']);
+        $this->request->session()->delete("Evento.id");
     }
 
     public function view($id = null) {
@@ -19,13 +20,16 @@ class EventosController extends AppController {
         ]);
 
         $this->set('evento', $evento);
-        $this->set('_serialize', ['evento']);
+        $this->set('consumables',$evento->consumables);
+        $this->set('_serialize', ['evento','consumables']);
+
+        $this->request->session()->write("Evento.id",$id);
     }
 
     public function add() {
         $evento = $this->Eventos->newEntity();
         if ($this->request->is('post')) {
-            $this->save($evento,['action' => 'index']);
+            $this->saveRedirect($evento,['action' => 'index']);
         }
         
         $this->set(compact('evento'));
@@ -37,7 +41,7 @@ class EventosController extends AppController {
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $this->save($evento,['action' => 'index']);
+            $this->saveRedirect($evento,['action' => 'view',$id]);
         }
         $this->set(compact('evento'));
         $this->set('_serialize', ['evento']);
@@ -46,26 +50,7 @@ class EventosController extends AppController {
     public function delete($id = null) {
         $this->request->allowMethod(['post', 'delete']);
         $evento = $this->Eventos->get($id);
-        $this->deleteModel($evento,['action' => 'index']);
-    }
-
-    public function addConsumable($id = null){
-        
-        $this->loadModel('Consumables');
-        $consumable = $this->Consumables->newEntity();
-        
-        if ($this->request->is('post')) {
-
-            $this->log("TESTE",'debug');
-            $this->log($this->request->getData(),'debug');
-            $data = $this->getParsedData();
-            $data['eventos_id'] = $id;
-            $this->log($data,'debug');
-            $this->saveGivenDataAndController($this->Consumables,$consumable,$data,['action'=>'view',$id]);
-        }
-
-        $this->set('consumable', $consumable);
-        $this->set('_serialize', ['consumable']);
+        $this->deleteModelRedirect($evento,['action' => 'index']);
     }
 
     protected function controller(){

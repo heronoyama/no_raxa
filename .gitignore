@@ -1,3 +1,4 @@
-mysql/
-cakephp/logs/
-cakephp/tmp/
+/mysql/
+/cakephp/logs/
+/cakephp/tmp/
+/cakephp/nbproject/
