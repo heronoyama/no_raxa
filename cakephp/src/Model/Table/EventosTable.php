@@ -1,8 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -25,6 +23,12 @@ class EventosTable extends Table {
             'cascadeCallbacks'=>true]);
         
         $this->hasMany('Participantes',[
+            'foreignKey' => 'eventos_id',
+            'joinType' => 'INNER',
+            'dependent' => true,
+            'cascadeCallbacks'=>true]);
+        
+        $this->hasMany('Collaborations',[
             'foreignKey' => 'eventos_id',
             'joinType' => 'INNER',
             'dependent' => true,

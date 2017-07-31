@@ -7,5 +7,6 @@
         <li><?= $this->Html->link(__('Dados do Evento'), '/eventos/'.$idEvento) ?> </li>
         <li><?= $this->Html->link(__('Consumíveis'), '/eventos/'.$idEvento.'/consumables') ?> </li>
         <li><?= $this->Html->link(__('Participantes'), '/eventos/'.$idEvento.'/participantes') ?> </li>
+        <li><?= $this->Html->link(__('Colaborações'), '/eventos/'.$idEvento.'/collaborations') ?> </li>
     </ul>
 </nav>

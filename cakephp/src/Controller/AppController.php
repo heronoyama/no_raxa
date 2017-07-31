@@ -7,7 +7,6 @@ use Cake\Event\Event;
 
 class AppController extends Controller {
 
-    
     public function initialize() {
         parent::initialize();
 
@@ -22,66 +21,66 @@ class AppController extends Controller {
         //$this->loadComponent('Csrf');
     }
 
-    
     public function beforeRender(Event $event) {
         if (!array_key_exists('_serialize', $this->viewVars) &&
-            in_array($this->response->type(), ['application/json', 'application/xml'])
+                in_array($this->response->type(), ['application/json', 'application/xml'])
         ) {
             $this->set('_serialize', true);
         }
     }
 
-    protected function getParsedData(){
+    protected function getParsedData() {
         return $this->request->getData();
     }
 
-    protected function saveModel($model){
-        $this->saveData($this->controller(),$model,$this->getParsedData());
+    protected function saveModel($model) {
+        $this->saveData($this->controller(), $model, $this->getParsedData());
     }
-    
-    protected function saveData($controller,$model,$data){
-        
-        $model = $controller->patchEntity($model,$data);
+
+    protected function saveData($controller, $model, $data) {
+
+        $model = $controller->patchEntity($model, $data);
         return $controller->save($model);
     }
-    
-    protected function deleteModel($model){
+
+    protected function deleteModel($model) {
         return $this->controller()->delete($model);
     }
-    
-    protected function saveRedirect($model,$destiny){
-        $this->saveDataRedirect($this->controller(),$model,$this->getParsedData(),$destiny);
+
+    protected function saveRedirect($model, $destiny) {
+        $this->saveDataRedirect($this->controller(), $model, $this->getParsedData(), $destiny);
     }
-    
-    protected function saveDataRedirect($controller,$model,$data,$destiny){
-        if($this->saveData($controller,$model,$data)){
-                $this->flashSucess();
-                return $this->redirect($destiny);
+
+    protected function saveDataRedirect($controller, $model, $data, $destiny) {
+        if ($this->saveData($controller, $model, $data)) {
+            $this->flashSucess();
+            return $this->redirect($destiny);
         }
         $this->flashError();
     }
-    
-    protected function deleteModelRedirect($model,$destiny){
+
+    protected function deleteModelRedirect($model, $destiny) {
         $success = $this->deleteModel($model);
-         if ($this->request->is('json'))
+        if ($this->request->is('json'))
             return;
-        
-        if($success)    
+
+        if ($success)
             $this->flashSucess();
         else
             $this->flashError();
         return $this->redirect($destiny);
     }
 
-    private function flashSucess(){
+    private function flashSucess() {
         $this->Flash->success(__('Operação realizada com sucesso'));
     }
 
-    private function flashError(){
-        $this->Flash->error(__("Oops, algo deu errado. Por favor, tente novamente."));   
+    private function flashError() {
+        $this->Flash->error(__("Oops, algo deu errado. Por favor, tente novamente."));
     }
 
-    protected function controller(){
+    protected function controller() {
         return null;
     }
+
 }

@@ -1,17 +1,16 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-class ParticipantesTable extends Table {
+class CollaborationsTable extends Table {
 
     public function initialize(array $config) {
         parent::initialize($config);
 
-        $this->setTable('participantes');
+        $this->setTable('collaborations');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
@@ -21,12 +20,14 @@ class ParticipantesTable extends Table {
             'foreignKey' => 'eventos_id',
             'joinType' => 'INNER'
         ]);
-        
-        $this->hasMany('Collaborations',[
+        $this->belongsTo('Participantes', [
             'foreignKey' => 'participantes_id',
-            'joinType' => 'INNER',
-            'dependent' => true,
-            'cascadeCallbacks'=>true]);
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Consumables', [
+            'foreignKey' => 'consumables_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     public function validationDefault(Validator $validator) {
@@ -35,14 +36,17 @@ class ParticipantesTable extends Table {
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('nome', 'create')
-            ->notEmpty('nome');
+            ->numeric('value')
+            ->requirePresence('value', 'create')
+            ->notEmpty('value');
 
         return $validator;
     }
 
-    public function buildRules(RulesChecker $rules){
+    public function buildRules(RulesChecker $rules) {
         $rules->add($rules->existsIn(['eventos_id'], 'Eventos'));
+        $rules->add($rules->existsIn(['participantes_id'], 'Participantes'));
+        $rules->add($rules->existsIn(['consumables_id'], 'Consumables'));
 
         return $rules;
     }

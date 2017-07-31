@@ -21,6 +21,12 @@ class ConsumablesTable extends Table {
             'foreignKey' => 'eventos_id',
             'joinType' => 'INNER'
         ]);
+        
+        $this->hasMany('Collaborations',[
+            'foreignKey' => 'consumables_id',
+            'joinType' => 'INNER',
+            'dependent' => true,
+            'cascadeCallbacks'=>true]);
     }
 
     public function validationDefault(Validator $validator) {
