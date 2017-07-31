@@ -2,3 +2,5 @@
 /cakephp/logs/
 /cakephp/tmp/
 /cakephp/nbproject/
+/cakephp/composer.lock
+/cakephp/config/Migrations/schema-dump-default.lock
