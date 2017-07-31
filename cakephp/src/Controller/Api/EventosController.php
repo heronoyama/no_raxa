@@ -8,7 +8,7 @@ class EventosController extends ParentController {
     
     public function view($id = null) {
         $evento = $this->Eventos->get($id, [
-            'contain' => ['Consumables']
+            'contain' => ['Consumables','Participantes']
         ]);
 
         $this->set('evento', $evento);
@@ -50,6 +50,28 @@ class EventosController extends ParentController {
         $this->saveData($this->Consumables,$consumable,$data);
 
         $this->set('consumable', $consumable);
+        $this->set('_serialize', ['consumable']);
+    }
+    
+    public function addParticipante($id = null){
+        
+        $this->loadModel('Participantes');
+        $participante = $this->Participantes->newEntity();
+        
+        if (!$this->request->is('post')){
+            $message = "Método inválido";
+            $this->set('message',$message);
+            $this->set('_serialize',['message']);
+            //TODO change code
+            return;
+        }
+        
+        $data = $this->getParsedData();
+        $data['eventos_id'] = $id;
+
+        $this->saveData($this->Participantes,$participante,$data);
+
+        $this->set('consumable', $participante);
         $this->set('_serialize', ['consumable']);
     }
     

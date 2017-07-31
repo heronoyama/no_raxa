@@ -69,9 +69,9 @@
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($consumables as $consumable): ?>
+        <?php foreach ($participantes as $participante): ?>
             <tr class='consumables'>
-                <td><?= h($consumable->nome) ?></td>
+                <td><?= h($participante->nome) ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>

@@ -16,12 +16,13 @@ class EventosController extends AppController {
 
     public function view($id = null) {
         $evento = $this->Eventos->get($id, [
-            'contain' => ['Consumables']
+            'contain' => ['Consumables','Participantes']
         ]);
 
         $this->set('evento', $evento);
         $this->set('consumables',$evento->consumables);
-        $this->set('_serialize', ['evento','consumables']);
+        $this->set('participantes',$evento->participantes);
+        $this->set('_serialize', ['evento','consumables','participantes']);
 
         $this->request->session()->write("Evento.id",$id);
     }

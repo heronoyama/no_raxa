@@ -1,4 +1,4 @@
-function Consumable(data,eventosModel){
+function Participante(data,eventosModel){
 	var self=this;
 	self.id = ko.observable(data.id);
 	self.nome = ko.observable(data.nome);
@@ -8,12 +8,12 @@ function Consumable(data,eventosModel){
 	this.edit = function() { this.editing(true) };
 
 	self.deletar = function(){
-		$.ajax('/api/consumables/'+self.id()+'.json',{
+		$.ajax('/api/participantes/'+self.id()+'.json',{
 			type : 'delete',
 			contentType: 'application/json',
 			success: function(result) { 
-				alert("Consumable deletado com sucesso!");
-				self.eventosModel().removeConsumable(self);
+				alert("Participante deletado com sucesso!");
+				self.eventosModel().removeParticipante(self);
 			},
 			error: function(result) { 
 				console.log(result);
@@ -22,8 +22,8 @@ function Consumable(data,eventosModel){
 	};
 
 	self.nome.subscribe(function(newNome){
-		var data = {nome: newNome};
-		$.ajax('/api/consumables/'+self.id()+'.json',
+		var data = ko.toJSON( {nome: newNome});
+		$.ajax('/api/participantes/'+self.id()+'.json',
 			{
 			data : ko.toJSON(data),
 			type : 'put',
@@ -42,24 +42,24 @@ function Consumable(data,eventosModel){
 
 function EventoModel(idEvento){
 	var self = this;
-	self.consumiveis = ko.observableArray([]);
+	self.participantes = ko.observableArray([]);
 	self.id = ko.observable(idEvento);
-	self.nomeConsumivel =  ko.observable();
+	self.nomeParticipante =  ko.observable();
 
 	
 
-	self.criaConsumable = function(){
-		var data = {nome: self.nomeConsumivel()};
-		$.ajax('/api/eventos/add_consumable/'+self.id()+'.json',
+	self.criaParticipante = function(){
+		var data = {nome: self.nomeParticipante()};
+		$.ajax('/api/eventos/add_participante/'+self.id()+'.json',
 			{
 			data : ko.toJSON(data),
 			type : 'post',
 			contentType: 'application/json',
 			success: function(result) { 
-				var consumiveis = self.consumiveis();
-				ko.utils.arrayPushAll(consumiveis,[new Consumable(result.consumable,self)]);
-				self.consumiveis.valueHasMutated();
-				self.nomeConsumivel(null);
+				var participantes = self.participantes();
+				ko.utils.arrayPushAll(participantes,[new Participante(result.consumable,self)]);
+				self.participantes.valueHasMutated();
+				self.nomeParticipante(null);
 
 			},
 			error: function(result) { 
@@ -68,18 +68,18 @@ function EventoModel(idEvento){
 		});
 	};
 
-	self.removeConsumable = function(consumableToRemove){
-		self.consumiveis.remove(consumableToRemove);
-		self.consumiveis.valueHasMutated();
+	self.removeParticipante = function(participanteToRemove){
+		self.participantes.remove(participanteToRemove);
+		self.participantes.valueHasMutated();
 	}
 
 	$.getJSON(
 		'/api/eventos/'+self.id()+'.json',
 		function(allData){
-			var mappedConsumables = $.map(allData.evento.consumables,function(item){
-				return new Consumable(item,self);
+			var mappedParticipantes = $.map(allData.evento.participantes,function(item){
+				return new Participante(item,self);
 			});
-			self.consumiveis(mappedConsumables);
+			self.participantes(mappedParticipantes);
 		});
 }
 
