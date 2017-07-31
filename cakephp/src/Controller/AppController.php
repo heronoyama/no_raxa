@@ -40,6 +40,7 @@ class AppController extends Controller {
     }
     
     protected function saveData($controller,$model,$data){
+        
         $model = $controller->patchEntity($model,$data);
         return $controller->save($model);
     }

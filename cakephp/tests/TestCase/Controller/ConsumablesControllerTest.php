@@ -81,7 +81,7 @@ class ConsumablesControllerTest extends IntegrationTestCase {
         ]);
  
         $data = "{\"nome\":\"Teste Edit\"}";
-        $this->put('/api/consumables/1.json',json_encode($data));
+        $this->put('/api/consumables/1.json',$data);
         $this->assertResponseSuccess();
 
         $query = $this->Consumables->find()->where(['nome' => 'Teste Edit']);

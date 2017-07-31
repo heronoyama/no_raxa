@@ -14,7 +14,9 @@
     <?= $this->Html->css('custom.css') ?>
 
     <?= $this->Html->script('https://code.jquery.com/jquery-3.2.1.min.js');?>
+    
     <?= $this->Html->script('knockout-3.3.0'); ?>
+    <?= $this->Html->script('custom-handlers'); ?>
 
 
     <?= $this->fetch('meta') ?>

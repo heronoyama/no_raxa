@@ -72,6 +72,29 @@ class EventosControllerTest extends IntegrationTestCase {
         $this->assertEquals("Evento Edit",$current->nome);
     }
     
+    public function testEdit_json(){
+        $current = $this->Eventos->get(1);
+        $this->assertEquals("Evento Teste Fixture",$current->nome);
+        $this->assertEquals(1,$current->pessoas_previstas);
+        
+        
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+ 
+        $data = "{\"nome\":\"Novo Evento\",\"pessoas_previstas\":2}";
+        $this->put('/api/eventos/1.json',$data);
+        $this->assertResponseSuccess();
+
+        $current = $this->Eventos->get(1);
+        $this->assertEquals("Novo Evento",$current->nome);
+        $this->assertEquals(2,$current->pessoas_previstas);
+
+    }
+      
     public function testDelete_html() {
 
         $query = $this->Eventos->find()->where(['nome' => "Evento Teste Fixture"]);
@@ -98,7 +121,7 @@ class EventosControllerTest extends IntegrationTestCase {
         ]);
  
         $data = "{\"nome\":\"Consumable Novo\"}";
-        $this->post('/api/eventos/add_consumable/1.json',json_encode($data));
+        $this->post('/api/eventos/add_consumable/1.json',$data);
         $this->assertResponseSuccess();
 
         $query = $this->Consumables->find('all');

@@ -15,6 +15,22 @@ class EventosController extends ParentController {
         $this->set('_serialize', ['evento']);
     }
     
+     function edit($id = null){
+        $evento = $this->Eventos->get($id, [
+            'contain' => []
+        ]);
+                
+        if (!$this->request->is(['put'])) {
+            $message = 'Método inválido';
+            $this->set('message',$message);
+            $this->set('_serialize',['message']);
+            return;
+        }
+        $this->saveModel($evento);
+        $this->set('evento',$evento);
+        $this->set('_serialize', ['evento']);
+    }
+    
     public function addConsumable($id = null){
         
         $this->loadModel('Consumables');
