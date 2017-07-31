@@ -116,10 +116,15 @@ Router::prefix('api',function (RouteBuilder $routes){
             'add_consumable/:id' =>[
                 'action' => 'addConsumable',
                 'method' => 'POST'
+            ],
+            'add_participante/:id' =>[
+                'action' => 'addParticipante',
+                'method' => 'POST'
             ]
         ]
     ]);
     $routes->resources('Consumables');
+    $routes->resources('Participantes');
     
     $routes->fallbacks(DashedRoute::class);
     
