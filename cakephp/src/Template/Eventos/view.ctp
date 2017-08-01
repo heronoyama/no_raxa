@@ -7,6 +7,7 @@
         <a class="editButton" data-bind="visible: !editing(), click:editing" > Edit </a>
         <a class="saveButton" data-bind="visible: editing, click:save" > Save </a>
         
+        <!-- ko with: evento -->
         <table class="vertical-table">
             <?= $this->Form->hidden('id',[
                 'value'=>$evento->id,
@@ -18,30 +19,31 @@
                 <td>
                     <?= $this->Form->text('localizacao',
                            ['value'=>$evento->localizacao,
-                            'data-bind'=>'visible:editing, valueWithInit:\'localizacao\'']); ?>
-                    <?="<span data-bind=\"visible: !editing(), text:localizacao\"></span>" ?>
+                            'data-bind'=>'visible:$parent.editing, valueWithInit:\'localizacao\'']); ?>
+                    <?="<span data-bind=\"visible: !\$parent.editing(), text:localizacao\"></span>" ?>
                 </td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Pessoas Previstas') ?></th>
                 <td>
                     <?= $this->Form->text('pessoas_previstas', ['value' => $evento->pessoas_previstas,
-                        'data-bind' => 'visible:editing, valueWithInit:\'pessoasPrevistas\'']);
+                        'data-bind' => 'visible:$parent.editing, valueWithInit:\'pessoasPrevistas\'']);
                     ?>
-                    <?= "<span data-bind=\"visible: !editing(), text:pessoasPrevistas\"></span>" ?>
+                    <?= "<span data-bind=\"visible: !\$parent.editing(), text:pessoasPrevistas\"></span>" ?>
                 </td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Data') ?></th>
                 <td>
                      <?= $this->Form->text('data', ['value' => $evento->data,
-                        'data-bind' => 'visible:editing, valueWithInit:\'dataEvento\'']);
+                        'data-bind' => 'visible:$parent.editing, valueWithInit:\'dataEvento\'']);
                     ?>
-                    <?= "<span data-bind=\"visible: !editing(), text:dataEvento\"></span>" ?>
+                    <?= "<span data-bind=\"visible: !\$parent.editing(), text:dataEvento\"></span>" ?>
                     
                 </td>
             </tr>
         </table>
+        <!-- /ko -->
     </div> 
     <div class='medium-6 column'>
     <h5>Consumiveis</h5>
@@ -79,6 +81,8 @@
     </div>
     
 </div>
-<?php
-    echo $this->Html->script('/js/Eventos/view');
-?>
+<script>
+    requirejs(['/js/init.js'],function(){
+       requirejs(['/js/app/Controllers/EventosView.js']);
+    });
+</script>

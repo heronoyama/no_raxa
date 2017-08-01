@@ -4,35 +4,44 @@
     <table cellpadding="0" cellspacing="0">
     <thead>
             <tr>
-                <th>Nome</th>
+                <th>Consumível</th>
+                <th>Participante</th>
+                <th>Valor</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-        <!-- ko foreach: colaboracoes-->
+          <?php foreach($collaborations as $collaboration):?>
             <tr class='colaboracoes'>
                 <td>
-                    <b data-bind="visible: !editing(), text: nome, click: edit">&nbsp;</b>
-                    <input data-bind="visible: editing, value: nome, hasFocus: editing"/>
+                    <?= $collaboration->consumable->nome ?>
                 </td>
                 <td>
-                    <!--<b data-bind="visible: !editing(), text: nome, click: edit">&nbsp;</b>-->
-                    <!--<input data-bind="visible: editing, value: nome, hasFocus: editing"/>-->
-                    <span> Valor </span>
+                    <?= $collaboration->participante->nome ?>
                 </td>
                 <td>
-                    <input type='hidden' data-bind='value:id'/>
-                    <a data-bind='click: deletar'>Deletar</a>
+                    <?= $collaboration->valor ?>
+                </td>
+                <td>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $collaboration->id], ['confirm' => __('Are you sure you want to delete # {0}?', $collaboration->id)]) ?>
                 </td>
             </tr>
-        <!-- /ko -->
+            <?php endforeach; ?>
         </tbody>
     </table>
 
-    <form data-bind='submit: criaColaboracao' method="POST">
-        <label>Nome</label>
-        <input type='text' name='valorColaboracao' data-bind='value: nomeConsumivel' required/>
-        <button type='submit'> Criar </button>
-    </form>
+    <?= $this->Form->create() ?>
+    <fieldset>
+        <legend><?= __('Nova colaboração') ?></legend>
+        <?php
+            echo $this->Form->control('valor');
+        ?>
+    </fieldset>
+    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->end() ?>
 
 </div>
+
+<?php
+    echo $this->Html->script('/js/Colaborations/index');
+?>

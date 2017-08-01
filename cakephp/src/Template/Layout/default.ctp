@@ -15,8 +15,9 @@
 
     <?= $this->Html->script('https://code.jquery.com/jquery-3.2.1.min.js');?>
     
-    <?= $this->Html->script('knockout-3.3.0'); ?>
-    <?= $this->Html->script('custom-handlers'); ?>
+    <?php //$this->Html->script('knockout-3.3.0'); ?>
+    <?php //$this->Html->script('custom-handlers'); ?>
+    <?= $this->Html->script('vendor/require.js')?>
 
 
     <?= $this->fetch('meta') ?>
@@ -47,8 +48,7 @@
 
     </div>
    
-    <footer>
-    </footer>
+    
 
 </body>
 </html>

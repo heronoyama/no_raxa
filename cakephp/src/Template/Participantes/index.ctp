@@ -31,6 +31,8 @@
     </form>
     
 </div>
-<?php
-    echo $this->Html->script('/js/Participantes/index');
-?>
+<script>
+    requirejs(['/js/init.js'],function(){
+       requirejs(['/js/app/Controllers/ParticipantesIndex.js']);
+    });
+</script>

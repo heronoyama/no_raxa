@@ -1,43 +1,13 @@
 requirejs(['knockout','models/Participante'],function(ko,Participante){
 
-function Participante(data,eventosModel){
+function ParticipanteModel(data,eventosModel){
 	var self=this;
 	self.participante = ko.observable(new Participante(data));
 	this.editing = ko.observable(false);
+
 	this.eventosModel = ko.observable(eventosModel);
 
 	this.edit = function() { this.editing(true) };
-
-	self.deletar = function(){
-		$.ajax('/api/participantes/'+self.participante().id()+'.json',{
-			type : 'delete',
-			contentType: 'application/json',
-			success: function(result) { 
-				alert("Participante deletado com sucesso!");
-				self.eventosModel().removeParticipante(self.participante());
-			},
-			error: function(result) { 
-				console.log(result);
-			}
-		});
-	};
-
-	self.nome.subscribe(function(newNome){
-		var data = ko.toJSON( {nome: newNome});
-		$.ajax('/api/participantes/'+self.participante().id()+'.json',
-			{
-			data : ko.toJSON(data),
-			type : 'put',
-			contentType: 'application/json',
-			success: function(result) { 
-				alert("nome atualizado com sucesso!");
-			},
-			error: function(result) { 
-				console.log(result);
-			}
-		});
-	});
-
 
 };
 
@@ -72,17 +42,11 @@ function EventoModel(idEvento){
 		self.participantes.valueHasMutated();
 	}
 
-	$.getJSON(
-		'/api/eventos/'+self.id()+'.json',
-		function(allData){
-			var mappedParticipantes = $.map(allData.evento.participantes,function(item){
-				return new Participante(item,self);
-			});
-			self.participantes(mappedParticipantes);
-		});
+	
 }
-
-});
 
 var idEvento = $('h3[data-id]').data('id');
 ko.applyBindings(new EventoModel(idEvento),document.getElementById('EventoModel'));
+
+});
+
