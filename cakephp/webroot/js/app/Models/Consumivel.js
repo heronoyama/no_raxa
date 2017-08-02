@@ -6,6 +6,8 @@ define(['knockout'],function(ko){
 
 
 		self.updateData = function(data){
+			if(!data)
+				return;
 			if(data.id)
 				self.id(data.id);
 			if(data.nome)
@@ -18,7 +20,7 @@ define(['knockout'],function(ko){
 				contentType: 'application/json',
 				success: function(result) { 
 					alert("Consumível deletado com sucesso!");
-					callback();
+					callback(self);
 				},
 				error: function(result) { 
 					console.log(result);
@@ -26,8 +28,40 @@ define(['knockout'],function(ko){
 			});
 		};
 
+		self.toJson = ko.computed(function(){
+			var data = {};
+			if(self.id())
+				data.id = self.id();
+			data.nome = self.nome()
+			return data;
+		});
+
+		self.save = function(eventoID,callback){
+			var dateToSave = self.toJson();
+			dateToSave.eventos_id = eventoID;
+			var method = dateToSave.id ? 'put' : 'post';
+			var url = dateToSave.id ? 
+				'/api/consumables/'+dateToSave.id+'.json' : 
+				'/api/consumables.json';
+
+			$.ajax(url, {
+				data : ko.toJSON(dateToSave),
+				type : method,
+				contentType: 'application/json',
+				success: function(result) { 
+					if(!dateToSave.id)
+						self.id(result.consumable.id);
+					callback(self)
+
+				},
+				error: function(result) { 
+					console.log(result);
+				}
+			});
+		};
+
+
 		self.update = function(data,callback){
-			self.updateData(data);
 			var dataToUpdate = ko.toJSON({
 				nome : self.nome()
 			});

@@ -47,6 +47,26 @@ class ConsumablesControllerTest extends IntegrationTestCase {
         $query = $this->Consumables->find()->where(['nome' => $data['nome']]);
         $this->assertEquals(1, $query->count());
     }
+    
+     public function testAdd_json() {
+        $data = ['nome'=>'Consumable Teste','eventos_id'=> 1];
+
+        $query = $this->Consumables->find()->where(['nome' => $data['nome']]);
+        $this->assertEquals(0, $query->count());
+        
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+        
+        $this->post('/api/consumables.json',json_encode($data));
+        $this->assertResponseSuccess();
+
+        $query = $this->Consumables->find()->where(['nome' => $data['nome']]);
+        $this->assertEquals(1, $query->count());
+    }
 
     public function testEdit_html() {
         $data = ['nome'=>'Consumable Edit'];

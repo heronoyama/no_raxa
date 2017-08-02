@@ -14,13 +14,6 @@ requirejs(['knockout','models/Evento'],function(ko,Evento){
             });
         };
 
-		// function load(){
-		// 	Evento.load(idEvent,function(evento){
-		// 		self.evento(evento);
-		// 	});
-		// }
-
-		// load();
 	};
 
 	ko.applyBindings(new EventosViewModel(),document.getElementById("EventoModel"));

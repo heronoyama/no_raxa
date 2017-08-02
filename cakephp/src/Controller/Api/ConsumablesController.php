@@ -6,6 +6,23 @@ use App\Controller\Api\ApiAppController as ParentController;
 
 class ConsumablesController extends ParentController {
     
+    public function add() {
+        $consumable = $this->Consumables->newEntity();
+        
+        if (!$this->request->is('post')) {
+            $response = $this->response->withStatus(400)->withStringBody(json_encode(["message"=>"Método não permitido"]));
+            return $response;
+        }
+        
+        if(!$this->saveModel($consumable)){
+            $response = $this->response->withStatus(400)->withStringBody(json_encode($consumable->errors()));
+            return $response;
+        }
+        
+        $this->set(compact('consumable'));
+        $this->set('_serialize', ['consumable']);
+    }
+    
     function edit($id = null){
         $consumable = $this->Consumables->get($id, [
             'contain' => []

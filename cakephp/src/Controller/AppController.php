@@ -32,9 +32,12 @@ class AppController extends Controller {
     protected function getParsedData() {
         return $this->request->getData();
     }
-
+    
     protected function saveModel($model) {
-        $this->saveData($this->controller(), $model, $this->getParsedData());
+        $this->log("========================",'debug');
+        $this->log($this->request->getData(),'debug');
+        $this->log("========================",'debug');
+        return $this->saveData($this->controller(), $model, $this->getParsedData());
     }
 
     protected function saveData($controller, $model, $data) {

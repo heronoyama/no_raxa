@@ -1,4 +1,4 @@
-<div class="eventos view large-9 medium-8 columns content"  id="EventoModel">
+<div class="eventos view large-9 medium-8 columns content"  id="ConsumablesModel">
     <h3 <?= 'data-id='.$evento->id?>> <?= h($evento->nome).' ('.h($evento->id).')' ?> > Consumíveis</h3>
     
     <table cellpadding="0" cellspacing="0">
@@ -9,6 +9,7 @@
             </tr>
         </thead>
         <tbody>
+        <!-- ko with: evento -->
         <!-- ko foreach: consumiveis -->
             <tr class='consumables'>
                 <td>
@@ -17,9 +18,10 @@
                 </td>    
                 <td>
                     <input type='hidden' data-bind='value:id'/>
-                    <a data-bind='click: deletar'>Deletar</a>
+                    <a data-bind='click: $root.delete.bind(this,$data)'>Deletar</a>
                 </td>
             </tr>
+        <!-- /ko -->
         <!-- /ko -->
         </tbody>
     </table>
@@ -32,6 +34,8 @@
 
 </div>
 
-<?php
-    echo $this->Html->script('/js/Consumables/index');
-?>
+<script>
+    requirejs(['/js/init.js'],function(){
+       requirejs(['/js/app/Controllers/ConsumablesIndex.js']);
+    });
+</script>
