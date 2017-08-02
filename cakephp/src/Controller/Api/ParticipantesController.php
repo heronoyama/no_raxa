@@ -2,21 +2,20 @@
 
 namespace App\Controller\Api;
 
-use App\Controller\Api\ApiAppController as ParentController;
+use App\Controller\Api\ApiAppController as ApiController;
 
-class ParticipantesController extends ParentController {
+class ParticipantesController extends ApiController {
     
      public function add() {
         $participante= $this->Participantes->newEntity();
         
         if (!$this->request->is('post')) {
-            $response = $this->response->withStatus(400)->withStringBody(json_encode(["message"=>"Método não permitido"]));
-            return $response;
+            return $this->responseWithMessage(400,"Método não permitido");
+            
         }
         
         if(!$this->saveModel($participante)){
-            $response = $this->response->withStatus(400)->withStringBody(json_encode($participante->errors()));
-            return $response;
+            return $this->response->responseWithMessage(400,json_encode($participante->errors()));
         }
         
         $this->set(compact('participante'));

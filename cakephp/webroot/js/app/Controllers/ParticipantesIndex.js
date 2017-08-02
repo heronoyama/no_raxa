@@ -39,44 +39,10 @@ function ParticipantesIndex(evento){
 
 };
 
-
-// function EventoModel(idEvento){
-// 	var self = this;
-// 	self.participantes = ko.observableArray([]);
-// 	self.id = ko.observable(idEvento);
-// 	self.nomeParticipante =  ko.observable();
-
-// 	self.criaParticipante = function(){
-// 		var data = {nome: self.nomeParticipante()};
-// 		$.ajax('/api/eventos/add_participante/'+self.id()+'.json',
-// 			{
-// 			data : ko.toJSON(data),
-// 			type : 'post',
-// 			contentType: 'application/json',
-// 			success: function(result) { 
-// 				var participantes = self.participantes();
-// 				ko.utils.arrayPushAll(participantes,[new Participante(result.consumable,self)]);
-// 				self.participantes.valueHasMutated();
-// 				self.nomeParticipante(null);
-
-// 			},
-// 			error: function(result) { 
-// 				console.log(result);
-// 			}
-// 		});
-// 	};
-
-// 	self.removeParticipante = function(participanteToRemove){
-// 		self.participantes.remove(participanteToRemove);
-// 		self.participantes.valueHasMutated();
-// 	}
-
-	
-// }
-
 var idEvento = $('h3[data-id]').data('id');
 Evento.load(idEvento,{
 		participanteModel : ParticipanteEdit,
+		include: '(Participantes)',
 		callback : function(evento){
 			ko.applyBindings(new ParticipantesIndex(evento),
 			document.getElementById('ParticipantesModel'));

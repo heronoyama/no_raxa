@@ -34,9 +34,6 @@ class AppController extends Controller {
     }
     
     protected function saveModel($model) {
-        $this->log("========================",'debug');
-        $this->log($this->request->getData(),'debug');
-        $this->log("========================",'debug');
         return $this->saveData($this->controller(), $model, $this->getParsedData());
     }
 

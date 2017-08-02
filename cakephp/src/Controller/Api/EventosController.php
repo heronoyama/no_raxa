@@ -2,13 +2,23 @@
 
 namespace App\Controller\Api;
 
-use App\Controller\Api\ApiAppController as ParentController;
+use App\Controller\Api\ApiAppController as ApiController;
 
-class EventosController extends ParentController {
+class EventosController extends ApiController {
     
     public function view($id = null) {
+        $result = $this->toInclude();
+        if(!$result->success){
+            return $this->responseWithMessage(400,$result->error);
+        }
+        
+        $contain = $result->values;
+        if(sizeof($contain) == 0){
+            $contain = ['Participantes','Consumables','Collaborations'];
+        }
+
         $evento = $this->Eventos->get($id, [
-            'contain' => ['Consumables','Participantes']
+            'contain' => $contain
         ]);
 
         $this->set('evento', $evento);

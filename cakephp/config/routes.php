@@ -84,6 +84,8 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['idEvento'=>'\d+',
         'pass'=>['idEvento'],
         'routeClass'=>'EventoRoute']);
+    
+    $routes->connect('/eventos/:action/*',['controller'=>'Eventos'],['routeClass'=>'DashedRoute']);
 
 
     //TODO #HERON beautifull routing para RESTful

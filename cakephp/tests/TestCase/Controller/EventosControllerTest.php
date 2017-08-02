@@ -10,7 +10,9 @@ class EventosControllerTest extends IntegrationTestCase {
 
     public $fixtures = [
         'app.eventos',
-        'app.consumables'
+        'app.consumables',
+        'app.participantes',
+        'app.collaborations'
     ];
  
     public function setUp() {
@@ -35,11 +37,53 @@ class EventosControllerTest extends IntegrationTestCase {
 
     }
 
-    public function testView_json(){
+    public function testView_json_noParams(){
         $this->get('/api/eventos/1.json');
         $this->assertResponseOK();
         $this->assertHeader('Content-type','application/json; charset=UTF-8','Resposta deveria ser json');
-        $this->assertResponseContains('"nome": "Evento Teste Fixture"');
+        
+        $responseJson = json_decode($this->_getBodyAsString());
+        $evento = $responseJson->evento;
+        $this->assertEquals("Evento Teste Fixture",$evento->nome);
+        $this->assertTrue(isset($evento->participantes));
+        $this->assertTrue(isset($evento->consumables));
+        $this->assertTrue(isset($evento->collaborations));
+
+    }
+    
+    public function testView_json_oneParam(){
+        $this->get('/api/eventos/1.json?include=(Participantes)');
+        $this->assertResponseOK();
+        $this->assertHeader('Content-type','application/json; charset=UTF-8','Resposta deveria ser json');
+        
+        $responseJson = json_decode($this->_getBodyAsString());
+        $evento = $responseJson->evento;
+        $this->assertEquals("Evento Teste Fixture",$evento->nome);
+        $this->assertTrue(isset($evento->participantes));
+        $this->assertFalse(isset($evento->consumables));
+        $this->assertFalse(isset($evento->collaborations));
+    }
+    
+    public function testView_json_twoParam(){
+        $this->get('/api/eventos/1.json?include=(Participantes,Consumables)');
+        $this->assertResponseOK();
+        $this->assertHeader('Content-type','application/json; charset=UTF-8','Resposta deveria ser json');
+        
+        $responseJson = json_decode($this->_getBodyAsString());
+        $evento = $responseJson->evento;
+        $this->assertEquals("Evento Teste Fixture",$evento->nome);
+        $this->assertTrue(isset($evento->participantes));
+        $this->assertTrue(isset($evento->consumables));
+        $this->assertFalse(isset($evento->collaborations));
+    }
+    
+    public function testView_json_paramWithError(){
+        $this->get('/api/eventos/1.json?include=Consumables');
+        $this->assertResponseError();
+        $responseJson = json_decode($this->_getBodyAsString());
+        $message= $responseJson->message;
+        $this->assertEquals("O valor desse parametro deve estar entre parenteses",$message);
+        
     }
 
     public function testAdd_html() {
@@ -96,7 +140,6 @@ class EventosControllerTest extends IntegrationTestCase {
     }
       
     public function testDelete_html() {
-
         $query = $this->Eventos->find()->where(['nome' => "Evento Teste Fixture"]);
         $this->assertEquals(1, $query->count());
 

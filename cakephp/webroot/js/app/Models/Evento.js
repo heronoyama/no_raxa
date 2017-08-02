@@ -70,7 +70,10 @@ define(['knockout', 'models/Participante', 'models/Consumivel'],
         };
 
         self.load = function(options){
-            $.getJSON('/api/eventos/' + self.id() + '.json',
+            var url = '/api/eventos/' + self.id() + '.json';
+            if(options.include)
+               url +='?include='+options.include;
+            $.getJSON(url,
                 function(allData){
                     var evento = allData.evento;
                     self.localizacao(evento.localizacao);
@@ -121,9 +124,9 @@ define(['knockout', 'models/Participante', 'models/Consumivel'],
     };
     
     return {
-        load : function(id, callback){
+        load : function(id,options){
             var evento = new Evento({id: id});
-            evento.load(callback);
+            evento.load(options);
         },
         model : Evento
     };

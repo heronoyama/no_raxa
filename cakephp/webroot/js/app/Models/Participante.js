@@ -1,4 +1,6 @@
 define(['knockout'],function(ko){
+
+	//TODO extract superclass to remove duplicated code
 	return function Participante(data){
 		var self = this;
 		self.id = ko.observable();

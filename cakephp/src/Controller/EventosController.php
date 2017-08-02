@@ -50,7 +50,9 @@ class EventosController extends AppController {
 
     public function delete($id = null) {
         $this->request->allowMethod(['post', 'delete']);
+        
         $evento = $this->Eventos->get($id);
+        
         $this->deleteModelRedirect($evento,['action' => 'index']);
     }
 

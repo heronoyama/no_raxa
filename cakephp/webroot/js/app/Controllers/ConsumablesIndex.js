@@ -44,6 +44,7 @@ var idEvento = $('h3[data-id]').data('id');
 //TODO conditional loading
 Evento.load(idEvento,{
 		consumivelModel : ConsumivelEdit,
+		include:'(Consumables)',
 		callback : function(evento){
 			ko.applyBindings(new ConsumablesIndex(evento),
 			document.getElementById('ConsumablesModel'));
