@@ -29,13 +29,16 @@ define(['knockout', 'models/Participante', 'models/Consumivel'],
                 self.colaboracoes(data.colaboracoes);
         };
 
-        self.addConsumivel = function(consumivelToAdd,callback){
-            consumivelToAdd.save(self.id(),function(consumivel){
-                var consumiveis = self.consumiveis();
-                ko.utils.arrayPushAll(consumiveis,[consumivel]);
-                self.consumiveis(consumiveis);
-                self.consumiveis.valueHasMutated();
-                callback();
+        self.addConsumivel = function(consumivelToAdd,saveSucessful){
+            consumivelToAdd.save({
+                evento_id : self.id(),
+                callback: function(consumivel){
+                    var consumiveis = self.consumiveis();
+                    ko.utils.arrayPushAll(consumiveis,[consumivel]);
+                    self.consumiveis(consumiveis);
+                    self.consumiveis.valueHasMutated();
+                    saveSucessful();
+                }
             });
         };
 
@@ -46,6 +49,26 @@ define(['knockout', 'models/Participante', 'models/Consumivel'],
             });
         };
 
+        self.addParticipante = function(participanteToAdd,saveSucessful){
+            participanteToAdd.save({
+                evento_id: self.id(),
+                callback: function(participante){
+                    var participantes = self.participantes();
+                    ko.utils.arrayPushAll(participantes,[participante]);
+                    self.participantes(participantes);
+                    self.participantes.valueHasMutated();
+                    saveSucessful();
+                }
+            });
+        };
+
+        self.removeParticipante = function(participanteToRemove){
+            participanteToRemove.deletar(function(participante){
+                self.participantes.remove(participante);
+                self.participantes.valueHasMutated();
+            });
+        };
+
         self.load = function(options){
             $.getJSON('/api/eventos/' + self.id() + '.json',
                 function(allData){
@@ -53,7 +76,7 @@ define(['knockout', 'models/Participante', 'models/Consumivel'],
                     self.localizacao(evento.localizacao);
                     self.pessoasPrevistas(evento.pessoas_previstas);
                     self.dataEvento(evento.data);
-                    loadParticipantes(evento.participantes);
+                    loadParticipantes(options,evento.participantes);
                     loadConsumiveis(options,evento.consumables);
                     options.callback(self);
             });
@@ -78,9 +101,10 @@ define(['knockout', 'models/Participante', 'models/Consumivel'],
             });
         };
 
-        function loadParticipantes(data){
+        function loadParticipantes(options,data){
+            var model = options.participanteModel? options.participanteModel : Participante;
                 var participantes = $.map(data, function(item){
-                    return new Participante(item);
+                    return new model(item);
                 });
                 self.participantes(participantes);
             };
@@ -90,7 +114,7 @@ define(['knockout', 'models/Participante', 'models/Consumivel'],
             var consumiveis = $.map(data, function(item){
                 return new model(item);
             });
-        self.consumiveis(consumiveis);
+            self.consumiveis(consumiveis);
         };
 
         self.updateData(data);

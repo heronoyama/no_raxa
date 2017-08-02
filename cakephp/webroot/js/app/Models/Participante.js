@@ -4,8 +4,17 @@ define(['knockout'],function(ko){
 		self.id = ko.observable();
 		self.nome = ko.observable();
 
+		self.toJson = ko.computed(function(){
+			var data = {};
+			if(self.id())
+				data.id = self.id();
+			data.nome = self.nome()
+			return data;
+		});
 
 		self.updateData = function(data){
+			if(!data)
+				return;
 			if(data.id)
 				self.id(data.id);
 			if(data.nome)
@@ -18,7 +27,7 @@ define(['knockout'],function(ko){
 				contentType: 'application/json',
 				success: function(result) { 
 					alert("Participante deletado com sucesso!");
-					callback();
+					callback(self);
 				},
 				error: function(result) { 
 					console.log(result);
@@ -26,18 +35,24 @@ define(['knockout'],function(ko){
 			});
 		};
 
-		self.update = function(data,callback){
-			self.updateData(data);
-			var dataToUpdate = ko.toJSON({
-				nome : self.nome()
-			});
-			$.ajax('/api/participantes/'+self.id()+'.json', {
-					data : dataToUpdate,
-					type : 'put',
+		self.save = function(options){
+			var dateToSave = self.toJson();
+			if(!dateToSave.id){
+				dateToSave.eventos_id = options.evento_id;
+			}
+			var method = dateToSave.id ? 'put' : 'post';
+			var url = dateToSave.id ? 
+				'/api/participantes/'+dateToSave.id+'.json' : 
+				'/api/participantes.json';
+
+			$.ajax(url, {
+					data : ko.toJSON(dateToSave),
+					type : method,
 					contentType: 'application/json',
 					success: function(result) { 
-						alert("nome atualizado com sucesso!");
-						callback();
+						if(!dateToSave.id)
+						self.id(result.participante.id);
+						options.callback(self);
 					},
 					error: function(result) { 
 						console.log(result);

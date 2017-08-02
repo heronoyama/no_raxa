@@ -36,9 +36,13 @@ define(['knockout'],function(ko){
 			return data;
 		});
 
-		self.save = function(eventoID,callback){
+		self.save = function(options){
 			var dateToSave = self.toJson();
-			dateToSave.eventos_id = eventoID;
+			
+			if(!dateToSave.id){
+				dateToSave.eventos_id = options.evento_id;
+			}
+			
 			var method = dateToSave.id ? 'put' : 'post';
 			var url = dateToSave.id ? 
 				'/api/consumables/'+dateToSave.id+'.json' : 
@@ -51,31 +55,12 @@ define(['knockout'],function(ko){
 				success: function(result) { 
 					if(!dateToSave.id)
 						self.id(result.consumable.id);
-					callback(self)
+					options.callback(self)
 
 				},
 				error: function(result) { 
 					console.log(result);
 				}
-			});
-		};
-
-
-		self.update = function(data,callback){
-			var dataToUpdate = ko.toJSON({
-				nome : self.nome()
-			});
-			$.ajax('/api/consumables/'+self.id()+'.json', {
-					data : dataToUpdate,
-					type : 'put',
-					contentType: 'application/json',
-					success: function(result) { 
-						alert("nome atualizado com sucesso!");
-						callback();
-					},
-					error: function(result) { 
-						console.log(result);
-					}
 			});
 		};
 

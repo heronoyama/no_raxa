@@ -48,6 +48,25 @@ class ParticipantesControllerTest extends IntegrationTestCase {
         $query = $this->Participantes->find()->where(['nome' => $data['nome']]);
         $this->assertEquals(1, $query->count());
     }
+    
+    public function testAdd_json() {
+        $data = ['nome'=>'ParticipanteTeste','eventos_id'=> 1];
+
+        $query = $this->Participantes->find()->where(['nome' => $data['nome']]);
+        $this->assertEquals(0, $query->count());
+
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+        $this->post('/api/participantes.json',json_encode($data));
+        $this->assertResponseSuccess();
+
+        $query = $this->Participantes->find()->where(['nome' => $data['nome']]);
+        $this->assertEquals(1, $query->count());
+    }
 
     public function testEdit_html() {
         $data = ['nome'=>'Participante Edit'];

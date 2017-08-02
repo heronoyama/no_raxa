@@ -11,12 +11,14 @@ function ConsumivelEdit(data){
 	};
 
 	self.nome.subscribe(function(newNome){
-		self.save(function(){
-			self.editing(false);
+		self.save({
+			callback : function(){
+				self.editing(false);
+			}
 		});
 	});
 
-}
+};
 
 function ConsumablesIndex(evento){
 	var self = this;
