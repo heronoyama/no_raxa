@@ -2,7 +2,7 @@ requirejs(['knockout','models/Evento','models/Consumivel'],function(ko,Evento,Co
 
 function ConsumivelEdit(data){
 	var self = this;
-	Consumivel.call(self,data);
+	Consumivel.model.call(self,data);
 
 	self.editing = ko.observable(false);
 
@@ -20,6 +20,8 @@ function ConsumivelEdit(data){
 
 };
 
+
+//TODO remover dependencia do Evento criando servico /api/eventos/:id/consumables.json
 function ConsumablesIndex(evento){
 	var self = this;
 	self.evento = ko.observable(evento);

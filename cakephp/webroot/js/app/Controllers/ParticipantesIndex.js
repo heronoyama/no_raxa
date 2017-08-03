@@ -3,7 +3,7 @@ requirejs(['knockout','models/Evento','models/Participante'],
 
 function ParticipanteEdit(data){
 	var self=this;
-	Participante.call(self,data);
+	Participante.model.call(self,data);
 
 	self.editing = ko.observable(false);
 
@@ -21,6 +21,7 @@ function ParticipanteEdit(data){
 
 };
 
+//TODO remover dependencia do Evento criando servico /api/eventos/:id/participantes.json
 function ParticipantesIndex(evento){
 	var self = this;
 	self.evento = ko.observable(evento);

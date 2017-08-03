@@ -1,7 +1,7 @@
 require(['knockout'], function(ko){
    
     ko.bindingHandlers.valueWithInit = {
-        init: function(element, valueAccessor, allBindingsAccessor, data) {
+        init: function(element, valueAccessor, allBindingsAccessor, data,bindingContext) {
             var property = valueAccessor(),
                 value = element.value;
 

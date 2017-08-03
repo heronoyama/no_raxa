@@ -127,6 +127,13 @@ Router::prefix('api',function (RouteBuilder $routes){
     ]);
     $routes->resources('Consumables');
     $routes->resources('Participantes');
+    $routes->resources('Collaborations');
+    
+    $routes->connect(
+        '/eventos/:idEvento/:controller',
+        ['action'=>'index'],
+        ['idEvento' => '\d+', 'pass' => ['idEvento'],'routeClass'=>'DashedRoute']  
+    );
     
     $routes->fallbacks(DashedRoute::class);
     

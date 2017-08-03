@@ -1,5 +1,5 @@
-<div class="eventos view large-9 medium-8 columns content"  id="EventoModel">
-    <h3 <?= 'data-id='.$evento->id?>> <?= h($evento->nome).' ('.h($evento->id).')' ?> > Colaborações</h3>
+<div class="eventos view large-9 medium-8 columns content"  id="CollaborationsModel">
+    <h3> <?= h($evento->nome).' ('.h($evento->id).')' ?> > Colaborações</h3>
     
     <table cellpadding="0" cellspacing="0">
     <thead>
@@ -11,37 +11,58 @@
             </tr>
         </thead>
         <tbody>
-          <?php foreach($collaborations as $collaboration):?>
+            <!-- ko foreach: colaboracoes -->
             <tr class='colaboracoes'>
+                <td data-bind="text:consumable().nome"></td>
+                <td data-bind="text:participante().nome"></td>
+                <td data-bind="text:valor"></td>
                 <td>
-                    <?= $collaboration->consumable->nome ?>
-                </td>
-                <td>
-                    <?= $collaboration->participante->nome ?>
-                </td>
-                <td>
-                    <?= $collaboration->valor ?>
-                </td>
-                <td>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $collaboration->id], ['confirm' => __('Are you sure you want to delete # {0}?', $collaboration->id)]) ?>
+                    <input type='hidden' data-bind="id" />
                 </td>
             </tr>
-            <?php endforeach; ?>
+            <!-- /ko -->
         </tbody>
     </table>
+    
+    <a data-bind='click:clearFilter, visible:isFiltered'>Limpar Filtros</a>
+    
+    <div id='filtro'>
+    <legend><?= __('Filtrar') ?></legend>
+      <fieldset>
+        <div class="large-6 columns">
+        <label for="participantes">Participante</label>
+        <select name='participantes' 
+                data-bind="
+                      options: participantes,
+                      optionsText: 'nome',
+                      selectedOptions: selectedParticipantes,
+                      optionsCaption: 'selecione...'"
+                multiple="true">
+                        
+                      </select>
+        </div>
+        <div class="large-6 columns">
+        <label for="consumables">Consumível</label>
+        <select name='consumables' 
+                data-bind="
+                      options: consumiveis,
+                      optionsText: 'nome',
+                      selectedOptions: selectedConsumiveis,
+                      optionsCaption: 'selecione...'"
+                multiple="true">
+                        
+                      </select>
+        </div>
+        <button data-bind='click: filtrar'> Filtrar </button>
+      </fieldset>
 
-    <?= $this->Form->create() ?>
-    <fieldset>
-        <legend><?= __('Nova colaboração') ?></legend>
-        <?php
-            echo $this->Form->control('valor');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+   </div>
+    
 
 </div>
 
-<?php
-    echo $this->Html->script('/js/Colaborations/index');
-?>
+<script>
+    requirejs(['/js/init.js'],function(){
+       requirejs(['/js/app/Controllers/CollaborationsIndex.js']);
+    });
+</script>

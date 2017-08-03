@@ -1,5 +1,5 @@
 define(['knockout'],function(ko){
-	return function Consumivel(data){
+	function Consumivel(data){
 		var self = this;
 		self.id = ko.observable();
 		self.nome = ko.observable();
@@ -66,6 +66,35 @@ define(['knockout'],function(ko){
 
 		self.updateData(data);
 	};
+
+	function Factory(){
+		var self = this;
+
+		self.loadAll = function(options){
+			var url = '/api/eventos/' + options.idEvento + '/consumables.json';
+            $.getJSON(url,
+                function(allData){
+                    var consumables = [];
+
+                    for(var index in allData.consumables){
+                    	var data = allData.consumables[index];
+                    	consumables.push(new Consumivel(data));
+                    }
+                    
+                    options.callback(consumables);
+            });
+
+		}
+		self.create = function(data){
+			return new Consumivel(data);
+		}
+
+	}
+
+	return {
+		model : Consumivel,
+		factory: new Factory()
+	}
 
 
 });

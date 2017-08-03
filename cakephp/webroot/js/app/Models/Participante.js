@@ -1,7 +1,7 @@
 define(['knockout'],function(ko){
 
 	//TODO extract superclass to remove duplicated code
-	return function Participante(data){
+	function Participante(data){
 		var self = this;
 		self.id = ko.observable();
 		self.nome = ko.observable();
@@ -65,5 +65,30 @@ define(['knockout'],function(ko){
 		self.updateData(data);
 	};
 
+	function Factory(){
+		var self = this;
+		self.loadAll = function(options){
+			var url = '/api/eventos/' + options.idEvento + '/participantes.json';
+            $.getJSON(url,
+                function(allData){
+                    var participantes = [];
+
+                    for(var index in allData.participantes){
+                    	var data = allData.participantes[index];
+                    	participantes.push(new Participante(data));
+                    }
+                    
+                    options.callback(participantes);
+            });
+		},
+		self.create = function(data){
+			return new Participante(data);
+		}
+	}
+
+	return {
+		model : Participante,
+		factory : new Factory()
+	}
 
 });

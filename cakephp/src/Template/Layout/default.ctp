@@ -13,10 +13,8 @@
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->css('custom.css') ?>
 
-    <?= $this->Html->script('https://code.jquery.com/jquery-3.2.1.min.js');?>
-    
-    <?php //$this->Html->script('knockout-3.3.0'); ?>
-    <?php //$this->Html->script('custom-handlers'); ?>
+    <?= $this->Html->script('vendor/jquery.js')?>
+    <?= $this->Html->script('vendor/jquery-ui.min.js')?>
     <?= $this->Html->script('vendor/require.js')?>
 
 

@@ -6,6 +6,17 @@ use App\Controller\Api\ApiAppController as ParentController;
 
 class ConsumablesController extends ParentController {
     
+      public function index($idEvento = null){
+        $where = ['eventos_id' => $idEvento];
+
+        $consumables = $this->Consumables
+                    ->find('all')
+                    ->where($where);
+
+        $this->set(compact('consumables'));
+        $this->set('_serialize', ['consumables']);
+    }
+    
     public function add() {
         $consumable = $this->Consumables->newEntity();
         
