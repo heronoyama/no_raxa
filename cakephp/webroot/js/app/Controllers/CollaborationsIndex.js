@@ -4,7 +4,7 @@ requirejs(['knockout','models/Colaboracao','models/Participante','models/Consumi
 
 	function CollaborationsIndexModel(idEvento){
 		var self = this;
-		
+		//TODO quebrar em mais classes
 		self.idEvento = ko.observable(idEvento);
 		self.colaboracoes =  ko.observableArray([]);
 		self.participantes = ko.observableArray([]);
@@ -12,6 +12,36 @@ requirejs(['knockout','models/Colaboracao','models/Participante','models/Consumi
 
 		self.selectedParticipantes = ko.observableArray([]);
 		self.selectedConsumiveis = ko.observableArray([]);
+
+		self.novoParticipante = ko.observable();
+		self.novoConsumivel = ko.observable();
+		self.novoValor = ko.observable();
+
+		self.novaColaboracao = function(){
+			if(!self.novoParticipante() || !self.novoConsumivel())
+				return;
+			var valor = self.novoValor()? self.novoValor() : 0;
+
+			Colaboracao.factory.new({
+				data : {
+					eventos_id : self.idEvento(),
+					participantes_id :self.novoParticipante().id(),
+					consumables_id : self.novoConsumivel().id(),
+					value: valor
+				},
+				callback: function(colaboracao){
+					if(self.isFiltered()){
+						self.clearFilter();
+						return;
+					}
+					var colaboracoes = self.colaboracoes();
+					ko.utils.arrayPushAll(colaboracoes,[colaboracao]);
+					self.colaboracoes(colaboracoes);
+					self.colaboracoes.valueHasMutated();
+
+				}
+			})
+		}
 
 		self.isFiltered = ko.observable(false);
 
@@ -97,6 +127,7 @@ requirejs(['knockout','models/Colaboracao','models/Participante','models/Consumi
 	ko.applyBindings(new CollaborationsIndexModel(idEvento),document.getElementById('CollaborationsModel'));
 
 	$(document).ready(function(){
-		$("#filtro").accordion({collapsible:true});
+		$("#filtro").accordion({collapsible:true,active:false});
+
 	});
 });

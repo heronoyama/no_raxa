@@ -55,6 +55,38 @@
         </div>
         <button data-bind='click: filtrar'> Filtrar </button>
       </fieldset>
+      </div>
+
+      <form data-bind='submit:novaColaboracao'>
+      <legend>Nova Colaboração</legend>
+      <div class="large-4 columns">
+        <label for="participantes">Participante</label>
+          <select name='participantes' 
+                  data-bind="
+                        options: participantes,
+                        optionsText: 'nome',
+                        value: novoParticipante,
+                        optionsCaption: 'selecione...'">                  >
+                          
+          </select>
+      </div>
+          <div class="large-4 columns">
+          <label for="consumables">Consumível</label>
+          <select name='consumables' 
+                  data-bind="
+                        options: consumiveis,
+                        optionsText: 'nome',
+                        value: novoConsumivel,
+                        optionsCaption: 'selecione...'">
+                          
+                        </select>
+          </div>
+          <div class="large-4 columns">
+          <label for='novoValor'>Valor</label>
+          <input type='text'  name='novoValor', data-bind='value:novoValor'/>
+          <input type='submit' text="Criar">
+          </div>
+      </form>
 
    </div>
     

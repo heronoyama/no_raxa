@@ -23,5 +23,27 @@ class CollaborationsController extends ApiController {
         $this->set(compact('collaborations'));
         $this->set('_serialize', ['collaborations']);
     }
+    
+    public function add() {
+        $collaboration = $this->Collaborations->newEntity();
+        
+        if (!$this->request->is('post')) {
+            $response = $this->response->withStatus(400)->withStringBody(json_encode(["message"=>"Método não permitido"]));
+            return $response;
+        }
+        
+        if(!$this->saveModel($collaboration)){
+            $response = $this->response->withStatus(400)->withStringBody(json_encode($collaboration->errors()));
+            return $response;
+        }
+        
+        $completeCollaboration = $this->Collaborations->loadInto($collaboration,['Participantes','Consumables']);
+        $this->set('collaboration',$completeCollaboration);
+        $this->set('_serialize', ['collaboration']);
+    }
+    
+    protected function controller() {
+        return $this->Collaborations;
+    }
 
 }

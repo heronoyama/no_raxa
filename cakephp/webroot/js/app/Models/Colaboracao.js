@@ -29,6 +29,23 @@ define(['knockout','models/Participante','models/Consumivel'],
                     options.callback(colaboracoes);
             });
 		}
+		self.new = function(options){
+			var data = ko.toJSON(options.data);
+			var url = '/api/collaborations.json';
+			$.ajax(url,{
+					data : data,
+					type : 'post',
+					contentType: 'application/json',
+					success: function(result) { 
+						var colaboracao = new Colaboracao(result.collaboration);
+						options.callback(colaboracao);
+					},
+					error: function(result) { 
+						console.log(result);
+					}
+			});
+		}
+
 	}
 
 	return {
