@@ -34,6 +34,15 @@ requirejs(['knockout','models/Colaboracao','models/Participante','models/Consumi
 						self.clearFilter();
 						return;
 					}
+					
+					var found = self.colaboracoes().find(function(each){
+						return each.id() == colaboracao.id();
+					});
+					if(found){
+						found.valor(colaboracao.valor());
+						return;
+					}
+
 					var colaboracoes = self.colaboracoes();
 					ko.utils.arrayPushAll(colaboracoes,[colaboracao]);
 					self.colaboracoes(colaboracoes);

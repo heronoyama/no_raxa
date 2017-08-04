@@ -50,4 +50,31 @@ class CollaborationsTable extends Table {
 
         return $rules;
     }
+    
+    public function addCollaboration($data){
+        $model = $this->getEntity($data);
+        
+        if(!$this->save($model))
+            return false;
+        
+        $this->loadInto($model,['Participantes','Consumables']);
+        return $model;
+    }
+    
+    private function getEntity($data){
+        $entity = $this->find()->where([
+            'eventos_id'=>$data['eventos_id'],
+            'consumables_id' =>$data['consumables_id'],
+            'participantes_id'=>$data['participantes_id']
+        ])->first();
+        
+        if(isset($entity)){
+            $entity->addValue($data['value']);
+            return $entity;
+        }
+        
+        $entity = $this->newEntity();;
+        $model = $this->patchEntity($entity, $data);
+        return $model;
+    }
 }
