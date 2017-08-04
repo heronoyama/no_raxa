@@ -39,10 +39,12 @@ class EventosControllerTest extends IntegrationTestCase {
 
     public function testView_json_noParams(){
         $this->get('/api/eventos/1.json');
+        $responseJson = json_decode($this->_getBodyAsString());
+        
         $this->assertResponseOK();
         $this->assertHeader('Content-type','application/json; charset=UTF-8','Resposta deveria ser json');
         
-        $responseJson = json_decode($this->_getBodyAsString());
+        
         $evento = $responseJson->evento;
         $this->assertEquals("Evento Teste Fixture",$evento->nome);
         $this->assertTrue(isset($evento->participantes));

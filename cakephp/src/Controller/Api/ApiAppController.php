@@ -9,7 +9,7 @@ class ApiAppController extends ParentController {
     
     protected function toInclude(){
         $includesString = $this->request->getQuery("include");
-        
+                
         return PathParams::extractInclude($includesString);
     }
     
@@ -17,12 +17,10 @@ class ApiAppController extends ParentController {
         $participantesFilter = $this->filterParticipantes();
         $consumablesFilter = $this->filterConsumables();
         
-        
         if(!$participantesFilter && !$consumablesFilter){
             return (object)['filtered' => false];
         }
-        
-        
+
         $result = [];
         if($participantesFilter){
             $result = array_merge($result,$participantesFilter);
@@ -33,7 +31,6 @@ class ApiAppController extends ParentController {
         }
         
         return (object)['filtered'=>true,'conditions'=>$result];
-
     }
     
     private function filterParticipantes(){

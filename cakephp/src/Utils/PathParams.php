@@ -6,7 +6,7 @@ class PathParams {
 
     public static function extractInclude($params) {
         if (empty($params)) {
-            return PathParams::errorMessage("O valor desse parametro deve estar entre parenteses");
+            return PathParams::success([]);
         }
         if (!preg_match("/\((\w*)(,\w+)*\)/", $params)) {
             return PathParams::errorMessage("O valor desse parametro deve estar entre parenteses");

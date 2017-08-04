@@ -16,13 +16,8 @@ class PathParamsTest extends TestCase {
         $this->assertFalse($result->success);
         $this->assertEquals("O valor desse parametro deve estar entre parenteses", $result->error);
 
-        $result = PathParams::extractInclude("");
-        $this->assertFalse($result->success);
-        $this->assertEquals("O valor desse parametro deve estar entre parenteses", $result->error);
-
         $result = PathParams::extractInclude("ola");
         $this->assertFalse($result->success);
-
         $this->assertEquals("O valor desse parametro deve estar entre parenteses", $result->error);
     }
 
@@ -43,6 +38,10 @@ class PathParamsTest extends TestCase {
 
     public function testParametro_Include_semValor() {
         $result = PathParams::extractInclude("()");
+        $this->assertTrue($result->success);
+        $this->assertEquals(0, sizeof($result->values));
+        
+        $result = PathParams::extractInclude("");
         $this->assertTrue($result->success);
         $this->assertEquals(0, sizeof($result->values));
     }

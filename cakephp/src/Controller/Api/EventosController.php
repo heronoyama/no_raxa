@@ -8,6 +8,7 @@ class EventosController extends ApiController {
     
     public function view($id = null) {
         $result = $this->toInclude();
+        
         if(!$result->success){
             return $this->responseWithMessage(400,$result->error);
         }
