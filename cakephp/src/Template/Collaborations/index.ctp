@@ -4,9 +4,9 @@
     <table cellpadding="0" cellspacing="0">
     <thead>
             <tr>
-                <th>Consumível</th>
-                <th>Participante</th>
-                <th>Valor</th>
+                <th data-bind='click:sortByConsumiveis'>Consumível</th>
+                <th data-bind='click:sortByParticipantes'>Participante</th>
+                <th data-bind='click:sortByValores'>Valor</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -15,9 +15,13 @@
             <tr class='colaboracoes'>
                 <td data-bind="text:consumable().nome"></td>
                 <td data-bind="text:participante().nome"></td>
-                <td data-bind="text:valor"></td>
                 <td>
-                    <input type='hidden' data-bind="id" />
+                    <b data-bind="visible: !editing(), text: valor, click: edit">&nbsp;</b>
+                    <input data-bind="visible: editing, value: valor, hasFocus: editing"/>
+                </td>
+                <td>
+                    <input type='hidden' data-bind="value:id" />
+                    <a data-bind='click: $root.delete.bind(this,$data)'>Deletar</a>
                 </td>
             </tr>
             <!-- /ko -->

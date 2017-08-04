@@ -39,6 +39,37 @@ class CollaborationsController extends ApiController {
         $this->set('_serialize', ['collaboration']);
     }
     
+    public function edit($id = null){
+        
+        $collaboration = $this->controller()->get($id, [
+            'contain' => []
+        ]);
+        
+        if (!$this->request->is('put')) {
+            $response = $this->response->withStatus(400)->withStringBody(json_encode(["message"=>"Método não permitido"]));
+            return $response;
+        }
+         
+        if(!$this->saveModel($collaboration)){
+            $response = $this->response->withStatus(400)->withStringBody(json_encode($collaboration->errors()));
+            return $response;
+        }
+        
+
+        $this->set('collaboration',$collaboration);
+        $this->set('_serialize', ['collaboration']);
+    }
+    
+     public function delete($id = null) {
+        $this->request->allowMethod(['post', 'delete']);
+        $collaboration = $this->controller()->get($id);
+        $success = $this->deleteModel($collaboration);
+        
+        $message = $success ? "Colaboração deletada com sucesso!" : "Algo deu errado.";
+        $this->set('message',$message);
+        $this->set('_serialize',['message']);
+    }
+    
     protected function controller() {
         return $this->Collaborations;
     }

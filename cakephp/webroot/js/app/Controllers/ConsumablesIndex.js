@@ -10,7 +10,7 @@ function ConsumivelEdit(data){
 		self.editing(true) 
 	};
 
-	self.nome.subscribe(function(newNome){
+	self.nome.subscribe(function(){
 		self.save({
 			callback : function(){
 				self.editing(false);

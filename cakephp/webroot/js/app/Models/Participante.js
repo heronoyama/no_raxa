@@ -6,6 +6,14 @@ define(['knockout'],function(ko){
 		self.id = ko.observable();
 		self.nome = ko.observable();
 
+		self.compareTo = function(other){
+			var nome = self.nome();
+			var otherNome = other.nome();
+			if(nome == otherNome)
+				return 0;
+			return (nome < otherNome) ? -1 : 1;
+		}
+
 		self.toJson = ko.computed(function(){
 			var data = {};
 			if(self.id())

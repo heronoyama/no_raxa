@@ -34,7 +34,7 @@ class ConsumablesController extends ParentController {
         $this->set('_serialize', ['consumable']);
     }
     
-    function edit($id = null){
+    public function edit($id = null){
         $consumable = $this->Consumables->get($id, [
             'contain' => []
         ]);

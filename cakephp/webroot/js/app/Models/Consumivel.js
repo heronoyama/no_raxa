@@ -1,9 +1,17 @@
 define(['knockout'],function(ko){
+	
 	function Consumivel(data){
 		var self = this;
 		self.id = ko.observable();
 		self.nome = ko.observable();
 
+		self.compareTo = function(other){
+			var nome = self.nome();
+			var otherNome = other.nome();
+			if(nome == otherNome)
+				return 0;
+			return (nome < otherNome) ? -1 : 1;
+		}
 
 		self.updateData = function(data){
 			if(!data)
