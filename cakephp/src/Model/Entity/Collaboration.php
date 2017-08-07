@@ -13,4 +13,5 @@ class Collaboration extends Entity {
     public function addValue($newValue){
         $this->value += $newValue;
     }
+    
 }

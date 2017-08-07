@@ -3,13 +3,14 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 
-
 class Consumption extends Entity {
 
     protected $_accessible = [
         '*' => true,
         'id' => false
     ];
+    
+    
     
     public function errorMessage(){
         $errors = $this->errors();
@@ -24,4 +25,6 @@ class Consumption extends Entity {
         }
         return $message;
     }
+    
+ 
 }

@@ -136,6 +136,44 @@ Router::prefix('api',function (RouteBuilder $routes){
         ['idEvento' => '\d+', 'pass' => ['idEvento'],'routeClass'=>'DashedRoute']  
     );
     
+    $routes->connect(
+            '/eventos/:idEvento/divisor/balancoParticipantes', 
+            ['controller' => 'DivisorDespesas',
+            'action' => 'balancoParticipantes'], 
+            ['idEvento' => '\d+', 
+                'pass' => ['idEvento'], 
+                'routeClass' => 'DashedRoute']
+            );
+    
+    $routes->connect(
+            '/eventos/:idEvento/divisor/detalhamentoParticipante/:idParticipante', 
+            ['controller' => 'DivisorDespesas',
+            'action' => 'detalhamentoParticipante'], 
+            ['idEvento' => '\d+', 
+              'idParticipante' => '\d+',
+                'pass' => ['idEvento','idParticipante'], 
+                'routeClass' => 'DashedRoute']
+            );
+    
+    $routes->connect(
+            '/eventos/:idEvento/divisor/detalhamentoConsumivel/:idConsumivel', 
+            ['controller' => 'DivisorDespesas',
+            'action' => 'detalhamentoConsumivel'], 
+            ['idEvento' => '\d+', 
+              'idConsumivel' => '\d+',
+                'pass' => ['idEvento','idConsumivel'], 
+                'routeClass' => 'DashedRoute']
+            );
+            
+    $routes->connect(
+            '/eventos/:idEvento/divisor/balancoConsumiveis', 
+            ['controller' => 'DivisorDespesas',
+            'action' => 'balancoConsumiveis'], 
+            ['idEvento' => '\d+', 
+                'pass' => ['idEvento'], 
+                'routeClass' => 'DashedRoute']
+            );
+
     $routes->fallbacks(DashedRoute::class);
     
 });
