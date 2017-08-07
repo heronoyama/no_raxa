@@ -33,6 +33,12 @@ class EventosTable extends Table {
             'joinType' => 'INNER',
             'dependent' => true,
             'cascadeCallbacks'=>true]);
+        
+         $this->hasMany('Consumptions',[
+            'foreignKey' => 'eventos_id',
+            'joinType' => 'INNER',
+            'dependent' => true,
+            'cascadeCallbacks'=>true]);
     }
 
     public function validationDefault(Validator $validator) {

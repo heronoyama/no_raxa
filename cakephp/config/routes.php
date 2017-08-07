@@ -128,6 +128,7 @@ Router::prefix('api',function (RouteBuilder $routes){
     $routes->resources('Consumables');
     $routes->resources('Participantes');
     $routes->resources('Collaborations');
+    $routes->resources('Consumptions');
     
     $routes->connect(
         '/eventos/:idEvento/:controller',

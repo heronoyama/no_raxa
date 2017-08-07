@@ -27,6 +27,12 @@ class ParticipantesTable extends Table {
             'joinType' => 'INNER',
             'dependent' => true,
             'cascadeCallbacks'=>true]);
+        
+        $this->hasMany('Consumptions',[
+            'foreignKey' => 'participantes_id',
+            'joinType' => 'INNER',
+            'dependent' => true,
+            'cascadeCallbacks'=>true]);
     }
 
     public function validationDefault(Validator $validator) {
