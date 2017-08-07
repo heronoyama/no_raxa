@@ -1,5 +1,5 @@
-require(['knockout'], function(ko){
-   
+requirejs(['knockout'], function(ko){
+
     ko.bindingHandlers.valueWithInit = {
         init: function(element, valueAccessor, allBindingsAccessor, data,bindingContext) {
             var property = valueAccessor(),
@@ -14,5 +14,6 @@ require(['knockout'], function(ko){
 
             ko.applyBindingsToNode(element, { value: data[property] });
         }
-    }; 
+    };
+
 });

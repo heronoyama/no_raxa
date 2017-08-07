@@ -11,7 +11,7 @@
         </thead>
         <tbody>
             <!-- ko foreach: consumos -->
-            <tr class='consumos'>
+            <tr class='Consumos'>
                 <td data-bind="text:consumable().nome"></td>
                 <td data-bind="text:participante().nome"></td>
                 

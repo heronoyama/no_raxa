@@ -1,9 +1,12 @@
 requirejs.config({
     baseUrl: '/js/vendor',
     paths: {
+    	knockout: 'knockout-3.3.0',
+    	text: 'requireText',
     	app: '../app',
-        knockout: 'knockout-3.3.0',
-        models: '../app/Models',
-        components:'../app/Components'
+    	models: '../app/Models',
+    	controllers : '../app/Controllers',
+        components:'../app/Components',
+        templates:'../app/Templates'
     }
 });
