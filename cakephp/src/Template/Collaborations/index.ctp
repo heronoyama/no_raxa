@@ -30,6 +30,8 @@
     
     <a data-bind='click:clearFilter, visible:isFiltered'>Limpar Filtros</a>
     
+  <?= $this->Html->link(__('Relatório todas colaborações'), '/csv/eventos/'.$evento->id.'/divisorDespesas/matrizColaboracao.csv') ?> 
+
     <div id='filtro'>
     <legend><?= __('Filtrar') ?></legend>
       <fieldset>

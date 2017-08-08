@@ -23,6 +23,7 @@ use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
 use App\Routing\Route\EventoRoute;
+use App\Routing\Route\DebugRoute;
 
 /**
  * The default class to use for all routes
@@ -87,7 +88,6 @@ Router::scope('/', function (RouteBuilder $routes) {
     
     $routes->connect('/eventos/:action/*',['controller'=>'Eventos'],['routeClass'=>'DashedRoute']);
 
-
     //TODO #HERON beautifull routing para RESTful
 
     /**
@@ -109,6 +109,37 @@ Router::scope('/', function (RouteBuilder $routes) {
     
     $routes->fallbacks(DashedRoute::class);
 
+});
+
+Router::scope("/csv",function(RouteBuilder $routes){
+    $routes->addExtensions(['csv']);
+    $routes->connect('/eventos/:idEvento/divisorDespesas/valorPorRecursoAnalitico',
+            ['controller'=>'DivisorDespesas',
+              'action' =>'exportValorPorRecursoAnalitico'],
+             ['idEvento'=>'\d+',
+            'pass'=>['idEvento'],
+            'routeClass'=>'DashedRoute']);
+    
+    $routes->connect('/eventos/:idEvento/divisorDespesas/balancoFinalParticipantes',
+            ['controller'=>'DivisorDespesas',
+              'action' =>'exportBalancoFinalParticipantes'],
+             ['idEvento'=>'\d+',
+            'pass'=>['idEvento'],
+            'routeClass'=>'DashedRoute']);
+    
+    $routes->connect('/eventos/:idEvento/divisorDespesas/matrizConsumo',
+            ['controller'=>'DivisorDespesas',
+              'action' =>'exportMatrizConsumo'],
+             ['idEvento'=>'\d+',
+            'pass'=>['idEvento'],
+            'routeClass'=>'DashedRoute']);
+    
+    $routes->connect('/eventos/:idEvento/divisorDespesas/matrizColaboracao',
+            ['controller'=>'DivisorDespesas',
+              'action' =>'exportmatrizColaboracao'],
+             ['idEvento'=>'\d+',
+            'pass'=>['idEvento'],
+            'routeClass'=>'DashedRoute']);
 });
 
 Router::prefix('api',function (RouteBuilder $routes){

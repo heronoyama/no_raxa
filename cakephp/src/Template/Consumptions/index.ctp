@@ -24,6 +24,8 @@
         </tbody>
     </table>
     
+  <?= $this->Html->link(__('Relatório todos os consumos'), '/csv/eventos/'.$evento->id.'/divisorDespesas/matrizConsumo.csv') ?> 
+
     <a data-bind='click:clearFilter, visible:isFiltered'>Limpar Filtros</a>
     
     <div id='filtro'>

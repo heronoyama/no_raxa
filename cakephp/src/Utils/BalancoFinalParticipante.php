@@ -34,6 +34,10 @@ class BalancoFinalParticipante {
         }
     }
     
+    public function headers(){
+        return ['ID','Nome','Valor Colaborado','Valor Devido','Valor Final'];
+    }
+    
     public function getData(){
         $result = [];
         foreach($this->participantes as $id => $participante){
