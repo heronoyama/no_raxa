@@ -1,28 +1,25 @@
 define(['knockout'],function(ko){
-
 	function DataItem(params){
 		var self=this;
 		self.id = ko.observable(params.id);
 		self.nome = ko.observable(params.nome);
-		self.valorColaborado = ko.observable(params.valor_colaborado);
-		self.valorDevido = ko.observable(params.valor_devido);
-		self.valorFinal = ko.observable(params.valor_final);
-
-	}
-
-	function Consumo(params){
-		var self = this;
-		self.consumivel = ko.observable(params.consumable);
+		self.valorInvestido = ko.observable(params.valor_investido);
 		self.valorPorParticipante = ko.observable(params.valor_por_participante);
 	}
 
+	function Consumo(params){
+		var self=this;
+		self.participante = ko.observable(params.participante);
+		self.id = ko.observable(params.id);
+	}
+
 	function Colaboracao(params){
-		var self = this;
-		self.consumivel = ko.observable(params.consumable);
+		var self=this;
+		self.participante = ko.observable(params.participante);
 		self.valorColaborado = ko.observable(params.valor_colaborado);
 	}
 
-	function DetalhamentoItem(params){
+	function DetalhamentoConsumivel(params){
 		var self= this;
 		self.id = ko.observable("");
 		self.nome=ko.observable("");
@@ -53,31 +50,31 @@ define(['knockout'],function(ko){
 			}
 			return colaboracoes;
 		}
-
 	}
 
-	function ParticipanteDataSet(idEvento){
+
+	function ConsumiveisDataSet(idEvento){
 		var self = this;
 
 		self.idEvento = ko.observable(idEvento);
 		self.dataSet = ko.observableArray([]);
 
 		function load(){
-			var url = "/api/eventos/"+self.idEvento()+"/divisor/balancoParticipantes.json";
+			var url = "/api/eventos/"+self.idEvento()+"/divisor/balancoConsumiveis.json";
 
 			$.getJSON(url,
                 function(allData){
-                    var participantes = [];
+                    var consumiveis = [];
 
                     for(var index in allData){
                     	var data = allData[index];
-                    	participantes.push(new DataItem(data));
+                    	consumiveis.push(new DataItem(data));
                     }
                     
-                    self.dataSet(participantes);
+                    self.dataSet(consumiveis);
             });
 
-			$("#ValorFinalParticipante").accordion({
+			$("#BalancoConsumiveis").accordion({
 				collapsible:true,
 				header:'h4',
 				heightStyle:'content',
@@ -90,14 +87,15 @@ define(['knockout'],function(ko){
 		
 	};
 
-	function DetalhamentoParticipante (idEvento){
+	function DetalhamentoConsumo(idEvento){
+		
 		var self = this;
 		self.idEvento = ko.observable(idEvento);
 		self.isVisible = ko.observable(false);
-		self.detalhamento = ko.observable(new DetalhamentoItem());
+		self.detalhamento = ko.observable(new DetalhamentoConsumivel());
 
 		self.populateData = function(dataItem){
-			var url = "/api/eventos/"+self.idEvento()+"/divisor/detalhamentoParticipante/"+dataItem.id()+".json";
+			var url = "/api/eventos/"+self.idEvento()+"/divisor/detalhamentoConsumivel/"+dataItem.id()+".json";
 			$.getJSON(url,
                 function(allData){
                     self.detalhamento().load(allData);
@@ -113,22 +111,23 @@ define(['knockout'],function(ko){
 
 	function Component(params){
 		var self = this;
-		self.participanteDataSet = ko.observable(new ParticipanteDataSet(params.idEvento));
-		self.detalhamentoParticipante = ko.observable(new DetalhamentoParticipante(params.idEvento));
+		self.consumiveisDataSet = ko.observable(new ConsumiveisDataSet(params.idEvento));
+		self.detalhamentoConsumo = ko.observable(new DetalhamentoConsumo(params.idEvento));
 
-		self.detailParticipante = function(dataItem){
-			self.detalhamentoParticipante().populateData(dataItem);
+		self.detailConsumivel = function(dataItem){
+			self.detalhamentoConsumo().populateData(dataItem);
 		}
 	}
 
 	function initializeComponente(){
-		 ko.components.register('participante-data-set', {
+		 ko.components.register('consumiveis-data-set', {
 	        viewModel: Component,
-	        template: {require: 'text!templates/ParticipanteDataSet.html'}
+	        template: {require: 'text!templates/ConsumivelDataSet.html'}
 	    });
 	}
 
 	return {
 		loadComponent: initializeComponente
 	}
+
 });

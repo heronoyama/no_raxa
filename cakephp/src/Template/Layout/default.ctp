@@ -11,6 +11,7 @@
 
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('cake.css') ?>
+    <?= $this->Html->css('vendor/jquery-ui.css') ?>
     <?= $this->Html->css('custom.css') ?>
 
     <?= $this->Html->script('vendor/jquery.js')?>

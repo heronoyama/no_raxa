@@ -1,11 +1,16 @@
-define(['knockout','components/ParticipanteDataSet'],function(ko,ParticipanteDataSet){
+define(['knockout',
+	'components/ParticipanteDataSet',
+	'components/ConsumivelDataSet'],
+		function(ko,ParticipanteDataSet,ConsumivelDataSet){
+	
 	function DivisorDespesas(){
 		var self = this;
 	}
 
 	ParticipanteDataSet.loadComponent();
+	ConsumivelDataSet.loadComponent();
 	ko.applyBindings();
 	
-	// ko.applyBindings(new DivisorDespesas(),document.getElementById('DivisorDeDespesas'));
+	// DivisorDespesas(),document.getElementById('DivisorDeDespesas'));
 
 });
