@@ -1,7 +1,8 @@
-define(['knockout'],function(ko){
+define(['knockout','gateway'],function(ko,Gateway){
 	
 	function Consumivel(data){
 		var self = this;
+		self.idEvento = ko.observable();
 		self.id = ko.observable();
 		self.nome = ko.observable();
 
@@ -13,64 +14,71 @@ define(['knockout'],function(ko){
 			return (nome < otherNome) ? -1 : 1;
 		}
 
+		self.toJson = ko.computed(function(){
+			var data = {};
+			if(self.id())
+				data.id = self.id();
+			if(self.idEvento())
+				data.eventos_id = self.idEvento();
+			data.nome = self.nome()
+			return data;
+		});
+
 		self.updateData = function(data){
 			if(!data)
 				return;
 			if(data.id)
 				self.id(data.id);
 			if(data.nome)
-				self.nome(data.nome);			
+				self.nome(data.nome);	
+			if(data.idEvento)
+				self.idEvento(data.idEvento);
 		};
 
-		self.deletar = function(callback){
-			$.ajax('/api/consumables/'+self.id()+'.json',{
-				type : 'delete',
-				contentType: 'application/json',
-				success: function(result) { 
-					alert("Consumível deletado com sucesso!");
+		self.delete = function(callback){
+			var gatewayOptions = {
+				controller: 'consumables',
+				id:self.id(),
+				callback : function(result){
 					callback(self);
-				},
-				error: function(result) { 
-					console.log(result);
 				}
-			});
+			};
+			Gateway.delete(gatewayOptions);
 		};
 
-		self.toJson = ko.computed(function(){
-			var data = {};
-			if(self.id())
-				data.id = self.id();
-			data.nome = self.nome()
-			return data;
-		});
-
-		self.save = function(options){
-			var dateToSave = self.toJson();
-			
-			if(!dateToSave.id){
-				dateToSave.eventos_id = options.evento_id;
+		self.save = function(callback){
+			if(self.id()){
+				self.update(callback);
+				return;
 			}
-			
-			var method = dateToSave.id ? 'put' : 'post';
-			var url = dateToSave.id ? 
-				'/api/consumables/'+dateToSave.id+'.json' : 
-				'/api/consumables.json';
-
-			$.ajax(url, {
-				data : ko.toJSON(dateToSave),
-				type : method,
-				contentType: 'application/json',
-				success: function(result) { 
-					if(!dateToSave.id)
-						self.id(result.consumable.id);
-					options.callback(self)
-
-				},
-				error: function(result) { 
-					console.log(result);
-				}
-			});
+			self.create(callback);
 		};
+
+		self.create = function(callback){
+			var dateToSave = self.toJson();
+			var gatewayOptions = {
+				controller: 'consumables',
+				data: dateToSave,
+				callback : function(result){
+					self.updateData(result.consumable);
+					callback(self);
+				}
+			};
+			Gateway.new(gatewayOptions);
+		};
+
+		self.update = function(callback){
+			var gatewayOptions = {
+				controller: 'consumables',
+				id: self.id(),
+				data : self.toJson(),
+				callback: function(result){
+					callback(self);
+				}
+			};
+
+			Gateway.update(gatewayOptions);
+		}
 
 		self.updateData(data);
 	};
@@ -79,22 +87,19 @@ define(['knockout'],function(ko){
 		var self = this;
 
 		self.loadAll = function(options){
-			var url = '/api/eventos/' + options.idEvento + '/consumables.json';
-            $.getJSON(url,
-                function(allData){
-                    var consumables = [];
-
-                    for(var index in allData.consumables){
-                    	var data = allData.consumables[index];
-                    	consumables.push(new Consumivel(data));
-                    }
-                    
-                    options.callback(consumables);
-            });
-
-		}
-		self.create = function(data){
-			return new Consumivel(data);
+			var gatewayOptions = {
+				idEvento : options.idEvento,
+				controller: 'consumables',
+				callback : function(allData){
+					var model = options.model ? options.model : Consumivel;
+					var consumiveis = allData.consumables.map(function(data){
+						return new model(data);
+					});
+                    options.callback(consumiveis);
+				}
+			}
+			
+			Gateway.getAll(gatewayOptions);
 		}
 
 	}

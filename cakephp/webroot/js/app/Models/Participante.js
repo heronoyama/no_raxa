@@ -1,8 +1,9 @@
-define(['knockout'],function(ko){
+define(['knockout','gateway'],function(ko,Gateway){
 
 	//TODO extract superclass to remove duplicated code
 	function Participante(data){
 		var self = this;
+		self.idEvento = ko.observable();
 		self.id = ko.observable();
 		self.nome = ko.observable();
 
@@ -18,6 +19,8 @@ define(['knockout'],function(ko){
 			var data = {};
 			if(self.id())
 				data.id = self.id();
+			if(self.idEvento())
+				data.eventos_id = self.idEvento();
 			data.nome = self.nome()
 			return data;
 		});
@@ -28,47 +31,55 @@ define(['knockout'],function(ko){
 			if(data.id)
 				self.id(data.id);
 			if(data.nome)
-				self.nome(data.nome);			
+				self.nome(data.nome);
+			if(data.idEvento)
+				self.idEvento(data.idEvento);
 		};
 
-		self.deletar = function(callback){
-			$.ajax('/api/participantes/'+self.id()+'.json',{
-				type : 'delete',
-				contentType: 'application/json',
-				success: function(result) { 
-					alert("Participante deletado com sucesso!");
+		self.delete = function(callback){
+			var gatewayOptions = {
+				controller: 'participantes',
+				id:self.id(),
+				callback : function(result){
 					callback(self);
-				},
-				error: function(result) { 
-					console.log(result);
 				}
-			});
+			};
+			Gateway.delete(gatewayOptions);
 		};
 
-		self.save = function(options){
-			var dateToSave = self.toJson();
-			if(!dateToSave.id){
-				dateToSave.eventos_id = options.evento_id;
+		self.save = function(callback){
+			if(self.id()){
+				self.update(callback);
+				return;
 			}
-			var method = dateToSave.id ? 'put' : 'post';
-			var url = dateToSave.id ? 
-				'/api/participantes/'+dateToSave.id+'.json' : 
-				'/api/participantes.json';
-
-			$.ajax(url, {
-					data : ko.toJSON(dateToSave),
-					type : method,
-					contentType: 'application/json',
-					success: function(result) { 
-						if(!dateToSave.id)
-						self.id(result.participante.id);
-						options.callback(self);
-					},
-					error: function(result) { 
-						console.log(result);
-					}
-			});
+			self.create(callback);
 		};
+
+		self.create = function(callback){
+			var dateToSave = self.toJson();
+			var gatewayOptions = {
+				controller: 'participantes',
+				data: dateToSave,
+				callback : function(result){
+					self.updateData(result.participante);
+					callback(self);
+				}
+			};
+			Gateway.new(gatewayOptions);
+		};
+
+		self.update = function(callback){
+			var gatewayOptions = {
+				controller: 'participantes',
+				id: self.id(),
+				data : self.toJson(),
+				callback: function(result){
+					callback(self);
+				}
+			};
+
+			Gateway.update(gatewayOptions);
+		}
 
 		self.updateData(data);
 	};
@@ -76,22 +87,21 @@ define(['knockout'],function(ko){
 	function Factory(){
 		var self = this;
 		self.loadAll = function(options){
-			var url = '/api/eventos/' + options.idEvento + '/participantes.json';
-            $.getJSON(url,
-                function(allData){
-                    var participantes = [];
-
-                    for(var index in allData.participantes){
-                    	var data = allData.participantes[index];
-                    	participantes.push(new Participante(data));
-                    }
-                    
+			var gatewayOptions = {
+				idEvento : options.idEvento,
+				controller: 'participantes',
+				callback : function(allData){
+					var model = options.model ? options.model : Participante;
+					var participantes = allData.participantes.map(function(data){ 
+						return new model(data);
+					});
                     options.callback(participantes);
-            });
-		},
-		self.create = function(data){
-			return new Participante(data);
+				}
+			}
+			
+			Gateway.getAll(gatewayOptions);
 		}
+	
 	}
 
 	return {

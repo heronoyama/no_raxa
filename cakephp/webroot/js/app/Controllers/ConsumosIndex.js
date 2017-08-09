@@ -26,10 +26,10 @@ requirejs(['knockout','models/Consumo','models/Participante','models/Consumivel'
 		self.novoConsumivel = ko.observable();
 		
 		self.delete = function(consumoToDelete){
-			consumoToDelete.delete({callback:function(consumo){
+			consumoToDelete.delete(function(consumo){
 				self.consumos.remove(consumo);
 				self.consumos.valueHasMutated();
-			}});
+			});
 
 		}
 

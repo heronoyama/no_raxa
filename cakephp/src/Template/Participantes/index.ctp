@@ -9,7 +9,6 @@
             </tr>
         </thead>
         <tbody>
-        <!-- ko with: evento -->
         <!-- ko foreach: participantes -->
             <tr class='participante'>
                 <td>
@@ -21,7 +20,6 @@
                     <a data-bind='click: $root.delete.bind(this,$data)'>Deletar</a>
                 </td>
             </tr>
-        <!-- /ko -->
         <!-- /ko -->
         </tbody>
     </table>

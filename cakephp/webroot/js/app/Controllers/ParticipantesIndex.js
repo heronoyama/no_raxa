@@ -1,52 +1,68 @@
-requirejs(['knockout','models/Evento','models/Participante'],
-	function(ko,Evento,Participante){
+requirejs(['knockout','components/PathUtils','models/Participante'],
+	function(ko,PathUtils,Participante){
 
 function ParticipanteEdit(data){
 	var self=this;
 	Participante.model.call(self,data);
 
 	self.editing = ko.observable(false);
-
 	self.edit = function() { 
 		self.editing(true) 
 	};
 
 	self.nome.subscribe(function(){
-		self.save({
-			callback:function(){
+		self.save(function(){
 				self.editing(false);
-			}
 		});
 	});
 
 };
 
-//TODO remover dependencia do Evento criando servico /api/eventos/:id/participantes.json
-function ParticipantesIndex(evento){
+function ParticipantesIndex(idEvento){
 	var self = this;
-	self.evento = ko.observable(evento);
+	self.idEvento = ko.observable(idEvento);
+	self.participantes = ko.observableArray([]);
+
 	self.nomeParticipante =  ko.observable();
 
 	self.criaParticipante = function(){
-		var participante = new ParticipanteEdit({nome : self.nomeParticipante()});
-		self.evento().addParticipante(participante,function(){
-			self.nomeParticipante(null);
+		var participante = new ParticipanteEdit({
+			nome : self.nomeParticipante(), 
+			idEvento:self.idEvento()
 		});
+
+		participante.save(
+				function(participante){
+                    var participantes = self.participantes();
+                    ko.utils.arrayPushAll(participantes,[participante]);
+                    self.participantes(participantes);
+					self.participantes.valueHasMutated();
+					self.nomeParticipante(null);
+                }
+            );
 	};
 
 	self.delete = function(participanteToDelete){
-		self.evento().removeParticipante(participanteToDelete);
+		 participanteToDelete.delete(function(participante){
+                self.participantes.remove(participante);
+                self.participantes.valueHasMutated();
+            });
 	};
 
+	function load(){
+		var options = {
+			idEvento : self.idEvento(),
+			model : ParticipanteEdit,
+			callback : function(participantes){
+				self.participantes(participantes);
+			}
+		};
+
+		Participante.factory.loadAll(options);
+	}
+	load();
 };
 
-var idEvento = $('h3[data-id]').data('id');
-Evento.load(idEvento,{
-		participanteModel : ParticipanteEdit,
-		include: '(Participantes)',
-		callback : function(evento){
-			ko.applyBindings(new ParticipantesIndex(evento),
-			document.getElementById('ParticipantesModel'));
-			}
-		});
+var idEvento = PathUtils.extractEventoId();
+ko.applyBindings(new ParticipantesIndex(idEvento),document.getElementById('ParticipantesModel'));
 });

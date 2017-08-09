@@ -23,12 +23,12 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 					}
 		});
 
-		self.delete = function(options){
+		self.delete = function(callback){
 			var gatewayOptions = {
 				controller: 'consumptions',
 				id:self.id(),
 				callback : function(result){
-					options.callback(self);
+					callback(self);
 				}
 			};
 			Gateway.delete(gatewayOptions);

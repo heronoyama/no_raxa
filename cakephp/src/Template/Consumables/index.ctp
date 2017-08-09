@@ -9,7 +9,6 @@
             </tr>
         </thead>
         <tbody>
-        <!-- ko with: evento -->
         <!-- ko foreach: consumiveis -->
             <tr class='consumables'>
                 <td>
@@ -22,7 +21,6 @@
                     <a data-bind="attr:{href:$root.url}">View</a>
                 </td>
             </tr>
-        <!-- /ko -->
         <!-- /ko -->
         </tbody>
     </table>

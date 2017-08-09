@@ -1,4 +1,4 @@
-requirejs(['knockout','models/Evento','models/Consumivel'],function(ko,Evento,Consumivel){
+requirejs(['knockout','components/PathUtils','models/Consumivel'],function(ko,PathUtils,Consumivel){
 
 function ConsumivelEdit(data){
 	var self = this;
@@ -11,44 +11,56 @@ function ConsumivelEdit(data){
 	};
 
 	self.nome.subscribe(function(){
-		self.save({
-			callback : function(){
+		self.save(function(){
 				self.editing(false);
 			}
-		});
+		);
 	});
 };
 
-
-//TODO remover dependencia do Evento criando servico /api/eventos/:id/consumables.json
-function ConsumablesIndex(evento){
+function ConsumablesIndex(idEvento){
 	var self = this;
-	self.evento = ko.observable(evento);
+	self.idEvento = ko.observable(idEvento);
+	self.consumiveis = ko.observableArray([]);
+
 	self.nomeConsumivel =  ko.observable();
 
 	self.criaConsumable = function(){
-		var consumivel = new ConsumivelEdit({nome : self.nomeConsumivel()});
-		self.evento().addConsumivel(consumivel,function(){
+		var novoConsumivel = new ConsumivelEdit({nome : self.nomeConsumivel(),idEvento:self.idEvento()});
+		novoConsumivel.save(function(consumivel){
+			var consumiveis = self.consumiveis();
+			ko.utils.arrayPushAll(consumiveis,[consumivel]);
+			self.consumiveis(consumiveis);
+			self.consumiveis.valueHasMutated();
 			self.nomeConsumivel(null);
-		});
+		})
 	};
 
 	self.delete = function(consumivelToDelete){
-		self.evento().removeConsumivel(consumivelToDelete);
+		consumivelToDelete.delete(function(consumivel){
+                self.consumiveis.remove(consumivel);
+                self.consumiveis.valueHasMutated();
+            });
 	};
+
+	function load(){
+		var options = {
+			idEvento : self.idEvento(),
+			model : ConsumivelEdit,
+			callback : function(consumiveis){
+				self.consumiveis(consumiveis);
+			}
+		};
+
+		Consumivel.factory.loadAll(options);
+	}
+
+	load();
 
 };
 
 
-var idEvento = $('h3[data-id]').data('id');
+var idEvento = PathUtils.extractEventoId();
+ko.applyBindings(new ConsumablesIndex(idEvento),document.getElementById('ConsumablesModel'));
 
-//TODO conditional loading
-Evento.load(idEvento,{
-		consumivelModel : ConsumivelEdit,
-		include:'(Consumables)',
-		callback : function(evento){
-			ko.applyBindings(new ConsumablesIndex(evento),
-			document.getElementById('ConsumablesModel'));
-			}
-		});
 });
