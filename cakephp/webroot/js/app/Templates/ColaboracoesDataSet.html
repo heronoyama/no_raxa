@@ -1,0 +1,61 @@
+<div id='ColaboracoesComponent'>
+<h4> Colaborações </h4>
+<div>
+<!-- ko with: colaboracoesDataSet -->
+<div>
+	<table>
+		<thead>
+			<tr>
+                <!-- ko if: !$component.isParticipante() -->
+                <th> Participante</th>
+                <!-- /ko -->
+                <!-- ko if: $component.isParticipante -->
+                <th>Consumivel</th>
+                <!-- /ko -->
+                <th>Valor Colaborado</th>
+                <th> Ações </th>
+			</tr>
+		</thead>
+		<tbody data-bind='foreach: colaboracoes'>
+			<tr>
+				<td data-bind='text:participante().nome, visible:!$component.isParticipante()'></td>
+				<td data-bind='text:consumable().nome, visible:$component.isParticipante'></td>
+                <td data-bind='text:valor'></td>
+                <td>
+                    <a data-bind='click: $component.delete.bind(this,$data)'>Deletar</a>
+                </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- /ko -->
+
+<!-- ko with: colaboracoesForm -->
+ <form data-bind='submit:novaColaboracao'>
+      <legend>Nova Colaboração</legend>
+      <div class="large-4 columns">
+        <!-- ko if: !$component.isParticipante()-->
+        <label for="owner" >Participante</label>
+        <!--/ko-->
+        <!-- ko if: $component.isParticipante -->
+        <label for="owner">Consumivel</label>
+        <!--/ko-->
+        <select name='participantes' 
+                data-bind="
+                    options: owner,
+                    optionsText: 'nome',
+                    value: selectedOwner,
+                    optionsCaption: 'selecione...'">                  >
+                          
+          </select>
+      </div>
+          
+    <div class="large-4 columns">
+          <label for='valor'>Valor</label>
+          <input type='text'  name='valor', data-bind='value:valor'/>
+          <input type='submit' text="Criar">
+          </div>
+ </form>
+
+<!-- /ko -->
+</div>

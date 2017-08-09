@@ -18,7 +18,7 @@
                 <td>
                     <input type='hidden' data-bind='value:id'/>
                     <a data-bind='click: $root.delete.bind(this,$data)'>Deletar</a>
-                    <a data-bind="attr:{href:$root.url}">View</a>
+                    <a data-bind="attr:{href:viewUrl}">View</a>
                 </td>
             </tr>
         <!-- /ko -->

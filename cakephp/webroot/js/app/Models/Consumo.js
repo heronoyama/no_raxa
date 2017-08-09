@@ -85,6 +85,30 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 			   gatewayOptions.params = options.params;
 			
 			Gateway.getAll(gatewayOptions);
+		},
+		new: function(options){
+			var gatewayOptions = {
+				controller: 'consumptions',
+				data: options.data,
+				callback : function(result){
+					var model = options.model ? options.model : Consumo;
+					var consumption = result.consumption;
+					var participante = consumption.participante;
+					var consumable = consumption.consumable;
+					consumption.participante = new Participante.model(participante)
+					consumption.consumivel = new Consumivel.model(consumable);
+					var consumo = new model(consumption);
+					options.callback(consumo);
+				}
+			}
+			Gateway.new(gatewayOptions);
+		},
+
+		disponiveisParaParticipante: function(options){
+			var callback = options.callback;
+			options.callback = function(){
+				
+			}
 		}
 	}
 });

@@ -75,7 +75,7 @@ requirejs(['knockout','models/Colaboracao','models/Participante','models/Consumi
 					self.colaboracoes.valueHasMutated();
 
 				}
-			})
+			});
 		}
 
 		self.isFiltered = ko.observable(false);

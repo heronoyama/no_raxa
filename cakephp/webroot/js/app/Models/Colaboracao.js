@@ -51,6 +51,17 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 			};
 			Gateway.delete(gatewayOptions);
 		}
+
+		self.save = function(){
+			var gatewayOptions = {
+				controller: 'collaborations',
+				data: self.toJson(),
+				callback : function(result){
+					options.callback(self);
+				}
+			}
+			Gateway.new(gatewayOptions);
+		}
 	}
 
 	return {
@@ -60,13 +71,10 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 				idEvento : options.idEvento,
 				controller: 'collaborations',
 				callback : function(allData){
-					var colaboracoes = [];
-                    var model = options.model ? options.model : Colaboracao;
-                    for(var index in allData.collaborations){
-                    	var data = allData.collaborations[index];
-                    	colaboracoes.push(new model(data));
-                    }
-                    
+					var model = options.model ? options.model : Colaboracao;
+					var colaboracoes =allData.collaborations.map(function(data){
+						return new model(data);
+					});
                     options.callback(colaboracoes);
 				}
 			}

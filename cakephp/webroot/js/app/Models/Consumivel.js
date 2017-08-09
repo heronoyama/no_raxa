@@ -80,6 +80,10 @@ define(['knockout','gateway'],function(ko,Gateway){
 			Gateway.update(gatewayOptions);
 		}
 
+		self.viewUrl = ko.computed(function(){
+			return '/eventos/:idEvento/consumables/view/:idConsumivel'.replace(":idEvento",self.idEvento()).replace(":idConsumivel",self.id());
+		});
+
 		self.updateData(data);
 	};
 
@@ -92,11 +96,14 @@ define(['knockout','gateway'],function(ko,Gateway){
 				callback : function(allData){
 					var model = options.model ? options.model : Consumivel;
 					var consumiveis = allData.consumables.map(function(data){
+						data.idEvento = options.idEvento;
 						return new model(data);
 					});
                     options.callback(consumiveis);
 				}
 			}
+			if(options.param)
+				gatewayOptions.param = options.param;
 			
 			Gateway.getAll(gatewayOptions);
 		}

@@ -14,4 +14,18 @@
             <td><?= h($consumable->modified) ?></td>
         </tr>
     </table>
+
+
+<div data-bind='component:{name:"colaboracoes-data-set", params:{ idEvento :<?=$evento->id?>,idConsumivel:<?=$consumable->id?>}}'>
+	</div>
+
+<div data-bind='component:{name:"consumos-data-set", params:{ idEvento :<?=$evento->id?>,idConsumivel:<?=$consumable->id?>}}'>
+    </div>
+
+<script>
+    requirejs(['/js/init.js'],function(){
+        requirejs(['/js/app/Controllers/LoadComponents.js']);
+    });
+</script>
+
 </div>

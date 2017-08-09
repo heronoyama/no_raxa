@@ -1,0 +1,55 @@
+<div id='ConsumosComponent'>
+<h4> Consumos </h4>
+<div>
+<!-- ko with: consumosDataSet -->
+<div>
+	<table>
+		<thead>
+			<tr>
+                <!-- ko if: !$component.isParticipante() -->
+                <th> Participante</th>
+                <!-- /ko -->
+                <!-- ko if: $component.isParticipante -->
+                <th>Consumivel</th>
+                <!-- /ko -->
+                <th> Ações </th>
+			</tr>
+		</thead>
+		<tbody data-bind='foreach: consumos'>
+			<tr>
+				<td data-bind='text:participante().nome, visible:!$component.isParticipante()'></td>
+				<td data-bind='text:consumable().nome, visible:$component.isParticipante'></td>
+                <td>
+                    <a data-bind='click: $component.delete.bind(this,$data)'>Deletar</a>
+                </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- /ko -->
+
+<!-- ko with: consumosForm -->
+ <form data-bind='submit:novoConsumo'>
+      <legend>Nova Consumo</legend>
+      <div class="large-4 columns">
+        <!-- ko if: !$component.isParticipante()-->
+        <label for="owner" >Participante</label>
+        <!--/ko-->
+        <!-- ko if: $component.isParticipante -->
+        <label for="owner">Consumivel</label>
+        <!--/ko-->
+        <select name='owner' 
+                data-bind="
+                    options: owner,
+                    optionsText: 'nome',
+                    value: selectedOwner,
+                    optionsCaption: 'selecione...'">                  >
+                          
+          </select>
+      </div>
+          
+    <input type='submit' text="Criar">
+ </form>
+
+<!-- /ko -->
+</div>
