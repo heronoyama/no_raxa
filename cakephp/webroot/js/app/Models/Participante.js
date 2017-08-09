@@ -84,9 +84,9 @@ define(['knockout','gateway'],function(ko,Gateway){
 		self.updateData(data);
 	};
 
-	function Factory(){
-		var self = this;
-		self.loadAll = function(options){
+	return {
+		model : Participante,
+		loadAll: function(options){
 			var gatewayOptions = {
 				idEvento : options.idEvento,
 				controller: 'participantes',
@@ -101,12 +101,6 @@ define(['knockout','gateway'],function(ko,Gateway){
 			
 			Gateway.getAll(gatewayOptions);
 		}
-	
-	}
-
-	return {
-		model : Participante,
-		factory : new Factory()
 	}
 
 });

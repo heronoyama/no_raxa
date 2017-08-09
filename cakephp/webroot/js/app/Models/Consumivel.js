@@ -83,10 +83,9 @@ define(['knockout','gateway'],function(ko,Gateway){
 		self.updateData(data);
 	};
 
-	function Factory(){
-		var self = this;
-
-		self.loadAll = function(options){
+	return {
+		model : Consumivel,
+		loadAll : function(options){
 			var gatewayOptions = {
 				idEvento : options.idEvento,
 				controller: 'consumables',
@@ -101,12 +100,6 @@ define(['knockout','gateway'],function(ko,Gateway){
 			
 			Gateway.getAll(gatewayOptions);
 		}
-
-	}
-
-	return {
-		model : Consumivel,
-		factory: new Factory()
 	}
 
 

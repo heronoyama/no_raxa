@@ -81,6 +81,26 @@ define(['knockout'],function(ko){
 			});
 		}
 
+		self.getEvento = function(options){
+			var url = self.baseUrl+".json";
+			url = url.replace(":idEvento",options.idEvento);
+			$.getJSON(url,options.callback);
+		}
+
+		self.updateEvento = function(options){
+			var url = self.baseUrl+".json";
+			url = url.replace(":idEvento",options.idEvento);
+			$.ajax(url, {
+                data : ko.toJSON(options.data),
+                type : 'put',
+                contentType: 'application/json',
+                success: options.callback,
+                error: function(result) {
+                    console.log(result);
+                }
+            });
+		}
+
 	}
 
 	return new Gateway();

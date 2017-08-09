@@ -52,7 +52,7 @@ function ConsumablesIndex(idEvento){
 			}
 		};
 
-		Consumivel.factory.loadAll(options);
+		Consumivel.loadAll(options);
 	}
 
 	load();

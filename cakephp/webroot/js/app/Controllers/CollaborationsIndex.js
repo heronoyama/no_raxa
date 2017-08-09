@@ -47,7 +47,7 @@ requirejs(['knockout','models/Colaboracao','models/Participante','models/Consumi
 				return;
 			var valor = self.novoValor()? self.novoValor() : 0;
 
-			Colaboracao.factory.new({
+			Colaboracao.new({
 				data : {
 					eventos_id : self.idEvento(),
 					participantes_id :self.novoParticipante().id(),
@@ -142,12 +142,12 @@ requirejs(['knockout','models/Colaboracao','models/Participante','models/Consumi
 			if(filtros.length > 0)
 				options.params = filtros.join('&');
 
-			Colaboracao.factory.loadAll(options);
+			Colaboracao.loadAll(options);
 		
 		}
 
 		function loadColaboracoes(){
-			Colaboracao.factory.loadAll({
+			Colaboracao.loadAll({
 				idEvento : self.idEvento(),
 				model : ColaboracaoEdit,
 				callback : function(colaboracoes){
@@ -158,7 +158,7 @@ requirejs(['knockout','models/Colaboracao','models/Participante','models/Consumi
 
 		function load(){
 			loadColaboracoes();
-			Participante.factory.loadAll({
+			Participante.loadAll({
 				idEvento : self.idEvento(),
 				callback : function(participantes){
 					self.participantes(participantes);
@@ -166,7 +166,7 @@ requirejs(['knockout','models/Colaboracao','models/Participante','models/Consumi
 
 			});
 
-			Consumivel.factory.loadAll({
+			Consumivel.loadAll({
 				idEvento : self.idEvento(),
 				callback : function(consumiveis){
 					self.consumiveis(consumiveis);

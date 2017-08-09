@@ -58,7 +58,7 @@ function ParticipantesIndex(idEvento){
 			}
 		};
 
-		Participante.factory.loadAll(options);
+		Participante.loadAll(options);
 	}
 	load();
 };

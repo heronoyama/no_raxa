@@ -5,8 +5,8 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 		var self = this;
 		self.id = ko.observable(data.id);
 		self.valor = ko.observable(parseInt(data.value));
-		self.participante = ko.observable(Participante.factory.create(data.participante));
-		self.consumable = ko.observable(Participante.factory.create(data.consumable));
+		self.participante = ko.observable(new Participante.model(data.participante));
+		self.consumable = ko.observable(new Consumivel.model(data.consumable));
 
 		self.compareTo = function(other){
 			var valor = self.valor();
@@ -53,9 +53,9 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 		}
 	}
 
-	function Factory(){
-		var self = this;
-		self.loadAll = function(options){
+	return {
+		model : Colaboracao,
+		loadAll : function(options){
 			var gatewayOptions = {
 				idEvento : options.idEvento,
 				controller: 'collaborations',
@@ -74,9 +74,9 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 			   gatewayOptions.params = options.params;
 			
 			Gateway.getAll(gatewayOptions);
-		}
+		},
 
-		self.new = function(options){
+		new : function(options){
 			var gatewayOptions = {
 				controller: 'collaborations',
 				data: options.data,
@@ -88,11 +88,5 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 			}
 			Gateway.new(gatewayOptions);
 		}
-		
 	}
-
-	return {
-		model : Colaboracao,
-		factory : new Factory()
-		}
 });
