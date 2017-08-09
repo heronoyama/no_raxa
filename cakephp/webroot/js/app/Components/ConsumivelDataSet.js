@@ -1,4 +1,9 @@
-define(['knockout'],function(ko){
+define(['knockout',
+	'components/models/Detalhamento',
+	'components/models/DataSet',
+	'gateway'],
+		function(ko,Detalhamento,DataSet,Gateway){
+
 	function DataItem(params){
 		var self=this;
 		self.id = ko.observable(params.id);
@@ -7,84 +12,43 @@ define(['knockout'],function(ko){
 		self.valorPorParticipante = ko.observable(params.valor_por_participante);
 	}
 
-	function Consumo(params){
-		var self=this;
-		self.participante = ko.observable(params.participante);
-		self.id = ko.observable(params.id);
-	}
-
-	function Colaboracao(params){
-		var self=this;
-		self.participante = ko.observable(params.participante);
-		self.valorColaborado = ko.observable(params.valor_colaborado);
-	}
-
 	function DetalhamentoConsumivel(params){
 		var self= this;
-		self.id = ko.observable("");
-		self.nome=ko.observable("");
-		self.consumptions = ko.observableArray([]);
-		self.collaborations = ko.observableArray([]);
+		Detalhamento.call(self,params);
 
-		self.load = function(data){
-			self.id(data.id);
-			self.nome(data.nome);
-			self.consumptions(loadConsumptions(data.consumptions));
-			self.collaborations(loadCollaborations(data.collaborations));
-		}
-
-		function loadConsumptions(consumptions){
-			var consumiveis = [];
-			for(var index in consumptions){
-				var consumption = consumptions[index];
-				consumiveis.push(new Consumo(consumption));
-			}
-			return consumiveis;
-		}
-
-		function loadCollaborations(collaborations){
-			var colaboracoes = [];
-			for(var index in collaborations){
-				var colaboracao = collaborations[index];
-				colaboracoes.push(new Colaboracao(colaboracao));
-			}
-			return colaboracoes;
-		}
+		self.mapConsumo = function(data){
+			return {
+				participante : ko.observable(data.participante),
+				id : ko.observable(data.id)
+			};
 	}
 
+		self.mapColaboracao = function(data){
+			return {
+				participante: ko.observable(data.participante),
+				valorColaborado: ko.observable(data.valor_colaborado)
+			};
+		};
+	}
 
 	function ConsumiveisDataSet(idEvento){
 		var self = this;
 
-		self.idEvento = ko.observable(idEvento);
-		self.dataSet = ko.observableArray([]);
+		self.loadCallback = function(allData){
+				var consumiveis = allData.map(function(data){
+            		return new DataItem(data);
+            	});
+            	self.dataSet(consumiveis);
+		};
 
-		function load(){
-			var url = "/api/eventos/"+self.idEvento()+"/divisor/balancoConsumiveis.json";
-
-			$.getJSON(url,
-                function(allData){
-                    var consumiveis = [];
-
-                    for(var index in allData){
-                    	var data = allData[index];
-                    	consumiveis.push(new DataItem(data));
-                    }
-                    
-                    self.dataSet(consumiveis);
-            });
-
-			$("#BalancoConsumiveis").accordion({
-				collapsible:true,
-				header:'h4',
-				heightStyle:'content',
-				animate: 200,
-				active:false});
-
+		self.loadMethod = function(){
+			return Gateway.balancoConsumiveis;
 		}
 
-		load();
-		
+		self.element = "#BalancoConsumiveis";
+
+		DataSet.call(self,idEvento);
+
 	};
 
 	function DetalhamentoConsumo(idEvento){
@@ -95,18 +59,19 @@ define(['knockout'],function(ko){
 		self.detalhamento = ko.observable(new DetalhamentoConsumivel());
 
 		self.populateData = function(dataItem){
-			var url = "/api/eventos/"+self.idEvento()+"/divisor/detalhamentoConsumivel/"+dataItem.id()+".json";
-			$.getJSON(url,
-                function(allData){
-                    self.detalhamento().load(allData);
-                    self.isVisible(true);
-            });
+   			Gateway.detalhamentoConsumivel({
+   				idEvento: self.idEvento(),
+   				idConsumivel: dataItem.id(),
+   				callback: function(allData){
+                    		self.detalhamento().load(allData);
+                    	self.isVisible(true);
+            			}
+        		});
 		}
 
 		self.close = function(){
 			self.isVisible(false);
 		}
-
 	}
 
 	function Component(params){

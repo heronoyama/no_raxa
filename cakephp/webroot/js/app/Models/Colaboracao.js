@@ -1,5 +1,5 @@
-define(['knockout','models/Participante','models/Consumivel'],
-		function(ko,Participante,Consumivel){
+define(['knockout','gateway','models/Participante','models/Consumivel'],
+		function(ko,Gateway,Participante,Consumivel){
 	
 	function Colaboracao(data){
 		var self = this;
@@ -30,45 +30,37 @@ define(['knockout','models/Participante','models/Consumivel'],
 		});
 
 		self.updateValue = function(options){
-			var url = '/api/collaborations/'+self.id()+'.json';
-			$.ajax(url,{
-					data : ko.toJSON(self.toJson()),
-					type : 'put',
-					contentType: 'application/json',
-					success: function(result) { 
-						options.callback(self);
-					},
-					error: function(result) { 
-						console.log(result);
-					}
-			});
+			var gatewayOptions = {
+				controller: 'collaborations',
+				id: self.id(),
+				data : self.toJson(),
+				callback: function(result){
+					options.callback(self);
+				}
+			};
+			Gateway.update(gatewayOptions);
 		}
 
 		self.delete = function(options){
-			var url = '/api/collaborations/'+self.id()+'.json';
-			$.ajax(url,{
-				type : 'delete',
-				contentType: 'application/json',
-					success: function(result) { 
-						options.callback(self);
-					},
-					error: function(result) { 
-						alert("check console for errors");
-						console.log(result);
-					}
-			});
+			var gatewayOptions = {
+				controller: 'collaborations',
+				id:self.id(),
+				callback : function(result){
+					options.callback(self);
+				}
+			};
+			Gateway.delete(gatewayOptions);
 		}
 	}
 
 	function Factory(){
 		var self = this;
 		self.loadAll = function(options){
-			var url = '/api/eventos/' + options.idEvento + '/collaborations.json';
-            if(options.params)
-               url +='?'+options.params;
-            $.getJSON(url,
-                function(allData){
-                    var colaboracoes = [];
+			var gatewayOptions = {
+				idEvento : options.idEvento,
+				controller: 'collaborations',
+				callback : function(allData){
+					var colaboracoes = [];
                     var model = options.model ? options.model : Colaboracao;
                     for(var index in allData.collaborations){
                     	var data = allData.collaborations[index];
@@ -76,24 +68,25 @@ define(['knockout','models/Participante','models/Consumivel'],
                     }
                     
                     options.callback(colaboracoes);
-            });
+				}
+			}
+            if(options.params)
+			   gatewayOptions.params = options.params;
+			
+			Gateway.getAll(gatewayOptions);
 		}
+
 		self.new = function(options){
-			var data = ko.toJSON(options.data);
-			var url = '/api/collaborations.json';
-			$.ajax(url,{
-					data : data,
-					type : 'post',
-					contentType: 'application/json',
-					success: function(result) { 
-						var model = options.model ? options.model : Colaboracao;
-						var colaboracao = new model(result.collaboration);
-						options.callback(colaboracao);
-					},
-					error: function(result) { 
-						console.log(result);
-					}
-			});
+			var gatewayOptions = {
+				controller: 'collaborations',
+				data: options.data,
+				callback : function(result){
+					var model = options.model ? options.model : Colaboracao;
+					var colaboracao = new model(result.collaboration);
+					options.callback(colaboracao);
+				}
+			}
+			Gateway.new(gatewayOptions);
 		}
 		
 	}

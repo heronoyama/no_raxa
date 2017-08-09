@@ -48,16 +48,8 @@ Router::defaultRouteClass(DashedRoute::class);
 
 
 Router::scope('/', function (RouteBuilder $routes) {
-    /**
-     * Here, we are connecting '/' (base path) to a controller called 'Pages',
-     * its action called 'display', and we pass a param to select the view file
-     * to use (in this case, src/Template/Pages/home.ctp)...
-     */
+    
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
-
-    /**
-     * ...and connect the rest of 'Pages' controller's URLs.
-     */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
     $routes->connect('/:controller/:id',
@@ -113,30 +105,8 @@ Router::scope('/', function (RouteBuilder $routes) {
 
 Router::scope("/csv",function(RouteBuilder $routes){
     $routes->addExtensions(['csv']);
-    $routes->connect('/eventos/:idEvento/divisorDespesas/valorPorRecursoAnalitico',
-            ['controller'=>'DivisorDespesas',
-              'action' =>'exportValorPorRecursoAnalitico'],
-             ['idEvento'=>'\d+',
-            'pass'=>['idEvento'],
-            'routeClass'=>'DashedRoute']);
-    
-    $routes->connect('/eventos/:idEvento/divisorDespesas/balancoFinalParticipantes',
-            ['controller'=>'DivisorDespesas',
-              'action' =>'exportBalancoFinalParticipantes'],
-             ['idEvento'=>'\d+',
-            'pass'=>['idEvento'],
-            'routeClass'=>'DashedRoute']);
-    
-    $routes->connect('/eventos/:idEvento/divisorDespesas/matrizConsumo',
-            ['controller'=>'DivisorDespesas',
-              'action' =>'exportMatrizConsumo'],
-             ['idEvento'=>'\d+',
-            'pass'=>['idEvento'],
-            'routeClass'=>'DashedRoute']);
-    
-    $routes->connect('/eventos/:idEvento/divisorDespesas/matrizColaboracao',
-            ['controller'=>'DivisorDespesas',
-              'action' =>'exportmatrizColaboracao'],
+    $routes->connect('/eventos/:idEvento/divisorDespesas/:action',
+            ['controller'=>'DivisorDespesas'],
              ['idEvento'=>'\d+',
             'pass'=>['idEvento'],
             'routeClass'=>'DashedRoute']);

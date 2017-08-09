@@ -17,7 +17,7 @@ class DivisorDespesasController extends AppController {
         $this->set('_serialize', ['evento']);
     }
 
-    public function exportValorPorRecursoAnalitico($idEvento = null) {
+    public function valorPorRecursoAnalitico($idEvento = null) {
         $this->response->download('report.csv');
         $balanco = new BalancoConsumiveis($idEvento);
         $data = $balanco->getData();
@@ -28,7 +28,7 @@ class DivisorDespesasController extends AppController {
         return;
     }
     
-    public function exportBalancoFinalParticipantes($idEvento = null){
+    public function balancoFinalParticipantes($idEvento = null){
         
         $this->response->download('report.csv');
         $balanco = new BalancoFinalParticipante($idEvento);
@@ -41,7 +41,7 @@ class DivisorDespesasController extends AppController {
         return;
     }
     
-    public function exportMatrizConsumo($idEvento = null){
+    public function matrizConsumo($idEvento = null){
         $this->response->download('report.csv');
         $matriz = new MatrizConsumo($idEvento);
         $data = $matriz->getData();
@@ -53,7 +53,7 @@ class DivisorDespesasController extends AppController {
         return;
     }
     
-    public function exportMatrizColaboracao($idEvento = null){
+    public function matrizColaboracao($idEvento = null){
         $this->response->download('report.csv');
         $matriz = new MatrizColaboracao($idEvento);
         $data = $matriz->getData();

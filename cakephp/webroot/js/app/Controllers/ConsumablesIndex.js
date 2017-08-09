@@ -17,7 +17,6 @@ function ConsumivelEdit(data){
 			}
 		});
 	});
-
 };
 
 

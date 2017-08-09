@@ -1,5 +1,5 @@
-define(['knockout','models/Participante','models/Consumivel'],
-		function(ko,Participante,Consumivel){
+define(['knockout','gateway','models/Participante','models/Consumivel'],
+		function(ko,Gateway,Participante,Consumivel){
 	
 	function Consumo(data){
 		var self = this;
@@ -23,46 +23,26 @@ define(['knockout','models/Participante','models/Consumivel'],
 					}
 		});
 
-		// self.updateValue = function(options){
-		// 	var url = '/api/collaborations/'+self.id()+'.json';
-		// 	$.ajax(url,{
-		// 			data : ko.toJSON(self.toJson()),
-		// 			type : 'put',
-		// 			contentType: 'application/json',
-		// 			success: function(result) { 
-		// 				options.callback(self);
-		// 			},
-		// 			error: function(result) { 
-		// 				console.log(result);
-		// 			}
-		// 	});
-		// }
-
 		self.delete = function(options){
-			var url = '/api/consumptions/'+self.id()+'.json';
-			$.ajax(url,{
-				type : 'delete',
-				contentType: 'application/json',
-					success: function(result) { 
-						options.callback(self);
-					},
-					error: function(result) { 
-						alert("check console for errors");
-						console.log(result);
-					}
-			});
+			var gatewayOptions = {
+				controller: 'consumptions',
+				id:self.id(),
+				callback : function(result){
+					options.callback(self);
+				}
+			};
+			Gateway.delete(gatewayOptions);
 		}
 	}
 
 	function Factory(){
 		var self = this;
 		self.loadAll = function(options){
-			var url = '/api/eventos/' + options.idEvento + '/consumptions.json';
-            if(options.params)
-               url +='?'+options.params;
-            $.getJSON(url,
-                function(allData){
-                    var consumos = [];
+			var gatewayOptions = {
+				idEvento : options.idEvento,
+				controller: 'consumptions',
+				callback : function(allData){
+					var consumos = [];
                     var model = options.model ? options.model : Consumo;
                     for(var index in allData.consumptions){
                     	var data = allData.consumptions[index];
@@ -70,24 +50,25 @@ define(['knockout','models/Participante','models/Consumivel'],
                     }
                     
                     options.callback(consumos);
-            });
+				}
+			}
+            if(options.params)
+			   gatewayOptions.params = options.params;
+			
+			Gateway.getAll(gatewayOptions);
 		}
+		
 		self.new = function(options){
-			var data = ko.toJSON(options.data);
-			var url = '/api/consumptions.json';
-			$.ajax(url,{
-					data : data,
-					type : 'post',
-					contentType: 'application/json',
-					success: function(result) { 
-						var model = options.model ? options.model : Consumo;
-						var consumo = new model(result.consumption);
-						options.callback(consumo);
-					},
-					error: function(result) { 
-						alert(result.responseJSON.message);
-					}
-			});
+			var gatewayOptions = {
+				controller: 'consumptions',
+				data: options.data,
+				callback : function(result){
+					var model = options.model ? options.model : Consumo;
+					var consumo = new model(result.consumption);
+					options.callback(consumo);
+				}
+			}
+			Gateway.new(gatewayOptions);
 		}
 		
 	}

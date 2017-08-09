@@ -6,24 +6,15 @@ use App\Controller\AppController;
 class ParticipantesController extends AppController {
 
     public function index($evento) {
-        
-        $this->paginate = [
-            'contain' => ['Eventos']
-        ];
-        $participantes = $this->paginate($this->Participantes->find('all')->where(['eventos_id' => $evento->id]));
+        $participantes = $this->Participantes->all($evento->id);
 
-        $this->set(compact('participantes'));
-        $this->set('evento',$evento);
-        $this->set('_serialize', ['participantes','evento']);
+        $_serialize = ['participantes','evento'];
+        $this->set(compact('participantes','evento','_serialize'));
     }
 
     public function view($id = null,$evento = null) {
-        $participante = $this->Participantes->get($id, [
-            'contain' => ['Eventos']
-        ]);
-
-        $this->set('participante', $participante);
-        $this->set('evento',$evento);
+        $participante = $this->Participantes->getWithEvento($id);
+        $this->set(compact('participante','evento'));
         $this->set('_serialize', ['participante','evento']);
     }
 

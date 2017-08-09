@@ -52,4 +52,12 @@ class ParticipantesTable extends Table {
 
         return $rules;
     }
+    
+    public function all($idEvento){
+        return $this->find('all',['contain'=>['Eventos']])->where([$this->alias().'.eventos_id' => $idEvento]);
+    }
+    
+    public function getWithEvento($id){
+        return $this->get($id, ['contain' => ['Eventos']]);
+    }
 }
