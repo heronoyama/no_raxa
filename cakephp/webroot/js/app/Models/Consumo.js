@@ -3,9 +3,21 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 	
 	function Consumo(data){
 		var self = this;
-		self.id = ko.observable(data.id);
-		self.participante = ko.observable(new Participante.model(data.participante));
-		self.consumable = ko.observable(new Consumivel.model(data.consumable));
+		self.id = ko.observable();
+		self.participante = ko.observable();
+		self.consumable = ko.observable();
+
+		self.updateData = function(data){
+			if(!data)
+				return;
+			if(data.id)
+				self.id(data.id);
+			if(data.participante)
+				self.participante(data.participante);
+			if(data.consumivel)
+				self.consumable(data.consumivel);
+		}
+		self.updateData(data);
 
 		self.compareTo = function(other){
 			var comparisonParticipante = self.participante().compareTo(other.participante());
@@ -23,6 +35,18 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 					}
 		});
 
+		self.save = function(callback){
+			var gatewayOptions = {
+				controller: 'consumptions',
+				data: self.toJson(),
+				callback : function(result){
+					callback(self);
+				}
+			}
+			
+			Gateway.new(gatewayOptions);
+		}
+
 		self.delete = function(callback){
 			var gatewayOptions = {
 				controller: 'consumptions',
@@ -33,6 +57,7 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 			};
 			Gateway.delete(gatewayOptions);
 		}
+
 	}
 
 	return {
@@ -42,12 +67,16 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 				idEvento : options.idEvento,
 				controller: 'consumptions',
 				callback : function(allData){
-					var consumos = [];
-                    var model = options.model ? options.model : Consumo;
-                    for(var index in allData.consumptions){
-                    	var data = allData.consumptions[index];
-                    	consumos.push(new model(data));
-                    }
+					
+					var model = options.model ? options.model : Consumo;
+					var consumos = allData.consumptions.map(function(data){
+						var dataItem = {
+							id: data.id,
+							participante: new Participante.model(data.participante),
+							consumivel: new Consumivel.model(data.consumable)
+						};
+						return new model(dataItem);
+					});
                     
                     options.callback(consumos);
 				}
@@ -56,19 +85,6 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 			   gatewayOptions.params = options.params;
 			
 			Gateway.getAll(gatewayOptions);
-		},
-		
-		new: function(options){
-			var gatewayOptions = {
-				controller: 'consumptions',
-				data: options.data,
-				callback : function(result){
-					var model = options.model ? options.model : Consumo;
-					var consumo = new model(result.consumption);
-					options.callback(consumo);
-				}
-			}
-			Gateway.new(gatewayOptions);
 		}
 	}
 });
