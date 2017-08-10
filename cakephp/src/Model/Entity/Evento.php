@@ -10,4 +10,8 @@ class Evento extends Entity {
         '*' => true,
         'id' => false
     ];
+
+    public function isOwnedBy($idUser){
+        return $this->users_id == $idUser;
+    }
 }

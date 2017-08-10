@@ -38,6 +38,18 @@ class AppController extends Controller {
         return false;
     }
 
+    protected function userOwnsEvento($user){
+            $eventoId = $this->getEventoIdFromRequest();
+            $this->loadModel("Eventos");
+            if ($this->Eventos->isOwnedBy($eventoId, $user['id'])) {
+                return true;
+            }
+    }
+
+    protected function getEventoIdFromRequest(){
+        return (int)$this->request->getParam('pass.0');
+    }
+     
     public function beforeRender(Event $event) {
         if (!array_key_exists('_serialize', $this->viewVars) &&
                 in_array($this->response->type(), ['application/json', 'application/xml'])

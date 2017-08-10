@@ -1,12 +1,12 @@
 <!--TODO Form templates? -->
 <div class="eventos view large-9 medium-8 columns content">
     <h3 <?= 'data-id='.$evento->id?>> <?= h($evento->nome).' ('.h($evento->id).')' ?></h3>
-        <?= $this->Html->link("Editar dados do evento",'/eventos/edit/'.$evento->id) ?>
     <div id='EventoModel'>
         
         <a class="editButton" data-bind="visible: !editing(), click:editing" > Edit </a>
         <a class="saveButton" data-bind="visible: editing, click:save" > Save </a>
-        
+
+<!-- TODO remover a dependencia das variaveis consumables e participantes -->        
         <!-- ko with: evento -->
         <table class="vertical-table">
             <?= $this->Form->hidden('id',[

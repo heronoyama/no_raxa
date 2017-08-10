@@ -13,9 +13,7 @@ class EventosController extends AppController {
         }
 
         if (in_array($this->request->getParam('action'), ['view','delete'])) {
-            $eventoId = (int)$this->request->getParam('pass.0');
-            $this->log("Im here!",'debug');
-            if ($this->Eventos->isOwnedBy($eventoId, $user['id'])) {
+            if ($this->userOwnsEvento($user)) {
                 return true;
             }
         }

@@ -16,18 +16,20 @@ define(['knockout'],function(ko){
 				if(!result.success){
 					alert("deu ruim");
 					console.log(result);
+					console.trace();
 					return;
 				}
 				var token = result.data.token;
 				$.ajax({
 					url : url,
 					type: 'GET',
-					dataType : 'application/json',
+					dataType : 'json',
 					success : callback,
-					error : function(reuslt){
+					error : function(result){
 						//TODO
 						alert("deu ruim");
 						console.log(result);
+						console.trace();
 					},
 					beforeSend : function(xhr){
 						xhr.setRequestHeader('Authorization','Bearer '+token);
@@ -56,34 +58,34 @@ define(['knockout'],function(ko){
 			var url = self.baseUrl+'/divisor/detalhamentoConsumivel/:idConsumivel.json';
 			url = url.replace(":idEvento",options.idEvento)
 					 .replace(":idConsumivel",options.idConsumivel);
-			$.getJSON(url,options.callback);
+			self.callGetJson(url,options.callback);
 		}
 
 		self.detalhamentoParticipante = function(options){
 			var url = self.baseUrl+'/divisor/detalhamentoParticipante/:idParticipante.json';
 			url = url.replace(":idEvento",options.idEvento)
 					 .replace(":idParticipante",options.idParticipante);
-			$.getJSON(url,options.callback);
+			self.callGetJson(url,options.callback);
 
 		}
 
 		self.balancoConsumiveis = function(options){
 			var url = self.baseUrl+'/divisor/balancoConsumiveis.json';
 			url = url.replace(":idEvento",options.idEvento);
-			$.getJSON(url,options.callback);
+			self.callGetJson(url,options.callback);
 
 		}
 
 		self.balancoParticipantes = function(options){
 			var url = self.baseUrl+'/divisor/balancoParticipantes.json';
 			url = url.replace(":idEvento",options.idEvento);
-			$.getJSON(url,options.callback);
+			self.callGetJson(url,options.callback);
 		}
 
 		self.update = function(options){
 			var url = "/api/:controller/:id.json";
 			url = url.replace(":controller",options.controller).replace(":id",options.id);
-			$.ajax(url,{
+			var ajaxOpions = {
 					data : ko.toJSON(options.data),
 					type : 'put',
 					contentType: 'application/json',
@@ -91,20 +93,22 @@ define(['knockout'],function(ko){
 					error: function(result) { 
 						console.log(result);
 					}
-			});
+			};
+			self.callCustomAjax(url,ajaxOpions);
 		}
 
 		self.delete = function(options){
 			var url = "/api/:controller/:id.json";
 			url = url.replace(":controller",options.controller).replace(":id",options.id);
-			$.ajax(url,{
+			var ajaxOptions = {
 					type : 'delete',
 					contentType: 'application/json',
 					success: options.callback,
 					error: function(result) { 
 						console.log(result);
 					}
-			});
+			}
+			self.callCustomAjax(url,ajaxOptions);
 
 		}
 
@@ -113,13 +117,13 @@ define(['knockout'],function(ko){
 			url = url.replace(":controller",options.controller).replace(":idEvento",options.idEvento);
 			if(options.params)
 			   url +='?'+options.params;
-			$.getJSON(url,options.callback);
+			self.callGetJson(url,options.callback);
 		}
 
 		self.new = function(options){
 			var url = "/api/:controller.json";
 			url = url.replace(":controller",options.controller);
-			$.ajax(url,{
+			var ajaxOptions = {
 					data : ko.toJSON(options.data),
 					type : 'post',
 					contentType: 'application/json',
@@ -127,13 +131,14 @@ define(['knockout'],function(ko){
 					error: function(result) { 
 						console.log(result);
 					}
-			});
+			}
+			self.callCustomAjax(url,ajaxOptions);
 		}
 
 		self.getEvento = function(options){
 			var url = self.baseUrl+".json";
 			url = url.replace(":idEvento",options.idEvento);
-			$.getJSON(url,options.callback);
+			self.callGetJson(url,options.callback);
 		}
 
 		self.updateEvento = function(options){
