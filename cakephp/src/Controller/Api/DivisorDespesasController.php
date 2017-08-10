@@ -10,6 +10,13 @@ use App\Utils\BalancoConsumiveis;
 
 class DivisorDespesasController extends ParentController {
 
+     protected function getEventoId(){
+        $id = (int)$this->request->getParam('pass.0');
+        $this->loadModel("Eventos");
+        $object = $this->Eventos->get($id);
+        return $object->id;
+    }
+
     public function balancoParticipantes($idEvento = null) {
 
         $balanco = new BalancoFinalParticipante($idEvento);

@@ -14,7 +14,7 @@ define(['knockout'],function(ko){
 		self.callGetJson = function(url,callback){
 			self.getToken(function(result){
 				if(!result.success){
-					alert("deu ruim");
+					alert("deu ruim - token");
 					console.log(result);
 					console.trace();
 					return;
@@ -27,7 +27,7 @@ define(['knockout'],function(ko){
 					success : callback,
 					error : function(result){
 						//TODO
-						alert("deu ruim");
+						alert("deu call get Json");
 						console.log(result);
 						console.trace();
 					},

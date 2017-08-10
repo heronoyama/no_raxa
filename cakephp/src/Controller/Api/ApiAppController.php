@@ -71,15 +71,13 @@ class ApiAppController extends ParentController {
             return (int)$this->request->getData()['eventos_id'];
         }
 
-        //Só posso querer deletar ou editar
-        $object = $this->getObject();
-        return $object->evento->id;
+        return $this->getEventoId();
     }
 
-    protected function getObject(){
+    protected function getEventoId(){
         $id = (int)$this->request->getParam('pass.0');
         $object = $this->controller()->get($id,['contain'=>'Eventos']);
-        return $object;
+        return $object->evento->id;
     }
     
     protected function toInclude(){

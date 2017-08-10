@@ -2,17 +2,17 @@
 
 namespace App\Controller;
 
-use App\Controller\AppController;
+use App\Controller\GivenEventoController;
 use App\Utils\BalancoConsumiveis;
 use App\Utils\BalancoFinalParticipante;
 use App\Utils\MatrizConsumo;
 use App\Utils\MatrizColaboracao;
 
 
-class DivisorDespesasController extends AppController {
+class DivisorDespesasController extends GivenEventoController {
     
 
-    public function index($evento) {
+       public function index($evento) {
         $this->set('evento', $evento);
         $this->set('_serialize', ['evento']);
     }
