@@ -41,6 +41,14 @@ class EventosTable extends Table {
             'cascadeCallbacks'=>true]);
     }
 
+    public function isOwnedBy($eventosId, $userId) {
+        return $this->exists(['id' => $eventosId, 'users_id' => $userId]);
+    }
+
+    public function ownedBy($userId){
+        return $this->find('all')->where(['users_id'=>$userId]);
+    }
+
     public function validationDefault(Validator $validator) {
         $validator
             ->integer('id')

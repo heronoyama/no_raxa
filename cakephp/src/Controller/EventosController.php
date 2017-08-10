@@ -6,11 +6,32 @@ use App\Controller\AppController;
 
 class EventosController extends AppController {
 
+    public function isAuthorized($user) {
+    
+    $action = $this->request->getParam('action');
+    if (in_array($action,['add','index'])){
+        return true;
+    }
+
+    if (in_array($this->request->getParam('action'), ['view','delete'])) {
+        $eventoId = (int)$this->request->getParam('pass.0');
+        $this->log("Im here!",'debug');
+        if ($this->Eventos->isOwnedBy($eventoId, $user['id'])) {
+            return true;
+        }
+    }
+
+    return parent::isAuthorized($user);
+}
+
     public function index() {
-        $eventos = $this->paginate($this->Eventos);
+        $eventos = $this->paginate($this->Eventos->ownedBy($this->Auth->user('id')));
 
         $this->set(compact('eventos'));
         $this->set('_serialize', ['eventos']);
+        $this->Auth->identify();
+
+        $this->log($this->Auth->user(),"debug");
         $this->request->session()->delete("Evento.id");
     }
 
@@ -30,6 +51,7 @@ class EventosController extends AppController {
     public function add() {
         $evento = $this->Eventos->newEntity();
         if ($this->request->is('post')) {
+            $evento->users_id = $this->Auth->user('id');
             $this->saveRedirect($evento,['action' => 'index']);
         }
         
