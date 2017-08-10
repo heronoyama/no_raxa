@@ -7,22 +7,20 @@ use App\Controller\AppController;
 class EventosController extends AppController {
 
     public function isAuthorized($user) {
-    
-    $action = $this->request->getParam('action');
-    if (in_array($action,['add','index'])){
-        return true;
-    }
-
-    if (in_array($this->request->getParam('action'), ['view','delete'])) {
-        $eventoId = (int)$this->request->getParam('pass.0');
-        $this->log("Im here!",'debug');
-        if ($this->Eventos->isOwnedBy($eventoId, $user['id'])) {
+        $action = $this->request->getParam('action');
+        if (in_array($action,['add','index'])){
             return true;
         }
-    }
 
-    return parent::isAuthorized($user);
-}
+        if (in_array($this->request->getParam('action'), ['view','delete'])) {
+            $eventoId = (int)$this->request->getParam('pass.0');
+            $this->log("Im here!",'debug');
+            if ($this->Eventos->isOwnedBy($eventoId, $user['id'])) {
+                return true;
+            }
+        }
+        return parent::isAuthorized($user);
+    }
 
     public function index() {
         $eventos = $this->paginate($this->Eventos->ownedBy($this->Auth->user('id')));
@@ -40,6 +38,8 @@ class EventosController extends AppController {
             'contain' => ['Consumables','Participantes']
         ]);
 
+
+    //TODO
         $this->set('evento', $evento);
         $this->set('consumables',$evento->consumables);
         $this->set('participantes',$evento->participantes);
@@ -55,17 +55,6 @@ class EventosController extends AppController {
             $this->saveRedirect($evento,['action' => 'index']);
         }
         
-        $this->set(compact('evento'));
-        $this->set('_serialize', ['evento']);
-    }
-
-    public function edit($id = null) {
-        $evento = $this->Eventos->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $this->saveRedirect($evento,['action' => 'view',$id]);
-        }
         $this->set(compact('evento'));
         $this->set('_serialize', ['evento']);
     }

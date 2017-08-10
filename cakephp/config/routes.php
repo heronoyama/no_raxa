@@ -116,18 +116,7 @@ Router::prefix('api',function (RouteBuilder $routes){
     $routes->extensions(['json']);
     Router::connect('/api/users/register', ['controller' => 'Users', 'action' => 'add', 'prefix' => 'api']);
 
-     $routes->resources('Eventos',[
-        'map' =>[
-            'add_consumable/:id' =>[
-                'action' => 'addConsumable',
-                'method' => 'POST'
-            ],
-            'add_participante/:id' =>[
-                'action' => 'addParticipante',
-                'method' => 'POST'
-            ]
-        ]
-    ]);
+     $routes->resources('Eventos');
     $routes->resources('Consumables');
     $routes->resources('Participantes');
     $routes->resources('Collaborations');

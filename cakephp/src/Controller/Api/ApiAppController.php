@@ -8,9 +8,11 @@ use App\Utils\PathParams;
 class ApiAppController extends ParentController {
 
     public function initialize(){
-        parent::initialize();
-        $this->Auth->storage = "Memory";
-        $this->Auth->authenticate = [
+        
+        $this->loadComponent('RequestHandler');
+        $this->loadComponent('Auth', [
+            'storage' => 'Memory',
+            'authenticate' => [
                 'Form' => [
                     'scope' => ['Users.active' => 1]
                 ],
@@ -23,27 +25,11 @@ class ApiAppController extends ParentController {
                     ],
                     'queryDatasource' => true
                 ]
-            ];
+            ],
+            'unauthorizedRedirect' => false,
+            'checkAuthIn' => 'Controller.initialize'
+        ]);
 
-        // $this->loadComponent('Auth', [
-        //     'storage' => 'Memory',
-        //     'authenticate' => [
-        //         'Form' => [
-        //             'scope' => ['Users.active' => 1]
-        //         ],
-        //         'ADmad/JwtAuth.Jwt' => [
-        //             'parameter' => 'token',
-        //             'userModel' => 'Users',
-        //             'scope' => ['Users.active' => 1],
-        //             'fields' => [
-        //                 'username' => 'id'
-        //             ],
-        //             'queryDatasource' => true
-        //         ]
-        //     ],
-        //     'unauthorizedRedirect' => false,
-        //     'checkAuthIn' => 'Controller.initialize'
-        // ]);
     }
     
     protected function toInclude(){
