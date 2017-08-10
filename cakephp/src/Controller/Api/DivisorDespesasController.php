@@ -12,9 +12,7 @@ class DivisorDespesasController extends ParentController {
 
      protected function getEventoId(){
         $id = (int)$this->request->getParam('pass.0');
-        $this->loadModel("Eventos");
-        $object = $this->Eventos->get($id);
-        return $object->id;
+        return $id;
     }
 
     public function balancoParticipantes($idEvento = null) {

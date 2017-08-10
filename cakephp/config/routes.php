@@ -109,7 +109,7 @@ Router::scope("/csv",function(RouteBuilder $routes){
             ['controller'=>'DivisorDespesas'],
              ['idEvento'=>'\d+',
             'pass'=>['idEvento'],
-            'routeClass'=>'DashedRoute']);
+            'routeClass'=>'EventoRoute']);
 });
 
 Router::prefix('api',function (RouteBuilder $routes){

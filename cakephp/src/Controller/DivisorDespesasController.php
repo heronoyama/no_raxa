@@ -10,16 +10,19 @@ use App\Utils\MatrizColaboracao;
 
 
 class DivisorDespesasController extends GivenEventoController {
-    
 
-       public function index($evento) {
+    protected function getActionsAllowed(){
+        return ['index','view','valorPorRecursoAnalitico','balancoFinalParticipantes','matrizConsumo','matrizColaboracao'];
+    }
+    
+    public function index($evento) {
         $this->set('evento', $evento);
         $this->set('_serialize', ['evento']);
     }
 
-    public function valorPorRecursoAnalitico($idEvento = null) {
+    public function valorPorRecursoAnalitico($evento = null) {
         $this->response->download('report.csv');
-        $balanco = new BalancoConsumiveis($idEvento);
+        $balanco = new BalancoConsumiveis($evento->id);
         $data = $balanco->getData();
         $_serialize = 'data';
         $_header = ['ID', 'Nome', 'Valor Investido','Valor por Participante'];
@@ -28,10 +31,10 @@ class DivisorDespesasController extends GivenEventoController {
         return;
     }
     
-    public function balancoFinalParticipantes($idEvento = null){
+    public function balancoFinalParticipantes($evento = null){
         
         $this->response->download('report.csv');
-        $balanco = new BalancoFinalParticipante($idEvento);
+        $balanco = new BalancoFinalParticipante($evento->id);
         $data = $balanco->getData();
         
         $_serialize = 'data';
@@ -41,9 +44,9 @@ class DivisorDespesasController extends GivenEventoController {
         return;
     }
     
-    public function matrizConsumo($idEvento = null){
+    public function matrizConsumo($evento = null){
         $this->response->download('report.csv');
-        $matriz = new MatrizConsumo($idEvento);
+        $matriz = new MatrizConsumo($evento->id);
         $data = $matriz->getData();
         $_serialize = 'data';
         
@@ -53,9 +56,9 @@ class DivisorDespesasController extends GivenEventoController {
         return;
     }
     
-    public function matrizColaboracao($idEvento = null){
+    public function matrizColaboracao($evento = null){
         $this->response->download('report.csv');
-        $matriz = new MatrizColaboracao($idEvento);
+        $matriz = new MatrizColaboracao($evento->id);
         $data = $matriz->getData();
         $_serialize = 'data';
         

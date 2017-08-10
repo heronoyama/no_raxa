@@ -7,7 +7,7 @@ class GivenEventoController extends AppController {
 
     public function isAuthorized($user) {
         $action = $this->request->getParam('action');
-        if (in_array($action, ['index','view'])) {
+        if (in_array($action, $this->getActionsAllowed())) {
             $evento = $this->request->getParam('pass.0');
             
             if ($evento->isOwnedBy($user['id'])) {
@@ -15,6 +15,10 @@ class GivenEventoController extends AppController {
             }
         }
         return parent::isAuthorized($user);
+    }
+
+    protected function getActionsAllowed(){
+        return ['index','view'];
     }
 
     public function index($evento) {
