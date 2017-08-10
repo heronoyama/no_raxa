@@ -36,22 +36,24 @@ requirejs(['knockout','models/Consumo','models/Participante','models/Consumivel'
 		self.novoConsumo = function(){
 			if(!self.novoParticipante() || !self.novoConsumivel())
 				return;
-			var novoConsumo = new ConsumoEdit({
-				participante : self.novoParticipante(),
-				consumable : self.novoConsumivel()
+			Consumo.new({
+				data : {
+					eventos_id : self.idEvento(),
+					participantes_id :self.novoParticipante().id(),
+					consumables_id : self.novoConsumivel().id()
+				},
+				model : ConsumoEdit,
+				callback: function(consumo){
+					if(self.isFiltered()){
+						self.clearFilter();
+						return;
+					}
+					var consumos = self.consumos();
+					ko.utils.arrayPushAll(consumos,[consumo]);
+					self.consumos(consumos);
+					self.consumos.valueHasMutated();
+				}
 			});
-			novoConsumo.save(function(consumo){
-				if(self.isFiltered()){
-					self.clearFilter();
-					return;
-				}
-				var consumos = self.consumos();
-				ko.utils.arrayPushAll(consumos,[consumo]);
-				self.consumos(consumos);
-				self.consumos.valueHasMutated();
-				}
-				
-			);
 		
 		}
 

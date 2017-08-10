@@ -1,9 +1,9 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
+use App\Controller\GivenEventoController;
 
-class ParticipantesController extends AppController {
+class ParticipantesController extends GivenEventoController {
 
     public function index($evento) {
         $participantes = $this->Participantes->all($evento->id);

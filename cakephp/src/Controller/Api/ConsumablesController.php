@@ -6,37 +6,6 @@ use App\Controller\Api\ApiAppController as ParentController;
 
 class ConsumablesController extends ParentController {
 
-    public function isAuthorized($user) {
-
-        if ($this->userOwnsEvento($user)) {
-            return true;
-        }
-
-        return parent::isAuthorized($user);
-    }
-
-    protected function getEventoIdFromRequest(){
-        //TODO im ugly but im happy because i work
-        /* If a system is a city, my security is like a milicia :P
-        */
-        $action = $this->request->getParam('action');
-        
-        if (in_array($action,['index'])){
-            //vou perguntar para papai se posso
-            return parent::getEventoIdFromRequest();
-        }
-
-        if(in_array($action,['add','edit'])){
-            //meu corpinho tem a resposta
-              return (int)$this->request->getData()['eventos_id'];
-        }
-
-        //Só posso querer deletar
-        $id = (int)$this->request->getParam('pass.0');
-        $consumable = $this->Consumables->get($id,['contain'=>'Eventos']);
-        return $consumable->evento->id;
-    }
-    
       public function index($idEvento = null){
         $where = ['eventos_id' => $idEvento];
 

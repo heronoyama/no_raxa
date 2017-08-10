@@ -1,24 +1,11 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
+use App\Controller\GivenEventoController;
 
-class ConsumablesController extends AppController {
+class ConsumablesController extends GivenEventoController {
 
-     public function isAuthorized($user) {
-        $this->log("Im verifiy if im authorized",'debug');
-        $action = $this->request->getParam('action');
-        if (in_array($action, ['view','index'])) {
-            $evento = $this->request->getParam('pass.0');
-            
-            if ($evento->isOwnedBy($user['id'])) {
-                return true;
-            }
-        }
-        return parent::isAuthorized($user);
-    }
-
-    public function index($evento) {
+     public function index($evento) {
 
         $this->paginate = [
             'contain' => ['Eventos']

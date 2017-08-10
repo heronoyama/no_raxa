@@ -2,15 +2,10 @@
 
 namespace App\Controller;
 
-use App\Controller\AppController;
+use App\Controller\GivenEventoController;
 
-class CollaborationsController extends AppController {
+class CollaborationsController extends GivenEventoController {
     
-    public function index($evento) {
-        $this->set('evento',$evento);
-        $this->set('_serialize', ['evento']);
-    }
-
     protected function controller(){
             return $this->Collaborations;
     }

@@ -5,7 +5,7 @@ namespace App\Controller\Api;
 use App\Controller\Api\ApiAppController as ParentController;
 
 class ConsumptionsController extends ParentController {
-    
+
     public function index($idEvento = null){
         $where = [$this->Consumptions->alias().'.eventos_id' => $idEvento];
         $contains = ['contain' => ['Participantes','Consumables']];

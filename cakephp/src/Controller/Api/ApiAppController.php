@@ -46,6 +46,41 @@ class ApiAppController extends ParentController {
         // ]);
 
     }
+
+    public function isAuthorized($user) {
+        if ($this->userOwnsEvento($user)) {
+            return true;
+        }
+
+        return parent::isAuthorized($user);
+    }
+
+    protected function getEventoIdFromRequest(){
+        //TODO im ugly but im happy because i work
+        /* If a system is a city, my security is like a milicia :P
+        */
+        $action = $this->request->getParam('action');
+        
+        if (in_array($action,['index'])){
+            //vou perguntar para papai se posso
+            return parent::getEventoIdFromRequest();
+        }
+
+        if(in_array($action,['add'])){
+            //meu corpinho tem a resposta
+            return (int)$this->request->getData()['eventos_id'];
+        }
+
+        //Só posso querer deletar ou editar
+        $object = $this->getObject();
+        return $object->evento->id;
+    }
+
+    protected function getObject(){
+        $id = (int)$this->request->getParam('pass.0');
+        $object = $this->controller()->get($id,['contain'=>'Eventos']);
+        return $object;
+    }
     
     protected function toInclude(){
         $includesString = $this->request->getQuery("include");

@@ -81,6 +81,10 @@ define(['knockout','gateway'],function(ko,Gateway){
 			Gateway.update(gatewayOptions);
 		}
 
+		self.viewUrl = ko.computed(function(){
+			return '/eventos/:idEvento/participantes/view/:idParticipante'.replace(":idEvento",self.idEvento()).replace(":idParticipante",self.id());
+		});
+
 		self.updateData(data);
 	};
 
@@ -93,6 +97,7 @@ define(['knockout','gateway'],function(ko,Gateway){
 				callback : function(allData){
 					var model = options.model ? options.model : Participante;
 					var participantes = allData.participantes.map(function(data){ 
+						data.idEvento = options.idEvento;
 						return new model(data);
 					});
                     options.callback(participantes);

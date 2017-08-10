@@ -30,8 +30,8 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 		self.toJson = ko.computed(function(){
 			return {
 					id : self.id(),
-					paritcipantes_id : self.participante().id(),
-					consumableS_id : self.consumable().id()
+					participantes_id : self.participante().id(),
+					consumables_id : self.consumable().id()
 					}
 		});
 
