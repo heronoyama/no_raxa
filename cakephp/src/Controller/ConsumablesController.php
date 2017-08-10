@@ -5,7 +5,7 @@ use App\Controller\GivenEventoController;
 
 class ConsumablesController extends GivenEventoController {
 
-     public function index($evento) {
+    public function index($evento) {
 
         $this->paginate = [
             'contain' => ['Eventos']
@@ -18,7 +18,7 @@ class ConsumablesController extends GivenEventoController {
         $this->set('_serialize', ['consumables','evento']);
     }
 
-    public function view($id = null,$evento = null) {
+    public function view($evento = null,$id = null) {
         $consumable = $this->Consumables->get($id, [
             'contain' => ['Eventos']
         ]);

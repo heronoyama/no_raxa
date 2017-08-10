@@ -12,7 +12,7 @@ class ParticipantesController extends GivenEventoController {
         $this->set(compact('participantes','evento','_serialize'));
     }
 
-    public function view($id = null,$evento = null) {
+    public function view($evento = null,$id = null) {
         $participante = $this->Participantes->getWithEvento($id);
         $this->set(compact('participante','evento'));
         $this->set('_serialize', ['participante','evento']);

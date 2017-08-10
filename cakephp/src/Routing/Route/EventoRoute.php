@@ -17,10 +17,10 @@ class EventoRoute extends CakeRoute{
         	['className' => EventosTable::class]);
 		$evento = $this->Eventos->get($idEvento);
 
+		$params['pass'] = [$evento];
 		if(isset($params['id']))
-			$params['pass'] = [$params['id'],$evento];
-		else
-			$params['pass'] = [$evento];
+			 array_push($params['pass'],$params['id']);
+					
 
                  
 		return $params;
