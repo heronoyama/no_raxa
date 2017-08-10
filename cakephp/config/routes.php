@@ -114,6 +114,8 @@ Router::scope("/csv",function(RouteBuilder $routes){
 
 Router::prefix('api',function (RouteBuilder $routes){
     $routes->extensions(['json']);
+    Router::connect('/api/users/register', ['controller' => 'Users', 'action' => 'add', 'prefix' => 'api']);
+
      $routes->resources('Eventos',[
         'map' =>[
             'add_consumable/:id' =>[

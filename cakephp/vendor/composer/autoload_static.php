@@ -65,6 +65,10 @@ class ComposerStaticInit051c1fa5213dceadbdfe959d7ba7ceac
         array (
             'JsonSchema\\' => 11,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -93,6 +97,7 @@ class ComposerStaticInit051c1fa5213dceadbdfe959d7ba7ceac
             'Aura\\Intl\\' => 10,
             'App\\Test\\' => 9,
             'App\\' => 4,
+            'ADmad\\JwtAuth\\' => 14,
         ),
     );
 
@@ -191,6 +196,10 @@ class ComposerStaticInit051c1fa5213dceadbdfe959d7ba7ceac
         array (
             0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
         ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
         'Doctrine\\Instantiator\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
@@ -258,6 +267,10 @@ class ComposerStaticInit051c1fa5213dceadbdfe959d7ba7ceac
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'ADmad\\JwtAuth\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/admad/cakephp-jwt-auth/src',
         ),
     );
 

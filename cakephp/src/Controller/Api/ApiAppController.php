@@ -6,6 +6,29 @@ use App\Controller\AppController as ParentController;
 use App\Utils\PathParams;
 
 class ApiAppController extends ParentController {
+
+    public function initialize(){
+        parent::initialize();
+        $this->loadComponent('Auth', [
+            'storage' => 'Memory',
+            'authenticate' => [
+                'Form' => [
+                    'scope' => ['Users.active' => 1]
+                ],
+                'ADmad/JwtAuth.Jwt' => [
+                    'parameter' => 'token',
+                    'userModel' => 'Users',
+                    'scope' => ['Users.active' => 1],
+                    'fields' => [
+                        'username' => 'id'
+                    ],
+                    'queryDatasource' => true
+                ]
+            ],
+            'unauthorizedRedirect' => false,
+            'checkAuthIn' => 'Controller.initialize'
+        ]);
+    }
     
     protected function toInclude(){
         $includesString = $this->request->getQuery("include");
@@ -45,7 +68,7 @@ class ApiAppController extends ParentController {
         $this->loadModel("Participantes");
         return [$this->Participantes->alias().'.id in' => $valuesParticipantes];
     }
-    
+
     private function filterConsumables(){
         $consumables = $this->request->getQuery("consumiveis");
         
