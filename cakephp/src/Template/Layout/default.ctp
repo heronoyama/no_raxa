@@ -35,7 +35,7 @@
     <div class="container clearfix" id="container">
         <?php 
             $session = $this->request->session();
-            if($session->check('Evento.id'))
+            if($session->check('Auth.User'))
                 echo $this->element('menuEventos');
             else
                 echo $this->element('menuLateral');
