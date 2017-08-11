@@ -178,16 +178,18 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'className' => 'Mail',
-            // The following keys are used in SMTP transports
-            'host' => 'localhost',
-            'port' => 25,
-            'timeout' => 30,
-            'username' => 'user',
-            'password' => 'secret',
-            'client' => null,
-            'tls' => null,
-            'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
+            'className' => 'Smtp',
+            'host' => 'ssl://smtp.gmail.com',
+            'port' => 465,
+            'username' => 'heron.oyama@gmail.com',
+            'password' => '99c11jgf',
+            'context' => [
+                'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+                ]
+            ]
         ],
     ],
 

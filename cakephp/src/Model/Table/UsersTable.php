@@ -32,6 +32,10 @@ class UsersTable extends Table {
             ->notEmpty('password');
 
         $validator
+            ->requirePresence('email', 'create')
+            ->notEmpty('email');
+
+        $validator
             ->boolean('active')
             ->requirePresence('active', 'create')
             ->notEmpty('active');
@@ -41,6 +45,7 @@ class UsersTable extends Table {
 
     public function buildRules(RulesChecker $rules) {
         $rules->add($rules->isUnique(['username']));
+        $rules->add($rules->isUnique(['email']));
 
         return $rules;
     }

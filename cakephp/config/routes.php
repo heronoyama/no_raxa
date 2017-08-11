@@ -80,6 +80,17 @@ Router::scope('/', function (RouteBuilder $routes) {
     
     $routes->connect('/eventos/:action/*',['controller'=>'Eventos'],['routeClass'=>'DashedRoute']);
 
+    $routes->connect(
+        '/users/activate/:token',
+        [
+            'controller'=>'Users',
+            'action'=>'activate' 
+        ], 
+        [
+            'pass' => ['token'],
+            'routeClass'=>'DebugRoute'
+        ]);
+
     //TODO #HERON beautifull routing para RESTful
 
     /**

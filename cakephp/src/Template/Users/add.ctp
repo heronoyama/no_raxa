@@ -4,8 +4,8 @@
         <legend><?= __('Add User') ?></legend>
         <?php
             echo $this->Form->control('username');
+            echo $this->Form->control('email',['type'=>'email']);
             echo $this->Form->control('password');
-            echo $this->Form->control('active');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
