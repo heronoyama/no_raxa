@@ -665,7 +665,10 @@ class Shell
      */
     public function err($message = null, $newlines = 1)
     {
-        return $this->_io->err('<error>' . $message . '</error>', $newlines);
+        $messageType = 'error';
+        $message = $this->wrapMessageWithType($messageType, $message);
+
+        return $this->_io->err($message, $newlines);
     }
 
     /**
@@ -679,7 +682,10 @@ class Shell
      */
     public function info($message = null, $newlines = 1, $level = Shell::NORMAL)
     {
-        return $this->out('<info>' . $message . '</info>', $newlines, $level);
+        $messageType = 'info';
+        $message = $this->wrapMessageWithType($messageType, $message);
+
+        return $this->out($message, $newlines, $level);
     }
 
     /**
@@ -692,7 +698,10 @@ class Shell
      */
     public function warn($message = null, $newlines = 1)
     {
-        return $this->_io->err('<warning>' . $message . '</warning>', $newlines);
+        $messageType = 'warning';
+        $message = $this->wrapMessageWithType($messageType, $message);
+
+        return $this->_io->err($message, $newlines);
     }
 
     /**
@@ -706,7 +715,30 @@ class Shell
      */
     public function success($message = null, $newlines = 1, $level = Shell::NORMAL)
     {
-        return $this->out('<success>' . $message . '</success>', $newlines, $level);
+        $messageType = 'success';
+        $message = $this->wrapMessageWithType($messageType, $message);
+
+        return $this->out($message, $newlines, $level);
+    }
+
+    /**
+     * Wraps a message with a given message type, e.g. <warning>
+     *
+     * @param string $messageType The message type, e.g. "warning".
+     * @param string|array $message The message to wrap.
+     * @return array|string The message wrapped with the given message type.
+     */
+    protected function wrapMessageWithType($messageType, $message)
+    {
+        if (is_array($message)) {
+            foreach ($message as $k => $v) {
+                $message[$k] = "<$messageType>" . $v . "</$messageType>";
+            }
+        } else {
+            $message = "<$messageType>" . $message . "</$messageType>";
+        }
+
+        return $message;
     }
 
     /**
