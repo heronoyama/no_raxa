@@ -1,11 +1,8 @@
-<div class="users form large-9 medium-8 columns content">
+<div class="users form">
     <?= $this->Form->create() ?>
-    <fieldset>
-        <legend><?= __('Insira seu e-mail') ?></legend>
         <?php
             echo $this->Form->control('email',['type'=>'email']);
         ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button('Solicitar nova senha',['class'=>'button button-block']) ?>
     <?= $this->Form->end() ?>
 </div>

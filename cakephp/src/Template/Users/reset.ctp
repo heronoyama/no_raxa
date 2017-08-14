@@ -1,11 +1,8 @@
-<div class="users form large-9 medium-8 columns content">
+<div class="users form">
     <?= $this->Form->create() ?>
-    <fieldset>
-        <legend><?= __('Insira sua nova senha') ?></legend>
-        <?php
-            echo $this->Form->control('password',['type'=>'password']);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?php
+        echo $this->Form->control('password',['type'=>'password']);
+    ?>
+    <?= $this->Form->button('Salvar nova senha',['class'=>'button button-block']) ?>
     <?= $this->Form->end() ?>
 </div>
