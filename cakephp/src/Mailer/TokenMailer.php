@@ -14,7 +14,7 @@ class TokenMailer extends Mailer {
             ->profile('default')
             ->emailFormat('html')
             ->template('verification','token')
-            ->viewVars(['nome' => $user->username,
+            ->viewVars(['nome' => $user->nome,
                         'link' => $this->getLink($token,$user)])
             ->subject("Verificação de email - No Raxa!");
 

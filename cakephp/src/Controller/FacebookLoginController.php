@@ -32,7 +32,6 @@ class FacebookLoginController extends AppController {
     public function auth() {
         
 		$helper = $this->facebook->getRedirectLoginHelper();
-        $this->log($helper,'debug');
 	    $permissions = ['email'];
         $loginUrl = $helper->getLoginUrl(
 			Router::url(['action' => 'callback'], true),
@@ -44,9 +43,7 @@ class FacebookLoginController extends AppController {
 
     public function callback(){
 
-        $this->log("Entrei em callback",'debug');
         $helper = $this->facebook->getRedirectLoginHelper();
-        $this->log($helper,'debug');
         try{
             $accessToken = $helper->getAccessToken();
 
@@ -61,7 +58,7 @@ class FacebookLoginController extends AppController {
                 $data = [
                     'email' => $fb_user['email'],
                     'password' => $password,
-                    'username' => $fb_user['first_name'].' '.$fb_user['last_name']
+                    'nome' => $fb_user['first_name'].' '.$fb_user['last_name']
                 ];
                 $user = $this->Users->newEntity($data);
                 $this->Users->save($user);

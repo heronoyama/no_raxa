@@ -69,7 +69,17 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['routeClass'=>'DebugRoute']
     );
 
-
+    $routes->connect(
+        '/logingoogle', 
+        ['controller' => 'GoogleLogin', 'action'=>'auth'],
+        ['routeClass'=>'DebugRoute']
+    );
+    $routes->connect(
+        '/auth/google',
+        ['controller' => 'GoogleLogin', 'action'=>'callback'],
+        ['routeClass'=>'DebugRoute']
+    );
+   
     $routes->connect('/:controller/:id',
         ['action'=>'view'],
         ['id' => '\d+', 'pass' => ['id']]);

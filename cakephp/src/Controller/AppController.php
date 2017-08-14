@@ -20,9 +20,14 @@ class AppController extends Controller {
                 'action' => 'index'
             ],
             'logoutRedirect' => [
-                'controller' => 'Pages',
-                'action' => 'display',
+                'controller' => 'Users',
+                'action' => 'login',
                 'home'
+            ],
+            'authenticate' => [
+                'Form' =>[
+                    'fields' => ['username' => 'email']
+                ]
             ]
         ]);
 

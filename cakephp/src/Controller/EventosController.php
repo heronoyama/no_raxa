@@ -27,7 +27,6 @@ class EventosController extends AppController {
         $this->set('_serialize', ['eventos']);
         $this->Auth->identify();
 
-        $this->log($this->Auth->user(),"debug");
         $this->request->session()->delete("Evento.id");
     }
 

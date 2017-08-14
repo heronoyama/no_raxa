@@ -35,7 +35,6 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             $user['active'] = false;
-            $this->log($user,'debug');
             if ($this->Users->save($user)) {
                 $success = $this->_sendVerificationEmail($user);
                 if($success){
@@ -44,7 +43,6 @@ class UsersController extends AppController {
                 }
             }
 
-            $this->log($user->errors(),'debug');
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $this->set(compact('user'));
@@ -63,8 +61,7 @@ class UsersController extends AppController {
             return $this->redirect(['action'=>'login']);
         }
         $user = $token->user;
-        $this->log("USER is",'debug');
-        $this->log($user,'debug');
+
         $user->active = true;
         if(!$this->Users->save($user)){
             $this->Flash->error(__("Deui ruim!"));

@@ -16,7 +16,7 @@ class ApiAppController extends ParentController {
                         'userModel' => 'Users',
                         'scope' => ['Users.active' => 1],
                         'fields' => [
-                            'username' => 'id'
+                            'username' => 'email'
                         ],
                         'queryDatasource' => true
                     ]
