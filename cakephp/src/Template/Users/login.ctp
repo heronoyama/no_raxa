@@ -8,4 +8,6 @@
     </fieldset>
 <?= $this->Form->button(__('Login')); ?>
 <?= $this->Form->end() ?>
+
+<?php //echo $this->Html->link('Entre com o Facebook', '/loginfacebook', ['class' =>'button']) ?>
 </div>

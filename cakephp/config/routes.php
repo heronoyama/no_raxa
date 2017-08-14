@@ -52,6 +52,24 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
+    $routes->connect(
+        '/loginfacebook', 
+        ['controller' => 'FacebookLogin', 'action'=>'auth'],
+        ['routeClass'=>'DebugRoute']
+    );
+    $routes->connect(
+        '/auth/facebook',
+        ['controller' => 'FacebookLogin', 'action'=>'callback'],
+        ['routeClass'=>'DebugRoute']
+    );
+
+    $routes->connect(
+        '/auth/facebook/logout',
+        ['controller' => 'FacebookLogin', 'action'=>'logout'],
+        ['routeClass'=>'DebugRoute']
+    );
+
+
     $routes->connect('/:controller/:id',
         ['action'=>'view'],
         ['id' => '\d+', 'pass' => ['id']]);
@@ -91,6 +109,7 @@ Router::scope('/', function (RouteBuilder $routes) {
             'routeClass'=>'DebugRoute'
         ]);
 
+    
     //TODO #HERON beautifull routing para RESTful
 
     /**
