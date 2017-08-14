@@ -40,7 +40,7 @@ class AppController extends Controller {
     }
 
     public function isAuthorized($user) {
-        return false;
+        return $user['active'];
     }
 
     protected function userOwnsEvento($user){

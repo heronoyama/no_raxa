@@ -48,11 +48,7 @@ class ApiAppController extends ParentController {
     }
 
     public function isAuthorized($user) {
-        if ($this->userOwnsEvento($user)) {
-            return true;
-        }
-
-        return parent::isAuthorized($user);
+        return parent::isAuthorized($user) && $this->userOwnsEvento($user);
     }
 
     protected function getEventoIdFromRequest(){

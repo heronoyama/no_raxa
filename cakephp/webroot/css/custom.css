@@ -70,3 +70,44 @@ body.login .loginAction.active a{
 	float: left;
 	margin: 0 2px;
 }
+
+.top-bar {
+	display:block;
+	width: 100%;
+	height:60px;
+}
+
+/* Logado */
+.header{
+	width:100%;
+	height: 50px;
+	background-color: #1ab188;
+}
+
+.header ul{
+	list-style: none;
+}
+
+.header a {
+	display:block;
+	float: right;
+	height: 100%;
+	margin: 0 10px;
+	color: black;
+	padding: 0 10px;
+}
+
+.menu{
+	width: 20%;
+	height:100%;
+	float: left;
+	background-color:#443f3f;
+}
+
+.side-nav li.heading{
+	color: #1ab188;
+}
+
+.side-nav li a:not(.button) {
+    color: #1ab188;
+}

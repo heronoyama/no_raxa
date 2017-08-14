@@ -24,30 +24,23 @@
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <nav class="top-bar expanded" data-topbar role="navigation">
-        <ul class="title-area large-3 medium-4 columns">
-            <li class="name">
-                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
-            </li>
+    <header class='header'>
+        <!-- TODO logo -->
+        <ul>
+            <li> <?=$this->Html->link("Ver meu perfil",['controller'=>'Users','action'=>'view',$this->request->session()->read("Auth.User.id")])?> </li>
+            <li> <?=$this->Html->link("Logout",['controller'=>'Users','action'=>'logout'])?> </li>
         </ul>
-    </nav>
-    <?= $this->Flash->render() ?>
-    <div class="container clearfix" id="container">
+    </header>
+    <nav class="menu" role="navigation">
         <?php 
             $session = $this->request->session();
-            if($session->check('Auth.User'))
-                echo $this->element('menuEventos');
-            else
-                echo $this->element('menuLateral');
-
+            echo $this->element('menuEventos');
         ?>
+    </nav>
 
-
+    <?= $this->Flash->render() ?>
+    <div class="container clearfix" id="container">
         <?= $this->fetch('content') ?>
-
     </div>
-   
-    
-
 </body>
 </html>

@@ -7,6 +7,9 @@ use App\Controller\AppController;
 class EventosController extends AppController {
 
     public function isAuthorized($user) {
+        if(!parent::isAuthorized($user))
+            return false;
+        
         $action = $this->request->getParam('action');
         if (in_array($action,['add','index'])){
             return true;
@@ -17,7 +20,7 @@ class EventosController extends AppController {
                 return true;
             }
         }
-        return parent::isAuthorized($user);
+        return false;
     }
 
     public function index() {
