@@ -13,6 +13,7 @@
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->css('vendor/jquery-ui.css') ?>
     <?= $this->Html->css('custom.css') ?>
+    <?= $this->Html->css("vendor/font-awesome.css")?>
 
     <?= $this->Html->script('vendor/jquery.js')?>
     <?= $this->Html->script('vendor/jquery-ui.min.js')?>
@@ -21,7 +22,7 @@
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
+     <?= $this->fetch('script') ?>
 </head>
 <body>
     <header class='header'>
@@ -31,7 +32,7 @@
             <li> <?=$this->Html->link("Logout",['controller'=>'Users','action'=>'logout'])?> </li>
         </ul>
     </header>
-    <nav class="menu" role="navigation">
+    <nav class="menu open" id='menu' role="navigation">
         <?php 
             $session = $this->request->session();
             echo $this->element('menuEventos');
@@ -42,5 +43,8 @@
     <div class="container clearfix" id="container">
         <?= $this->fetch('content') ?>
     </div>
+
+    <?=$this->Html->script('gadgets/Menu.js');?>
+    
 </body>
 </html>
