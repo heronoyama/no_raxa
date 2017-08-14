@@ -1,13 +1,11 @@
-<div class="users form large-9 medium-8 columns content">
+<div class="users form">
+    
     <?= $this->Form->create($user) ?>
-    <fieldset>
-        <legend><?= __('Add User') ?></legend>
-        <?php
-            echo $this->Form->control('nome');
-            echo $this->Form->control('email',['type'=>'email']);
-            echo $this->Form->control('password');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?php
+        echo $this->Form->control('nome');
+        echo $this->Form->control('email',['type'=>'email']);
+        echo $this->Form->control('password');
+    ?>
+    <?= $this->Form->button('Criar',['class'=>'button button-block']) ?>
     <?= $this->Form->end() ?>
 </div>

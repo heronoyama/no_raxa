@@ -2,6 +2,71 @@
 	text-decoration: line-through;
 }
 
-.panel{
-	
+body.login .container {
+	height: 400px;
+}
+
+body.login {
+	background-color:  #582b2b;
+}
+
+div.login {
+	background:rgb(62, 155, 30);
+    padding: 40px;
+	max-width: 600px;
+	height:80%;
+    margin: 40px auto;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+}
+
+body.login .loginController{
+	list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+body.login .loginController:after{
+	content: "";
+    display: table;
+    clear: both;
+}
+
+body.login .loginAction a {
+	display: block;
+    text-decoration: none;
+    padding: 15px;
+    background-color: black;
+    color: #a0b3b0;
+    font-size: 20px;
+    float: left;
+    width: 50%;
+    text-align: center;
+	cursor: pointer;
+}
+
+body.login .loginAction.active a{
+	background: #1ab188;
+    color: #ffffff;
+}
+
+.forgot{
+	margin-top: -15px;
+	text-align: right;
+}
+
+.forgot a {
+	color:black;
+}
+
+.button-block{
+	display: block;
+    width: 100%;
+}
+
+.social-button{
+	display: block;
+	width: 49%;
+	float: left;
+	margin: 0 2px;
 }

@@ -8,9 +8,12 @@ use Cake\Mailer\MailerAwareTrait;
 class UsersController extends AppController {
     use MailerAwareTrait;    
 
+    public $helpers = ['Login'];
+
     public function initialize(){
         parent::initialize();
         $this->Auth->allow(['login','logout','add','index','delete','activate','reset','requestNewPassword']);
+        $this->viewBuilder()->setLayout('login');
     }
 
     public function index() {
