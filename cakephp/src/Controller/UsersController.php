@@ -10,7 +10,7 @@ class UsersController extends AppController {
 
     public function initialize(){
         parent::initialize();
-        $this->Auth->allow(['login','logout','add','index','delete','activate']);
+        $this->Auth->allow(['login','logout','add','index','delete','activate','reset','requestNewPassword']);
     }
 
     public function index() {
@@ -47,6 +47,51 @@ class UsersController extends AppController {
         }
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
+    }
+
+    public function requestNewPassword(){
+        if($this->request->is('post')){
+            $email = $this->request->getData()['email'];
+            $user = $user = $this->Users->findByEmail($email)->first();
+            if(empty($user)){
+                $this->Flash->error(__("Email não encontra$userdo"));
+                return;
+            }
+            $user->active = false;
+            $this->Users->save($user);
+            $success = $this->_sendResetPasswordEmail($user);
+            if($success){
+                $this->Flash->success(__("Solicitação feita com sucesso. Cheque seu email."));
+                return $this->redirect(['action' => 'login']);
+            }
+        }
+    }
+
+    public function reset($activationToken = null){
+        if(!isset($activationToken)){
+            $this->Flash->error(__("Token não encontrado!"));
+            return $this->redirect(['action'=>'login']);
+        }
+        if($this->request->is('post')){
+            $this->loadModel("Tokens");
+            $token = $this->Tokens->isValid($activationToken);
+            if(!$token){
+                $this->Flash->error(__("Token não encontrado!"));
+                return $this->redirect(['action'=>'login']);
+            }
+            $senha = $this->request->getData()['password'];
+            $user = $token->user;
+            $user->password = $senha;
+            $user->active = true;
+            if(!$this->Users->save($user)){
+                $this->Flash->error(__("Deui ruim!"));
+                return $this->redirect(['action'=>'login']);
+            }
+            $this->Tokens->delete($token);
+            $this->Flash->success(__("Senha resetada com sucesso!"));
+            return $this->redirect(['action'=>'login']);
+        }
+                
     }
 
     public function activate($activationToken = null) {
@@ -127,6 +172,17 @@ class UsersController extends AppController {
             return false;
         }
         $this->getMailer("Token")->send('activate',[$token,$user]);
+        return true;
+    }
+
+    private function _sendResetPasswordEmail($user){
+        $this->loadModel("Tokens");
+        $data = ["users_id" => $user->id, "token" => $user->getToken()];
+        $token = $this->Tokens->newEntity($data);
+        if (!$this->Tokens->save($token)) {
+            return false;
+        }
+        $this->getMailer("Token")->send('resetPassword',[$token,$user]);
         return true;
     }
 }

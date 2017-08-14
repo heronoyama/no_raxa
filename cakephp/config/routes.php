@@ -116,9 +116,19 @@ Router::scope('/', function (RouteBuilder $routes) {
         ], 
         [
             'pass' => ['token'],
-            'routeClass'=>'DebugRoute'
+            'routeClass'=>'DashedRoute'
         ]);
 
+    $routes->connect(
+        '/users/reset/:token',
+        [
+            'controller'=>'Users',
+            'action'=>'reset' 
+        ], 
+        [
+            'pass' => ['token'],
+            'routeClass'=>'DashedRoute'
+        ]);
     
     //TODO #HERON beautifull routing para RESTful
 

@@ -15,16 +15,25 @@ class TokenMailer extends Mailer {
             ->emailFormat('html')
             ->template('verification','token')
             ->viewVars(['nome' => $user->nome,
-                        'link' => $this->getLink($token,$user)])
+                        'link' => $this->getLinkActivation($token,$user)])
             ->subject("Verificação de email - No Raxa!");
 
     }
 
-    private function getLink($token){
+    public function resetPassword($token,$user){
+        $this->to($user->email)
+            ->profile('default')
+            ->emailFormat('html')
+            ->template('reset','token')
+            ->viewVars(['link' => $this->getLinkActivation($token,$user)])
+            ->subject("Reset de senha - No Raxa!");
+    }
+
+    private function getLinkActivation($token){
         $finalToken = $token->getFullToken();
         $link =  Router::url(
              [ 'controller' => 'Users',
-                'action' => 'activate',
+                'action' => 'reset',
                 'token'=> $finalToken],true);
         return $link;
     }
