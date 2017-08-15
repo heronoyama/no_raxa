@@ -1,4 +1,4 @@
-<div class="eventos view large-9 medium-8 columns content"  id="CollaborationsModel">
+<div class="collaborations index content"  id="CollaborationsModel">
     <h3> <?= h($evento->nome).' ('.h($evento->id).')' ?> > Colaborações</h3>
     
     <table cellpadding="0" cellspacing="0">

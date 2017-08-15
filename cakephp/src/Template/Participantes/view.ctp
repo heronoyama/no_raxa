@@ -1,4 +1,4 @@
-<div class="participantes view large-9 medium-8 columns content">
+<div class="participantes view  content">
     <h3><?= h($participante->nome).' ('.h($participante->id).')' ?></h3>
     <table class="vertical-table">
         <tr>

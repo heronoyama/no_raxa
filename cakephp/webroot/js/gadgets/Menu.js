@@ -5,7 +5,7 @@ function Menu(dom){
         function setup(){
             if(self.dom.length == 0)
                 return;
-            self.dom.click(function(){
+            $('.heading',self.dom).click(function(){
                 console.log(self.dom);
                 console.log(self.dom.hasClass('open'));
                 if(self.dom.hasClass('open')){

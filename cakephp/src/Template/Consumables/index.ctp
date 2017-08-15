@@ -1,4 +1,4 @@
-<div class="eventos view large-9 medium-8 columns content"  id="ConsumablesModel">
+<div class="consumables index content"  id="ConsumablesModel">
     <h3 <?= 'data-id='.$evento->id?>> <?= h($evento->nome).' ('.h($evento->id).')' ?> > Consumíveis</h3>
     
     <table cellpadding="0" cellspacing="0">

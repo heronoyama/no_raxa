@@ -2,19 +2,11 @@
 	text-decoration: line-through;
 }
 
-body.login .container {
-	height: 400px;
-}
-
-body.login {
-	background-color:  #582b2b;
-}
-
 div.login {
 	background:rgb(62, 155, 30);
     padding: 40px;
 	max-width: 600px;
-	height:80%;
+	height:500px;
     margin: 40px auto;
     border-radius: 4px;
     box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
@@ -32,7 +24,7 @@ body.login .loginController:after{
     clear: both;
 }
 
-body.login .loginAction a {
+ body.login .loginAction a {
 	display: block;
     text-decoration: none;
     padding: 15px;
@@ -43,11 +35,19 @@ body.login .loginAction a {
     width: 50%;
     text-align: center;
 	cursor: pointer;
-}
+} 
 
 body.login .loginAction.active a{
-	background: #1ab188;
+	background: #443f3f;
     color: #ffffff;
+}
+
+.button {
+	background-color:#443f3f;
+}
+
+.button:hover,.form button:hover,button {
+	background-color:#000;
 }
 
 .forgot{
@@ -106,7 +106,7 @@ body.login .loginAction.active a{
 }
 
 .menu.open {
-	width: 20%;
+	width: 15%;
 }
 
 .menu.open li p {
@@ -140,4 +140,38 @@ body.login .loginAction.active a{
 
 .side-nav li a:not(.button) {
 	color: #1ab188;
+}
+/* General */
+
+.content h3, .content h4, h1,h2,h3,h4,h5{
+	color:#0f5643;
+}
+
+a, th.actions,.vertical-table th , table tr th {
+	color:#1ab188;
+}
+
+a:hover{
+	color:#368a55;
+}
+
+div.container > div {
+	padding: 15px;
+}
+
+div.container {
+	min-width: 85%;
+	overflow: auto;
+}
+
+.eventos.view .editButton,.eventos.view .saveButton{
+	float:right;
+}
+
+table tr th , .content h4{
+	border-bottom-color:#0f5643;
+}
+
+.ui-accordion-header-icon,.ui-state-active .ui-icon, .ui-button:active .ui-icon {
+	background-image: none;
 }

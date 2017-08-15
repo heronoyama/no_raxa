@@ -5,6 +5,11 @@ namespace App\Controller\Api;
 use App\Controller\Api\ApiAppController as ApiController;
 
 class EventosController extends ApiController {
+
+     protected function getEventoId(){
+        $id = (int)$this->request->getParam('pass.0');
+        return $id;
+    }
     
     //TODO check use
     public function view($id = null) {
@@ -28,6 +33,7 @@ class EventosController extends ApiController {
     }
     
      function edit($id = null){
+        $this->log($this->getParsedData(),'debug');
         $evento = $this->Eventos->get($id, [
             'contain' => []
         ]);

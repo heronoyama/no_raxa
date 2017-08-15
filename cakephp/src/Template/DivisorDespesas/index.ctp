@@ -1,4 +1,4 @@
-<div class="eventos view large-9 medium-8 columns content"  id="DivisorDeDespesas">
+<div class="divisor index content"  id="DivisorDeDespesas">
 <h3> <?= h($evento->nome).' ('.h($evento->id).')' ?> > Divisor</h3>
 
 <div class='large-12 panel'>

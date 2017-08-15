@@ -1,10 +1,10 @@
 <!--TODO Form templates? -->
-<div class="eventos view large-9 medium-8 columns content">
+<div class="eventos view content">
     <h3 <?= 'data-id='.$evento->id?>> <?= h($evento->nome).' ('.h($evento->id).')' ?></h3>
     <div id='EventoModel'>
         
-        <a class="editButton" data-bind="visible: !editing(), click:editing" > Edit </a>
-        <a class="saveButton" data-bind="visible: editing, click:save" > Save </a>
+        <a class="fa fa-edit editButton" data-bind="visible: !editing(), click:editing" > Edit </a>
+        <a class="fa fa-save saveButton" data-bind="visible: editing, click:save" > Save </a>
 
 <!-- TODO remover a dependencia das variaveis consumables e participantes -->        
         <!-- ko with: evento -->

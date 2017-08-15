@@ -1,4 +1,4 @@
-<div class="consumables view large-9 medium-8 columns content">
+<div class="consumables view  content">
     <h3><?= h($consumable->nome).' ('.h($consumable->id).')' ?></h3>
     <table class="vertical-table">
         <tr>

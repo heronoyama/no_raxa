@@ -1,4 +1,4 @@
-<div class="eventos index large-9 medium-8 columns content">
+<div class="eventos index">
     <h3><?= __('Eventos') ?></h3>
     <div><?= $this->Html->link(__('New Evento'), ['action' => 'add']) ?></div>
     <table cellpadding="0" cellspacing="0">
