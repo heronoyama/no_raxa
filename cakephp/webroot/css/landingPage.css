@@ -7,6 +7,16 @@
 .button:hover{
     background-color: #000;
 }
+
+#flash {
+    z-index: 9999;
+    top: 110px;
+    position: absolute;
+    display: inline-block;
+    margin: auto;
+    min-width: 500px;
+    left: 32%;
+}
 /*header*/
 
 .home header{

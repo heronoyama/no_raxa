@@ -49,9 +49,10 @@ Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
     
-    $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
-    $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
-
+    // $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+    // $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+    $routes->connect('/', ['controller' => 'LandingPage', 'action' => 'home']);
+    
     $routes->connect(
         '/loginfacebook', 
         ['controller' => 'FacebookLogin', 'action'=>'auth'],
@@ -164,9 +165,10 @@ Router::scope("/csv",function(RouteBuilder $routes){
 
 Router::prefix('api',function (RouteBuilder $routes){
     $routes->extensions(['json']);
-    Router::connect('/api/users/register', ['controller' => 'Users', 'action' => 'add', 'prefix' => 'api']);
+    Router::connect('/api/users/register', 
+        ['controller' => 'Users', 'action' => 'add', 'prefix' => 'api']);
 
-     $routes->resources('Eventos');
+    $routes->resources('Eventos');
     $routes->resources('Consumables');
     $routes->resources('Participantes');
     $routes->resources('Collaborations');
