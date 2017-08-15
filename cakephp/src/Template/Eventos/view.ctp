@@ -45,7 +45,7 @@
         </table>
         <!-- /ko -->
     </div> 
-    <div class='medium-6 column'>
+    <div class='component-panel data-block'>
     <h5>Consumiveis</h5>
     <table cellpadding="0" cellspacing="0">
     <thead>
@@ -62,7 +62,7 @@
         </tbody>
     </table>
     </div>
-    <div class='medium-6 column'>
+    <div class='component-panel data-block'>
     <h5>Participantes</h5>
     <table cellpadding="0" cellspacing="0">
     <thead>

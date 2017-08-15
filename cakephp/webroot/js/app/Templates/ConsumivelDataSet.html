@@ -1,5 +1,5 @@
 <!-- ko with: consumiveisDataSet -->
-<div id='BalancoConsumiveis'>
+<div id='BalancoConsumiveis' class='component-header'>
 	<h4>Valor final por consumível </h4>
 	<div>
 	<table>
@@ -10,7 +10,7 @@
 				<th>Custo por participante</th>
 			</tr>
 		</thead>
-		<tbody data-bind='foreach: dataSet'>
+		<tbody class='component-table' data-bind='foreach: dataSet'>
 			<tr data-bind='click:$component.detailConsumivel.bind(this,$data)'>
 				<td data-bind='text:nome'></td>
 				<td data-bind='text:valorInvestido'></td>
@@ -23,11 +23,12 @@
 <!-- /ko -->
 
 <!-- ko with: detalhamentoConsumo -->
-<div id="DetalhamentoConsumo" data-bind='visible:isVisible' class='panel'>
+<div id="DetalhamentoConsumo" data-bind='visible:isVisible' class='component-panel'>
 	<div data-bind='with:detalhamento'>
-		<p> Consumivel <span data-bind='text:nome'></span></p>
-		<p data-bind='click:$parent.close'> Clique para fechar </p>
-		<p> Consumos </p>
+		<i class='fa fa-close fa2x' data-bind='click:$parent.close'> Fechar </i>
+		<h4> Consumivel <span data-bind='text:nome'></span></h4>
+		
+		<h5> Consumos </h5>
 		<table>
 			<thead>
 				<th>Participante</th>
@@ -38,7 +39,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<p> Colaborações </p>
+		<h5> Colaborações </h5>
 		<table>
 			<thead>
 				<th>Partiicpante</th>
