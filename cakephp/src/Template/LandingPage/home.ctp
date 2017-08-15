@@ -89,6 +89,8 @@ $this->layout = false;
 </div>
 
 <footer class='footer'>
+    <p> Um produto Agile Devs</p>
+    <p> Conheça nosso <a href='http://agiledevs.com.br'> site</a> </p>
 </footer>
 </body>
 </html>

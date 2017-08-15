@@ -146,5 +146,15 @@ i.extra-large{
 .home footer{
     min-height: 150px;
     background-color: #443f3f;
+    padding: 2em;
 }
 
+.footer p{
+    display:block;
+    margin:0;
+    color: #ebebec;
+}
+
+.footer a {
+    color:#1ab188;
+}
