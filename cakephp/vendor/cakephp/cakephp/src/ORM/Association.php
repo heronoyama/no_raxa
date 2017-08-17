@@ -238,7 +238,8 @@ abstract class Association
     }
 
     /**
-     * Sets the name for this association.
+     * Sets the name for this association, usually the alias
+     * assigned to the target associated table
      *
      * @param string $name Name to be assigned
      * @return $this
@@ -258,7 +259,8 @@ abstract class Association
     }
 
     /**
-     * Gets the name for this association.
+     * Gets the name for this association, usually the alias
+     * assigned to the target associated table
      *
      * @return string
      */
@@ -419,10 +421,10 @@ abstract class Association
 
                     throw new RuntimeException(sprintf(
                         $errorMessage,
-                        get_class($this->_sourceTable),
+                        $this->_sourceTable ? get_class($this->_sourceTable) : 'null',
                         $this->getName(),
                         $this->type(),
-                        get_class($this->_targetTable),
+                        $this->_targetTable ? get_class($this->_targetTable) : 'null',
                         $className
                     ));
                 }
