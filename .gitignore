@@ -3,5 +3,4 @@
 /cakephp/tmp/
 /cakephp/vendor/
 /cakephp/nbproject/
-/cakephp/composer.lock
 /cakephp/config/Migrations/schema-dump-default.lock
