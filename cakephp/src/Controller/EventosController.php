@@ -44,8 +44,6 @@ class EventosController extends AppController {
         $this->set('consumables',$evento->consumables);
         $this->set('participantes',$evento->participantes);
         $this->set('_serialize', ['evento','consumables','participantes']);
-
-        $this->request->session()->write("Evento.id",$id);
     }
 
     public function add() {

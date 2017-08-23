@@ -61,30 +61,34 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect(
         '/auth/facebook',
         ['controller' => 'FacebookLogin', 'action'=>'callback'],
-        ['routeClass'=>'DebugRoute']
+        ['routeClass'=>'DashedRoute']
     );
 
     $routes->connect(
         '/auth/facebook/logout',
         ['controller' => 'FacebookLogin', 'action'=>'logout'],
-        ['routeClass'=>'DebugRoute']
+        ['routeClass'=>'DashedRoute']
     );
 
     $routes->connect(
         '/logingoogle', 
         ['controller' => 'GoogleLogin', 'action'=>'auth'],
-        ['routeClass'=>'DebugRoute']
+        ['routeClass'=>'DashedRoute']
     );
     $routes->connect(
         '/auth/google',
         ['controller' => 'GoogleLogin', 'action'=>'callback'],
-        ['routeClass'=>'DebugRoute']
+        ['routeClass'=>'DashedRoute']
     );
-   
+
     $routes->connect('/:controller/:id',
         ['action'=>'view'],
         ['id' => '\d+', 'pass' => ['id']]);
 
+    $routes->connect('/dashboard/:idEvento',
+        ['controller' =>'Dashboard','action'=>'index'],
+        ['idEvento'=>'\d+','pass'=>['idEvento'],'routeClass'=>'EventoRoute']
+    );
 
     $routes->connect(
         '/eventos/:idEvento/:controller',
