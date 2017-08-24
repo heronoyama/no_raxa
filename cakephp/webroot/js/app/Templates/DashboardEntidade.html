@@ -1,0 +1,95 @@
+<div class='botoesLaterais'>
+    <ul class='side-nav'>
+        <li data-bind='css : { active : modoListagem }'> <a data-bind='click:setModoListagem'> <i class='fa fa-list fa-fw'></i>  Listagem </a> </li>
+        <li data-bind='css : { active : modoConsumo }'> <a data-bind='click:setModoConsumo'> <i class='fa fa-check fa-fw'></i> Consumo  </a> </li>
+        <li data-bind='css : { active : modoColaboracao }'> <a data-bind='click:setModoColaboracao'> <i class='fa fa-dollar fa-fw'></i> Colaborações </a> </li>
+    </ul>
+</div>
+<div class='paineis'>
+    <div class='listagem' data-bind='with:painelListagem, visible: modoListagem'>
+        <div class='crud participantes'>
+            <div class='list'>
+                <h5> Participantes </h5>
+                <ul>
+                    <li> Joaozinho </li>
+                    <li> Pedrinho </li>
+                </ul>
+            </div>
+            <div class='controle'>
+                <input type='text' />
+                <a class='adicionar'> <i class='fa fa-plus fa-fw'></i> </a>
+            </div>
+        </div>
+        <div class='crud consumiveis'>
+            <div class='list'>
+                <h5> Consumíveis </h5>
+                <ul>
+                    <li> Carne </li>
+                    <li> Cerveja </li>
+                </ul>
+            </div>
+            <div class='controle'>
+                <input type='text' />
+                <a class='adicionar'> <i class='fa fa-plus fa-fw'></i> </a>
+            </div>
+        </div>
+    </div>
+
+    <div class='consumo' data-bind='with:painelConsumo, visible: modoConsumo'>
+        <div class='crud participantes'>
+            <div class='list'>
+                <h5> Participantes </h5>
+                <ul>
+                    <li> Joaozinho </li>
+                    <li> Pedrinho </li>
+                </ul>
+            </div>
+            <div class='controle'>
+                <input type='text' />
+                <a class='adicionar'> <i class='fa fa-plus fa-fw'></i> </a>
+            </div>
+        </div>
+        <div class='crud consumiveis'>
+            <div class='list'>
+                <h5> Consumíveis </h5>
+                <ul>
+                    <li> Carne </li>
+                    <li> Cerveja </li>
+                </ul>
+            </div>
+            <div class='controle'>
+                <input type='text' />
+                <a class='adicionar'> <i class='fa fa-plus fa-fw'></i> </a>
+            </div>
+        </div>
+    </div>
+
+    <div class='colaboracao' data-bind='with:painelColaboracao, visible: modoColaboracao'>
+        <div class='crud participantes'>
+            <div class='list'>
+                <h5> Participantes </h5>
+                <ul>
+                    <li> Joaozinho </li>
+                    <li> Pedrinho </li>
+                </ul>
+            </div>
+            <div class='controle'>
+                <input type='text' />
+                <a class='adicionar'> <i class='fa fa-plus fa-fw'></i> </a>
+            </div>
+        </div>
+        <div class='crud consumiveis'>
+            <div class='list'>
+                <h5> Consumíveis </h5>
+                <ul>
+                    <li> Carne </li>
+                    <li> Cerveja </li>
+                </ul>
+            </div>
+            <div class='controle'>
+                <input type='text' />
+                <a class='adicionar'> <i class='fa fa-plus fa-fw'></i> </a>
+            </div>
+        </div>
+    </div>
+</div>

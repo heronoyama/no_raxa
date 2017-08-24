@@ -234,10 +234,112 @@ table tr th , .content h4{
 }
 #dashboard section{
 	height: 300px;
-	border:1px solid black;
+	border: 1px solid #d8d8d8;
 	margin: 10px 5px 0 5px;
+
 }
 
-#dasboard section:first{
+#dashboard section:first{
 	margin-top:0;
+}
+
+#entidades .botoesLaterais {
+	float:left;
+	position:relative;
+	height:100%;
+	width:15%;
+	background-color: #f2f2f2;
+	border-right: 1px solid #d8d8d8;
+}
+
+#entidades .botoesLaterais ul {
+	list-style: none;
+    height: 100%;
+    display: block;
+	margin: 0;
+	padding: 0;
+}
+
+#entidades .botoesLaterais ul li {
+	display: inline-block;
+	height: 32%;
+	clear:both;
+	width: 100%;
+}
+
+#entidades .botoesLaterais a {
+	display: inline-block;
+	height: 100%;
+	width: 100%;
+	padding: 20px;
+}
+
+#entidades .botoesLaterais li.active {
+	background-color: #ebebec;
+}
+
+#entidades .botoesLaterais li.active a {
+	color: #0b8060;
+}
+
+#entidades .paineis {
+	float: right;
+	position:relative;
+	height: 100%;
+	width: 85%;
+} 
+#entidades .paineis > div {
+	height:100%;
+}
+#entidades .paineis .crud {
+	width: 50%;
+	border: 0.5px solid #d8d8d8;
+	padding: 15px 30px;
+	height: 100%;
+}
+
+#entidades .paineis .crud .list {
+	height: 80%;
+}
+
+#entidades .paineis .crud .list ul {
+	list-style:  none;
+	height: 100%;
+	overflow-y: auto;
+}
+
+#entidades .paineis .crud .list li{
+	padding: 10px 0;
+    border-bottom: 1px solid #ebebec;
+}
+
+#entidades .paineis .participantes {
+	float:left;
+}
+
+#entidades .paineis .consumiveis {
+	float:right;
+}
+
+#entidades .paineis .controle {
+	height: 20%;
+}
+
+#entidades .paineis .controle input {
+	float: left;
+	width: 80%;
+	height: 100%;
+}
+
+#entidades .paineis .controle a {
+	display: inline-block;
+	width: 20%;
+	padding: 15px;
+	height: 100%;
+	border:1px solid  rgb(204, 204, 204);	
+	text-align: center;
+}
+
+#entidades .paineis .controle a:hover {
+	background-color:  #d8d8d8;	
 }
