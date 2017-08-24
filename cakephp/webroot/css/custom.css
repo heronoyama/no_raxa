@@ -309,8 +309,17 @@ table tr th , .content h4{
 }
 
 #entidades .paineis .crud .list li{
-	padding: 10px 0;
-    border-bottom: 1px solid #ebebec;
+	padding: 10px;
+	border-bottom: 1px solid #ebebec;
+	cursor: pointer;
+}
+
+#entidades .paineis .crud .list li.active{
+ 	background-color: rgb(204, 204, 204);
+}
+
+#entidades .paineis .crud .list li:hover:not(.active){
+ 	background-color: #ebebec;
 }
 
 #entidades .paineis .crud .list li p {
@@ -325,6 +334,7 @@ table tr th , .content h4{
 #entidades .paineis .participantes {
 	float:left;
 }
+
 
 #entidades .paineis .consumiveis {
 	float:right;

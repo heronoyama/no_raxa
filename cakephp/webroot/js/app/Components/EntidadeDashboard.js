@@ -15,6 +15,16 @@ define(['knockout',
         var self = this;
         self.participanteRepository = ko.observable(participanteRepository);
         self.consumivelRepository = ko.observable(consumivelRepository);
+
+        self.participanteFoco = ko.observable();
+
+        self.participanteSelecionado = function(participante){
+            self.participanteFoco(participante);
+        }
+
+        self.isSelected = function(participante){
+            return self.participanteFoco() == participante;
+        };
     }
 
     function PainelColaboracao(participanteRepository,consumivelRepository){

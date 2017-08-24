@@ -41,7 +41,8 @@ define(['knockout','models/Participante','gateway'],function(ko,Participante,Gat
                 model : Participante.editModel,
                 callback : function(participantes){
                     self.participantes(participantes);
-                }
+                },
+                params:'include=(Consumptions,Collaborations)'
             };
 
 		    Participante.loadAll(options);

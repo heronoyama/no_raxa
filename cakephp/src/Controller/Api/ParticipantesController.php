@@ -9,8 +9,19 @@ class ParticipantesController extends ApiController {
     public function index($idEvento = null){
         $where = ['eventos_id' => $idEvento];
 
+        $result = $this->toInclude();
+        
+        if(!$result->success){
+            return $this->responseWithMessage(400,$result->error);
+        }
+        
+        $contain = $result->values;
+        if(sizeof($contain) == 0){
+            $contain = [];
+        }
+
         $participantes = $this->Participantes
-                    ->find('all')
+                    ->find('all',['contain' => $contain])
                     ->where($where);
 
         $this->set(compact('participantes'));
