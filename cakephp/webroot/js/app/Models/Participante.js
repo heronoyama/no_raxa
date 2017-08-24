@@ -1,5 +1,23 @@
 define(['knockout','gateway'],function(ko,Gateway){
 
+
+	function ParticipanteEdit(data){
+		var self=this;
+		Participante.call(self,data);
+
+		self.editing = ko.observable(false);
+		self.edit = function() { 
+			self.editing(true) 
+		};
+
+		self.nome.subscribe(function(){
+			self.save(function(){
+					self.editing(false);
+			});
+		});
+
+	};
+
 	//TODO extract superclass to remove duplicated code
 	function Participante(data){
 		var self = this;
@@ -90,6 +108,7 @@ define(['knockout','gateway'],function(ko,Gateway){
 
 	return {
 		model : Participante,
+		editModel : ParticipanteEdit,
 		loadAll: function(options){
 			var gatewayOptions = {
 				idEvento : options.idEvento,

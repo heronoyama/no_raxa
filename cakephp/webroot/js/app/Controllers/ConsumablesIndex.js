@@ -1,23 +1,5 @@
 requirejs(['knockout','components/PathUtils','models/Consumivel'],function(ko,PathUtils,Consumivel){
 
-function ConsumivelEdit(data){
-	var self = this;
-	Consumivel.model.call(self,data);
-
-	self.editing = ko.observable(false);
-
-	self.edit = function() { 
-		self.editing(true) 
-	};
-
-	self.nome.subscribe(function(){
-		self.save(function(){
-				self.editing(false);
-			}
-		);
-	});
-};
-
 function ConsumablesIndex(idEvento){
 	var self = this;
 	self.idEvento = ko.observable(idEvento);
@@ -26,7 +8,7 @@ function ConsumablesIndex(idEvento){
 	self.nomeConsumivel =  ko.observable();
 
 	self.criaConsumable = function(){
-		var novoConsumivel = new ConsumivelEdit({nome : self.nomeConsumivel(),idEvento:self.idEvento()});
+		var novoConsumivel = new Consumivel.editModel({nome : self.nomeConsumivel(),idEvento:self.idEvento()});
 		novoConsumivel.save(function(consumivel){
 			var consumiveis = self.consumiveis();
 			ko.utils.arrayPushAll(consumiveis,[consumivel]);
@@ -46,7 +28,7 @@ function ConsumablesIndex(idEvento){
 	function load(){
 		var options = {
 			idEvento : self.idEvento(),
-			model : ConsumivelEdit,
+			model : Consumivel.editModel,
 			callback : function(consumiveis){
 				self.consumiveis(consumiveis);
 			}

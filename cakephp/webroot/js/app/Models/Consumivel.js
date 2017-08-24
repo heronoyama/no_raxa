@@ -1,4 +1,22 @@
 define(['knockout','gateway'],function(ko,Gateway){
+
+	function ConsumivelEdit(data){
+		var self = this;
+		Consumivel.call(self,data);
+
+		self.editing = ko.observable(false);
+
+		self.edit = function() { 
+			self.editing(true) 
+		};
+
+		self.nome.subscribe(function(){
+			self.save(function(){
+					self.editing(false);
+				}
+			);
+		});
+	};
 	
 	function Consumivel(data){
 		var self = this;
@@ -89,6 +107,7 @@ define(['knockout','gateway'],function(ko,Gateway){
 
 	return {
 		model : Consumivel,
+		editModel: ConsumivelEdit,
 		loadAll : function(options){
 			var gatewayOptions = {
 				idEvento : options.idEvento,

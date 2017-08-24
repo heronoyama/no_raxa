@@ -85,10 +85,10 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['action'=>'view'],
         ['id' => '\d+', 'pass' => ['id']]);
 
-    $routes->connect('/dashboard/:idEvento',
-        ['controller' =>'Dashboard','action'=>'index'],
-        ['idEvento'=>'\d+','pass'=>['idEvento'],'routeClass'=>'EventoRoute']
-    );
+    // $routes->connect('/dashboard/:idEvento',
+    //     ['controller' =>'Dashboard','action'=>'index'],
+    //     ['idEvento'=>'\d+','pass'=>['idEvento'],'routeClass'=>'EventoRoute']
+    // );
 
     $routes->connect(
         '/eventos/:idEvento/:controller',

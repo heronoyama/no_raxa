@@ -1,23 +1,6 @@
 requirejs(['knockout','components/PathUtils','models/Participante'],
 	function(ko,PathUtils,Participante){
 
-function ParticipanteEdit(data){
-	var self=this;
-	Participante.model.call(self,data);
-
-	self.editing = ko.observable(false);
-	self.edit = function() { 
-		self.editing(true) 
-	};
-
-	self.nome.subscribe(function(){
-		self.save(function(){
-				self.editing(false);
-		});
-	});
-
-};
-
 function ParticipantesIndex(idEvento){
 	var self = this;
 	self.idEvento = ko.observable(idEvento);
@@ -26,7 +9,7 @@ function ParticipantesIndex(idEvento){
 	self.nomeParticipante =  ko.observable();
 
 	self.criaParticipante = function(){
-		var participante = new ParticipanteEdit({
+		var participante = new Participante.editModel({
 			nome : self.nomeParticipante(), 
 			idEvento:self.idEvento()
 		});
@@ -52,7 +35,7 @@ function ParticipantesIndex(idEvento){
 	function load(){
 		var options = {
 			idEvento : self.idEvento(),
-			model : ParticipanteEdit,
+			model : Participante.editModel,
 			callback : function(participantes){
 				self.participantes(participantes);
 			}

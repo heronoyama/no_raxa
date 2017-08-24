@@ -1,27 +1,39 @@
-define(['knockout','gateway'],function(ko,Gateway){
+define(['knockout',
+        'components/PathUtils',
+        'gateway',
+        'models/ParticipantesRepository',
+        'models/ConsumivelRepository'],
+            function(ko,PathUtils,Gateway,ParticipantesRepository,ConsumivelRepository){
 
-    function PainelListagem(){
+    function PainelListagem(participanteRepository,consumivelRepository){
         var self = this;
-        self.texto = ko.observable("olá listagem");
+        self.participanteRepository = ko.observable(participanteRepository);
+        self.consumivelRepository = ko.observable(consumivelRepository);
     }
 
-    function PainelConsumo(){
+    function PainelConsumo(participanteRepository,consumivelRepository){
         var self = this;
-        self.texto = ko.observable("ola consumos");
+        self.participanteRepository = ko.observable(participanteRepository);
+        self.consumivelRepository = ko.observable(consumivelRepository);
     }
 
-    function PainelColaboracao(){
+    function PainelColaboracao(participanteRepository,consumivelRepository){
         var self = this;
-        self.texto = ko.observable('olá colaboiração');
+        self.participanteRepository = ko.observable(participanteRepository);
+        self.consumivelRepository = ko.observable(consumivelRepository);
     }
 
 
     function DashboardEntidade(){
         var self = this;
+    
+        self.idEvento = ko.observable(PathUtils.extractEventoId());
+        self.participanteRepository = ko.observable(new ParticipantesRepository(self.idEvento()));
+        self.consumivelRepository = ko.observable(new ConsumivelRepository(self.idEvento()));
 
-        self.painelListagem = ko.observable(new PainelListagem());
-        self.painelConsumo = ko.observable(new PainelConsumo());
-        self.painelColaboracao = ko.observable(new PainelColaboracao());
+        self.painelListagem = ko.observable(new PainelListagem(self.participanteRepository(),self.consumivelRepository()));
+        self.painelConsumo = ko.observable(new PainelConsumo(self.participanteRepository(),self.consumivelRepository()));
+        self.painelColaboracao = ko.observable(new PainelColaboracao(self.participanteRepository(),self.consumivelRepository()));
 
         self.modoListagem = ko.observable(true);
         self.modoConsumo = ko.observable(false);
