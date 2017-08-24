@@ -331,6 +331,14 @@ table tr th , .content h4{
 	float: right;
 }
 
+#entidades .paineis div.editControl {
+	float:right;
+}
+
+#entidades .paineis div.editControl i{
+	margin:10px;
+}
+
 #entidades .paineis .participantes {
 	float:left;
 }

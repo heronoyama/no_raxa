@@ -59,7 +59,8 @@ define(['knockout','gateway'],function(ko,Gateway){
 				var colaboracoes  = data.collaborations.map(function(item){
 					return {
 						idConsumivel : item.consumables_id,
-						valor:item.value
+						valor:item.value,
+						id:item.id
 					}
 				});
 				self.colaboracoesData(colaboracoes);
@@ -67,7 +68,8 @@ define(['knockout','gateway'],function(ko,Gateway){
 			if(data.consumptions){
 				var consumos = data.consumptions.map(function(item){
 					return {
-						idConsumivel : item.consumables_id
+						idConsumivel : item.consumables_id,
+						id:item.id
 					}
 				});
 				self.consumosData(consumos);
