@@ -37,6 +37,20 @@ define(['knockout',
             self.consumiveisToShow([]);
         }
 
+        self.getCssParticipante = function(participante){
+            if(self.participanteFoco())
+                return self.participanteFoco() == participante ? "active" : '';
+
+            return self.participantesMarkedId().indexOf(participante.id()) >=0 ? 'marked' :'';
+        }
+
+        self.getCssConsumivel = function(consumivel){
+            if(self.consumivelFoco())
+                return self.consumivelFoco() == consumivel ? "active" : '';
+
+            return self.consumiveisMarkedId().indexOf(consumivel.id()) >=0 ? 'marked' :'';
+        }
+
         self.isParticipanteActive = function(participante){
             if(self.participanteFoco())
                 return self.participanteFoco() == participante;

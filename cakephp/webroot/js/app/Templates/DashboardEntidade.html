@@ -46,7 +46,7 @@
             <div class='list'>
                 <h5> Participantes </h5>
                 <ul data-bind='foreach: participantes'>
-                    <li data-bind='css : {active : $parents[1].isParticipanteActive($data)}, click: $parents[1].participanteSelecionado.bind(this,$data)'>
+                    <li data-bind='css : $parents[1].getCssParticipante($data), click: $parents[1].participanteSelecionado.bind(this,$data)'>
                         <p data-bind="text: nome"></p>
                         <div class='editControl' data-bind='visible: $parents[1].consumivelFoco'>
                             <i class='fa fa-plus fa-fw'
@@ -66,7 +66,7 @@
             <div class='list'>
                 <h5> Consumíveis </h5>
                 <ul data-bind='foreach: consumiveis'>
-                    <li data-bind='css : { active: ($parents[1].isConsumivelActive($data))}, click: $parents[1].consumivelSelecionado.bind(this,$data)'>
+                    <li data-bind='css : $parents[1].getCssConsumivel($data), click: $parents[1].consumivelSelecionado.bind(this,$data)'>
                         <p data-bind="text: nome"></p>
                         <div class='editControl' data-bind='visible: $parents[1].participanteFoco'>
                             <i class='fa fa-plus fa-fw'

@@ -318,6 +318,10 @@ table tr th , .content h4{
  	background-color: rgb(204, 204, 204);
 }
 
+#entidades .paineis .crud .list li.marked{
+ 	background-color: #ebebec;
+}
+
 #entidades .paineis .crud .list li:hover:not(.active){
  	background-color: #ebebec;
 }
