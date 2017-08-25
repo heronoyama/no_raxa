@@ -22,11 +22,15 @@ define(['knockout',
         self.consumivelFoco = ko.observable();
         self.participantesToShow = ko.observableArray([]);
 
+        self.consumosSelecionados = ko.observableArray([]);
+
         self.participanteSelecionado = function(participante){
             self.participanteFoco(participante);
             self.consumiveisToShow(participante.consumosData());
             self.consumivelFoco(null);
             self.participantesToShow([]);
+            self.consumosSelecionados([]);
+            self.consumosSelecionados(self.repository().consumoRepository().consumosDoParticipante(participante));
         }
 
         self.consumivelSelecionado = function(consumivel){
@@ -34,36 +38,43 @@ define(['knockout',
             self.participantesToShow(consumivel.consumosData());
             self.participanteFoco(null);
             self.consumiveisToShow([]);
+
+            self.consumosSelecionados([]);
+            self.consumosSelecionados(self.repository().consumoRepository().consumosDoConsumivel(consumivel));
+        }
+
+        self.consumoDoParticipante = function(participante){
+            return self.consumosSelecionados().find(function(consumo){ return consumo.participante().id() == participante.id();});
+        }
+
+        self.consumoDoConsumivel = function(consumivel){
+            return self.consumosSelecionados().find(function(consumo){ return consumo.consumable().id() == consumivel.id();});
         }
 
         self.getCssParticipante = function(participante){
             if(self.participanteFoco())
                 return self.participanteFoco() == participante ? "active" : '';
-
-            return self.participantesMarkedId().indexOf(participante.id()) >=0 ? 'marked' :'';
+            return  self.consumoDoParticipante(participante) ? 'marked' : '';
         }
 
         self.getCssConsumivel = function(consumivel){
             if(self.consumivelFoco())
                 return self.consumivelFoco() == consumivel ? "active" : '';
 
-            return self.consumiveisMarkedId().indexOf(consumivel.id()) >=0 ? 'marked' :'';
+            return self.consumoDoConsumivel(consumivel) ? 'marked':'';
         }
 
         self.isParticipanteActive = function(participante){
             if(self.participanteFoco())
                 return self.participanteFoco() == participante;
-            return self.participantesMarkedId().indexOf(participante.id()) >=0;
+
+            return self.consumoDoParticipante(participante);
         };
 
         self.isConsumivelActive = function(consumivel){
             if(self.consumivelFoco())
                 return self.consumivelFoco() == consumivel;
-            return self.consumiveisMarkedId().indexOf(consumivel.id()) >=0;
-        }
-
-        self.consumivelIsSelected = function(consumivel){
-            return self.consumivelFoco() == participante();
+            return self.consumoDoConsumivel(consumivel);
         }
 
         self.consumiveisMarkedId = ko.computed(function(){
@@ -74,25 +85,26 @@ define(['knockout',
             return self.participantesToShow().map(function(each){ return each.idParticipante; });
         });
 
-        self.getConsumo = function(consumivel){
-            if(self.participanteFoco()){
-                return self.consumiveisToShow().find(function(each){ return each.idConsumivel == consumivel.id() });
-            }
-            return self.participantesToShow().find(function(each){ return each.idParticipante == consumivel.id() });
+        self.findConsumo = function(participante,consumivel){
+            return self.consumosSelecionados().find(function(consumo){ 
+                return consumo.participante().id() == participante.id() && consumo.consumable().id() == consumivel.id();
+            });
         }
 
-        self.removeConsumivelAoParticipante = function(consumivel){
-            var consumo = self.getConsumo(consumivel);
-            var gatewayOptions = {
-				controller: 'consumptions',
-				id:consumo.id,
-				callback : function(result){
-                    self.consumiveisToShow.remove(consumo);
-                    self.consumiveisToShow.valueHasMutated();
-				}
-            };
-            
-			Gateway.delete(gatewayOptions);
+        self.getConsumo = function(entidade){
+            var participante = self.participanteFoco() ? self.participanteFoco() : entidade;
+            var consumivel = self.consumivelFoco()? self.consumivelFoco() : entidade;
+            return self.findConsumo(participante,consumivel);
+            ///TODO trocar para OWNER  e flag para participante x consumivel
+        }
+
+        self.removeConsumivelAoParticipante = function(entidade){
+            var consumo = self.getConsumo(entidade);
+
+            self.repository().consumoRepository().delete(consumo,function(){
+                self.consumosSelecionados.remove(consumo);
+                self.consumosSelecionados.valueHasMutated();
+            });
         }
 
         self.adicionaConsumivelAoParticipante = function(entidade){
@@ -107,25 +119,14 @@ define(['knockout',
                 data.consumables_id = self.consumivelFoco().id();
             }
 
-            var gatewayOptions = {
-				controller: 'consumptions',
-				data: data,
-				callback : function(result){
-                    var consumption = result.consumption;
-					var consumo = {
-                        id : consumption.id,
-                        idConsumivel : consumption.consumable.id,
-                        idParticipante : consumption.participante.id
-                    }
-                    if(self.participanteFoco()){
-                        self.atualizaConsumoDoParticipante(consumo);
-                    } else {
-                        self.atualizaConsumoDoConsumivel(consumo);
-                    }
-				}
-            }
-            
-            Gateway.new(gatewayOptions);
+            self.repository().consumoRepository().novo(data,
+                function(consumo){
+                    var consumos = self.consumosSelecionados();
+                    ko.utils.arrayPushAll(consumos,[consumo]);
+                    self.consumosSelecionados(consumos);
+                    self.consumosSelecionados.valueHasMutated();
+                });
+           
         }
 
         self.atualizaConsumoDoParticipante = function(consumo){

@@ -26,5 +26,4 @@ function(ko,ParticipantesRepository, ConsumivelRepository,ConsumoRepository){
         }
     }
 
-
 });

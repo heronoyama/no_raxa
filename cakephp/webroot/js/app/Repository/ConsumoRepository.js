@@ -7,12 +7,30 @@ define(['knockout','models/Consumo','models/Participante','models/Consumivel','g
         self.params = params;
         self.consumos = ko.observableArray([]);
 
+        self.consumosDoParticipante = function(participante){
+            return self.consumos().filter(function(each){
+                return each.participante().id() == participante.id();
+            });
+        }
+
+        self.consumosDoConsumivel = function(consumivel){
+            return self.consumos().filter(function(each){
+                return each.consumable().id() == consumivel.id();
+            });
+        }
+
         self.novo = function(data,callback){
             var gatewayOptions = {
 				controller: 'consumptions',
 				data: data,
 				callback : function(result){
-                    var consumo = new Consumo(consumption);
+                    var consumption = result.consumption;
+					var participante = consumption.participante;
+					var consumable = consumption.consumable;
+					consumption.participante = new Participante.model(participante)
+					consumption.consumivel = new Consumivel.model(consumable);
+					var consumo = new Consumo.model(consumption);
+
                     var consumos = self.consumos();
                     ko.utils.arrayPushAll(consumos,[consumo]);
                     self.consumos.valueHasMutated();
@@ -23,7 +41,7 @@ define(['knockout','models/Consumo','models/Participante','models/Consumivel','g
 			Gateway.new(gatewayOptions);
         }
 
-        self.delete = function(consumo){
+        self.delete = function(consumo,callback){
             var result = confirm("Deseja realmente remover esse consumo?");
 			if(!result)
                 return;
@@ -34,7 +52,8 @@ define(['knockout','models/Consumo','models/Participante','models/Consumivel','g
 				callback : function(result){
                     self.consumos.remove(consumo);
                     self.consumos.valueHasMutated();
-					callback(self);
+                    if(callback)
+					    callback(consumo);
 				}
 			};
             Gateway.delete(gatewayOptions);
