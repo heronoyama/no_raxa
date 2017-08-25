@@ -2,7 +2,7 @@ define(['knockout','models/Participante','gateway'],function(ko,Participante,Gat
 
     function ParticipanteEdit(data){
 		var self=this;
-		Participante.call(self,data);
+		Participante.model.call(self,data);
 
 		self.editing = ko.observable(false);
 		self.edit = function() { 
@@ -30,6 +30,13 @@ define(['knockout','models/Participante','gateway'],function(ko,Participante,Gat
             return self.editMode ? ParticipanteEdit : Participante;
         }
 
+        self.criaParticipante = function(){
+            var data = {
+                nome : self.nomeParticipante()
+            }
+            self.novo(data);
+        }
+
         self.novo = function(data,callback){
 
 			var gatewayOptions = {
@@ -43,7 +50,8 @@ define(['knockout','models/Participante','gateway'],function(ko,Participante,Gat
                     ko.utils.arrayPushAll(participantes,[participante]);
                     self.participantes(participantes);
                     self.participantes.valueHasMutated();
-					callback(self);
+                    if(callback)
+					    callback(self);
 				}
             };
             
@@ -79,7 +87,7 @@ define(['knockout','models/Participante','gateway'],function(ko,Participante,Gat
                 idEvento : self.idEvento(),
                 controller: 'participantes',
 
-                callback : function(participantes){
+                callback : function(allData){
                     var model = self.editMode ? ParticipanteEdit : Participante;
 					var participantes = allData.participantes.map(function(data){ 
 						data.idEvento = options.idEvento;

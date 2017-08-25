@@ -1,4 +1,5 @@
-define(['knockout','models/Consumo','models/Participante','models/Consumivel','gateway'],function(ko,Consumo,Participante,ConsumivelGateway){
+define(['knockout','models/Consumo','models/Participante','models/Consumivel','gateway'],
+    function(ko,Consumo,Participante,Consumivel,Gateway){
 
     function ConsumoRepository(idEvento,params){
         var self = this;
@@ -48,10 +49,10 @@ define(['knockout','models/Consumo','models/Participante','models/Consumivel','g
                         var consumos = allData.consumptions.map(function(data){
 						var dataItem = {
 							id: data.id,
-							participante: new Participante(data.participante),
-							consumivel: new Consumivel(data.consumable)
+							participante: new Participante.model(data.participante),
+							consumivel: new Consumivel.model(data.consumable)
 						};
-						return new Consumo(dataItem);
+						return new Consumo.model(dataItem);
 					});
                     self.consumos(consumos);
                 }
