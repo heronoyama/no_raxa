@@ -32,9 +32,12 @@ define(['knockout','models/Participante','gateway'],function(ko,Participante,Gat
 
         self.criaParticipante = function(){
             var data = {
+                eventos_id : self.idEvento(),
                 nome : self.nomeParticipante()
             }
-            self.novo(data);
+            self.novo(data,function(){
+                self.nomeParticipante(null);
+            });
         }
 
         self.novo = function(data,callback){
