@@ -16,7 +16,7 @@ class ConsumablesController extends ParentController {
         }
 
         $contain = $result->values;
-        $this->log($contain,'debug');
+        
         $consumables = $this->Consumables
                     ->find('all',['contain' => $contain])
                     ->where($where);

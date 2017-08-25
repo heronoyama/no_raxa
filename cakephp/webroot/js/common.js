@@ -8,6 +8,7 @@ requirejs.config({
     	controllers : '../app/Controllers',
         components:'../app/Components',
         templates:'../app/Templates',
-        gateway:'../app/Gateway'
+        gateway:'../app/Gateway',
+        repository: '../app/Repository'
     }
 });

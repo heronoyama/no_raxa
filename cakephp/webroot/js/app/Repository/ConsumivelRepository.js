@@ -1,8 +1,9 @@
 define(['knockout','models/Consumivel','gateway'],function(ko,Consumivel,Gateway){
 
-    function ConsumivelRepository(idEvento){
+    function ConsumivelRepository(idEvento,params){
         var self = this;
-	    self.idEvento = ko.observable(idEvento);
+		self.idEvento = ko.observable(idEvento);
+		self.params = params;
 	    self.consumiveis = ko.observableArray([]);
 
 	    self.nomeConsumivel =  ko.observable();
@@ -35,8 +36,9 @@ define(['knockout','models/Consumivel','gateway'],function(ko,Consumivel,Gateway
 			    callback : function(consumiveis){
     				self.consumiveis(consumiveis);
 			    },
-                params:'include=(Consumptions,Collaborations)'
-		    };
+			};
+			if(self.params)
+				options.params = 'include=('+self.params.join(',')+')';
 
 		    Consumivel.loadAll(options);
 	    }
@@ -44,6 +46,10 @@ define(['knockout','models/Consumivel','gateway'],function(ko,Consumivel,Gateway
 	    load();
     }
 
-    return ConsumivelRepository;
+    return {
+		initialize: function(idEvento,params){
+			return new ConsumivelRepository(idEvento,params);
+		}
+	}
 
 });

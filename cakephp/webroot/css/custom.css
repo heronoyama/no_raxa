@@ -329,6 +329,8 @@ table tr th , .content h4{
 #entidades .paineis .crud .list li p {
 	margin:0;
 	display: inline-block;
+	width: 80%;
+    height: 100%;
 }
 
 #entidades .paineis .crud .list a {

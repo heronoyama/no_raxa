@@ -1,21 +1,20 @@
 define(['knockout',
         'components/PathUtils',
         'gateway',
-        'models/ParticipantesRepository',
-        'models/ConsumivelRepository'],
-            function(ko,PathUtils,Gateway,ParticipantesRepository,ConsumivelRepository){
+        'repository/Repository'],
+            function(ko,PathUtils,Gateway,Repository){
 
-    function PainelListagem(participanteRepository,consumivelRepository){
+    function PainelListagem(repository){
         var self = this;
-        self.participanteRepository = ko.observable(participanteRepository);
-        self.consumivelRepository = ko.observable(consumivelRepository);
+        self.repository = ko.observable(repository);
     }
 
-    function PainelConsumo(idEvento, participanteRepository,consumivelRepository){
+
+    //TODO break me plzzz
+    function PainelConsumo(idEvento, repository){
         var self = this;
         self.idEvento = ko.observable(idEvento);
-        self.participanteRepository = ko.observable(participanteRepository);
-        self.consumivelRepository = ko.observable(consumivelRepository);
+        self.repository = ko.observable(repository);
 
         self.participanteFoco = ko.observable();
         self.consumiveisToShow = ko.observableArray([]);
@@ -75,13 +74,15 @@ define(['knockout',
             return self.participantesToShow().map(function(each){ return each.idParticipante; });
         });
 
-        self.getConsumo = function(){
-            var lista = self.participanteFoco()? self.consumiveisToShow() : self.participantesToShow();
-            return lista.find(function(each){ return each.idConsumivel == consumivel.id() });
+        self.getConsumo = function(consumivel){
+            if(self.participanteFoco()){
+                return self.consumiveisToShow().find(function(each){ return each.idConsumivel == consumivel.id() });
+            }
+            return self.participantesToShow().find(function(each){ return each.idParticipante == consumivel.id() });
         }
 
         self.removeConsumivelAoParticipante = function(consumivel){
-            var consumo = self.getConsumo();
+            var consumo = self.getConsumo(consumivel);
             var gatewayOptions = {
 				controller: 'consumptions',
 				id:consumo.id,
@@ -113,23 +114,39 @@ define(['knockout',
                     var consumption = result.consumption;
 					var consumo = {
                         id : consumption.id,
-                        idConsumivel : consumption.consumable.id
+                        idConsumivel : consumption.consumable.id,
+                        idParticipante : consumption.participante.id
                     }
-                    var consumiveisToShow = self.consumiveisToShow();
-                    ko.utils.arrayPushAll(consumiveisToShow,[consumo]);
-                    self.consumiveisToShow(consumiveisToShow);
-                    self.consumiveisToShow.valueHasMutated();
+                    if(self.participanteFoco()){
+                        self.atualizaConsumoDoParticipante(consumo);
+                    } else {
+                        self.atualizaConsumoDoConsumivel(consumo);
+                    }
 				}
             }
             
             Gateway.new(gatewayOptions);
         }
+
+        self.atualizaConsumoDoParticipante = function(consumo){
+            self.participanteFoco().adicionaConsumoData(consumo);
+            var consumiveisToShow = self.consumiveisToShow();
+            ko.utils.arrayPushAll(consumiveisToShow,[consumo]);
+            self.consumiveisToShow(consumiveisToShow);
+            self.consumiveisToShow.valueHasMutated();
+        }
+        self.atualizaConsumoDoConsumivel = function(consumo){
+            self.consumoFoco().adicionaConsumoData(consumo);
+            var participantesToShow = self.participantesToShow();
+            ko.utils.arrayPushAll(participantesToShow,[consumo]);
+            self.participantesToShow(participantesToShow);
+            self.participantesToShow.valueHasMutated();
+        }
     }
 
-    function PainelColaboracao(participanteRepository,consumivelRepository){
+    function PainelColaboracao(repository){
         var self = this;
-        self.participanteRepository = ko.observable(participanteRepository);
-        self.consumivelRepository = ko.observable(consumivelRepository);
+        self.repository = ko.observable(repository);
     }
 
 
@@ -137,12 +154,11 @@ define(['knockout',
         var self = this;
     
         self.idEvento = ko.observable(PathUtils.extractEventoId());
-        self.participanteRepository = ko.observable(new ParticipantesRepository(self.idEvento()));
-        self.consumivelRepository = ko.observable(new ConsumivelRepository(self.idEvento()));
+        self.repository = ko.observable(Repository.initalize(self.idEvento(),['Consumptions','Collaborations']));
 
-        self.painelListagem = ko.observable(new PainelListagem(self.participanteRepository(),self.consumivelRepository()));
-        self.painelConsumo = ko.observable(new PainelConsumo(self.idEvento(),self.participanteRepository(),self.consumivelRepository()));
-        self.painelColaboracao = ko.observable(new PainelColaboracao(self.participanteRepository(),self.consumivelRepository()));
+        self.painelListagem = ko.observable(new PainelListagem(self.repository()));
+        self.painelConsumo = ko.observable(new PainelConsumo(self.idEvento(),self.repository()));
+        self.painelColaboracao = ko.observable(new PainelColaboracao(self.repository()));
 
         self.modoListagem = ko.observable(true);
         self.modoConsumo = ko.observable(false);
