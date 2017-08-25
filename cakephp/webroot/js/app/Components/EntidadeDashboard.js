@@ -17,28 +17,19 @@ define(['knockout',
         self.repository = ko.observable(repository);
 
         self.participanteFoco = ko.observable();
-        self.consumiveisToShow = ko.observableArray([]);
-
         self.consumivelFoco = ko.observable();
-        self.participantesToShow = ko.observableArray([]);
-
         self.consumosSelecionados = ko.observableArray([]);
 
         self.participanteSelecionado = function(participante){
             self.participanteFoco(participante);
-            self.consumiveisToShow(participante.consumosData());
             self.consumivelFoco(null);
-            self.participantesToShow([]);
             self.consumosSelecionados([]);
             self.consumosSelecionados(self.repository().consumoRepository().consumosDoParticipante(participante));
         }
 
         self.consumivelSelecionado = function(consumivel){
             self.consumivelFoco(consumivel);
-            self.participantesToShow(consumivel.consumosData());
             self.participanteFoco(null);
-            self.consumiveisToShow([]);
-
             self.consumosSelecionados([]);
             self.consumosSelecionados(self.repository().consumoRepository().consumosDoConsumivel(consumivel));
         }
@@ -76,14 +67,6 @@ define(['knockout',
                 return self.consumivelFoco() == consumivel;
             return self.consumoDoConsumivel(consumivel);
         }
-
-        self.consumiveisMarkedId = ko.computed(function(){
-            return self.consumiveisToShow().map(function(each){ return each.idConsumivel; });
-        });
-
-        self.participantesMarkedId = ko.computed(function(){
-            return self.participantesToShow().map(function(each){ return each.idParticipante; });
-        });
 
         self.findConsumo = function(participante,consumivel){
             return self.consumosSelecionados().find(function(consumo){ 
@@ -129,20 +112,6 @@ define(['knockout',
            
         }
 
-        self.atualizaConsumoDoParticipante = function(consumo){
-            self.participanteFoco().adicionaConsumoData(consumo);
-            var consumiveisToShow = self.consumiveisToShow();
-            ko.utils.arrayPushAll(consumiveisToShow,[consumo]);
-            self.consumiveisToShow(consumiveisToShow);
-            self.consumiveisToShow.valueHasMutated();
-        }
-        self.atualizaConsumoDoConsumivel = function(consumo){
-            self.consumoFoco().adicionaConsumoData(consumo);
-            var participantesToShow = self.participantesToShow();
-            ko.utils.arrayPushAll(participantesToShow,[consumo]);
-            self.participantesToShow(participantesToShow);
-            self.participantesToShow.valueHasMutated();
-        }
     }
 
     function PainelColaboracao(repository){
