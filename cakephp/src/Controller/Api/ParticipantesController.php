@@ -16,10 +16,7 @@ class ParticipantesController extends ApiController {
         }
         
         $contain = $result->values;
-        if(sizeof($contain) == 0){
-            $contain = [];
-        }
-
+        
         $participantes = $this->Participantes
                     ->find('all',['contain' => $contain])
                     ->where($where);

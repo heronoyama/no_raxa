@@ -23,6 +23,9 @@ define(['knockout','gateway'],function(ko,Gateway){
 		self.idEvento = ko.observable();
 		self.id = ko.observable();
 		self.nome = ko.observable();
+		//Todo trocar para a entidade de fato
+		self.consumosData = ko.observableArray();
+		self.colaboracoesData = ko.observableArray([]);
 
 		self.compareTo = function(other){
 			var nome = self.nome();
@@ -51,6 +54,25 @@ define(['knockout','gateway'],function(ko,Gateway){
 				self.nome(data.nome);	
 			if(data.idEvento)
 				self.idEvento(data.idEvento);
+			if(data.collaborations){
+				var colaboracoes  = data.collaborations.map(function(item){
+					return {
+						idParticipante : item.participantes_id,
+						valor:item.value,
+						id:item.id
+					}
+				});
+				self.colaboracoesData(colaboracoes);
+			}
+			if(data.consumptions){
+				var consumos = data.consumptions.map(function(item){
+					return {
+						idParticipante : item.participantes_id,
+						id:item.id
+					}
+				});
+				self.consumosData(consumos);
+			}
 		};
 
 		self.delete = function(callback){
@@ -121,8 +143,8 @@ define(['knockout','gateway'],function(ko,Gateway){
                     options.callback(consumiveis);
 				}
 			}
-			if(options.param)
-				gatewayOptions.param = options.param;
+			if(options.params)
+				gatewayOptions.params = options.params;
 			
 			Gateway.getAll(gatewayOptions);
 		}

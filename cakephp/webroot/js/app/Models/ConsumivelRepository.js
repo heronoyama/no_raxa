@@ -34,7 +34,8 @@ define(['knockout','models/Consumivel','gateway'],function(ko,Consumivel,Gateway
 			    model : Consumivel.editModel,
 			    callback : function(consumiveis){
     				self.consumiveis(consumiveis);
-			    }
+			    },
+                params:'include=(Consumptions,Collaborations)'
 		    };
 
 		    Consumivel.loadAll(options);

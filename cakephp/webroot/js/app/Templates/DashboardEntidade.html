@@ -46,8 +46,14 @@
             <div class='list'>
                 <h5> Participantes </h5>
                 <ul data-bind='foreach: participantes'>
-                    <li data-bind='css : {active : $parents[1].isSelected($data)},click: $parents[1].participanteSelecionado.bind(this,$data)'>
+                    <li data-bind='css : {active : $parents[1].isParticipanteActive($data)}, click: $parents[1].participanteSelecionado.bind(this,$data)'>
                         <p data-bind="text: nome"></p>
+                        <div class='editControl' data-bind='visible: $parents[1].consumivelFoco'>
+                            <i class='fa fa-plus fa-fw'
+                                data-bind='visible: !$parents[1].isParticipanteActive($data), click: $parents[1].adicionaConsumivelAoParticipante.bind(this,$data)'>
+                            </i>
+                            <i class='fa fa-minus fa-fw' data-bind='visible:$parents[1].isParticipanteActive($data), click: $parents[1].removeConsumivelAoParticipante.bind(this,$data)'></i>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -60,13 +66,13 @@
             <div class='list'>
                 <h5> Consumíveis </h5>
                 <ul data-bind='foreach: consumiveis'>
-                    <li data-bind='css : { active: ($parents[1].consumosMarkedId().indexOf($data.id()) >=0) }'>
+                    <li data-bind='css : { active: ($parents[1].isConsumivelActive($data))}, click: $parents[1].consumivelSelecionado.bind(this,$data)'>
                         <p data-bind="text: nome"></p>
                         <div class='editControl' data-bind='visible: $parents[1].participanteFoco'>
-                            <i class='fa fa-plus fa-fw' 
-                                data-bind='visible: $parents[1].consumosMarkedId().indexOf($data.id()) < 0, click: $parents[1].adicionaConsumivelAoParticipante.bind(this,$data)'>
+                            <i class='fa fa-plus fa-fw'
+                                data-bind='visible: !$parents[1].isConsumivelActive($data), click: $parents[1].adicionaConsumivelAoParticipante.bind(this,$data)'>
                             </i>
-                            <i class='fa fa-minus fa-fw' data-bind='visible:$parents[1].consumosMarkedId().indexOf($data.id()) >=0, click: $parents[1].removeConsumivelAoParticipante.bind(this,$data)'></i>
+                            <i class='fa fa-minus fa-fw' data-bind='visible:$parents[1].isConsumivelActive($data), click: $parents[1].removeConsumivelAoParticipante.bind(this,$data)'></i>
                         </div>
                     </li>
                 </ul>

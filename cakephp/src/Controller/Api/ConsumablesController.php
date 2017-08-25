@@ -9,8 +9,16 @@ class ConsumablesController extends ParentController {
       public function index($idEvento = null){
         $where = ['eventos_id' => $idEvento];
 
+        $result = $this->toInclude();
+
+        if(!$result->success){
+            return $this->responseWithMessage(400,$result->error);
+        }
+
+        $contain = $result->values;
+        $this->log($contain,'debug');
         $consumables = $this->Consumables
-                    ->find('all')
+                    ->find('all',['contain' => $contain])
                     ->where($where);
 
         $this->set(compact('consumables'));

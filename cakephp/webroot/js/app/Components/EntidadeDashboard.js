@@ -20,25 +20,54 @@ define(['knockout',
         self.participanteFoco = ko.observable();
         self.consumiveisToShow = ko.observableArray([]);
 
+        self.consumivelFoco = ko.observable();
+        self.participantesToShow = ko.observableArray([]);
+
         self.participanteSelecionado = function(participante){
             self.participanteFoco(participante);
             self.consumiveisToShow(participante.consumosData());
+            self.consumivelFoco(null);
+            self.participantesToShow([]);
         }
 
-        self.isSelected = function(participante){
-            return self.participanteFoco() == participante;
+        self.consumivelSelecionado = function(consumivel){
+            self.consumivelFoco(consumivel);
+            self.participantesToShow(consumivel.consumosData());
+            self.participanteFoco(null);
+            self.consumiveisToShow([]);
+        }
+
+        self.isParticipanteActive = function(participante){
+            if(self.participanteFoco())
+                return self.participanteFoco() == participante;
+            return self.participantesMarkedId().indexOf(participante.id()) >=0;
         };
 
-        // self.consumoIsMarked = function(idConsumivel){
-        //     return self.consumiveisToShow().map(function(each){ return each.idConsumivel; }).indexOf(idConsumivel()) >=0;
-        // };
+        self.isConsumivelActive = function(consumivel){
+            if(self.consumivelFoco())
+                return self.consumivelFoco() == consumivel;
+            return self.consumiveisMarkedId().indexOf(consumivel.id()) >=0;
+        }
 
-        self.consumosMarkedId = ko.computed(function(){
+        self.consumivelIsSelected = function(consumivel){
+            return self.consumivelFoco() == participante();
+        }
+
+        self.consumiveisMarkedId = ko.computed(function(){
             return self.consumiveisToShow().map(function(each){ return each.idConsumivel; });
         });
 
+        self.participantesMarkedId = ko.computed(function(){
+            return self.participantesToShow().map(function(each){ return each.idParticipante; });
+        });
+
+        self.getConsumo = function(){
+            var lista = self.participanteFoco()? self.consumiveisToShow() : self.participantesToShow();
+            return lista.find(function(each){ return each.idConsumivel == consumivel.id() });
+        }
+
         self.removeConsumivelAoParticipante = function(consumivel){
-            var consumo = self.consumiveisToShow().find(function(each){ return each.idConsumivel == consumivel.id() });
+            var consumo = self.getConsumo();
             var gatewayOptions = {
 				controller: 'consumptions',
 				id:consumo.id,
@@ -51,12 +80,18 @@ define(['knockout',
 			Gateway.delete(gatewayOptions);
         }
 
-        self.adicionaConsumivelAoParticipante = function(consumivel){
+        self.adicionaConsumivelAoParticipante = function(entidade){
             var data = {
                     eventos_id : self.idEvento(),
-					participantes_id : self.participanteFoco().id(),
-					consumables_id : consumivel.id()
             };
+            if(self.participanteFoco()){
+                data.participantes_id = self.participanteFoco().id();
+                data.consumables_id = entidade.id();
+            } else {
+                data.participantes_id = entidade.id();
+                data.consumables_id = self.consumivelFoco().id();
+            }
+
             var gatewayOptions = {
 				controller: 'consumptions',
 				data: data,
