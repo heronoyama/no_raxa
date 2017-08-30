@@ -1,5 +1,5 @@
-define(['knockout','gateway', 'models/Participante', 'models/Consumivel'], 
- function(ko,Gateway,Participante,Consumivel){
+define(['knockout','gateway'], 
+ function(ko,Gateway){
 
     function Evento(data){
         var self = this;

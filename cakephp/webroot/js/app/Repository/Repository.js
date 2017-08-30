@@ -1,5 +1,9 @@
-define(['knockout','repository/ParticipantesRepository','repository/ConsumivelRepository','repository/ConsumoRepository'], 
-function(ko,ParticipantesRepository, ConsumivelRepository,ConsumoRepository){
+define(['knockout',
+    'repository/ParticipantesRepository',
+    'repository/ConsumivelRepository',
+    'repository/ConsumoRepository',
+    'repository/ColaboracaoRepository'], 
+function(ko,ParticipantesRepository, ConsumivelRepository,ConsumoRepository,ColaboracaoRepository){
     
     function Repository(idEvento,params){
         var self = this;
@@ -9,6 +13,7 @@ function(ko,ParticipantesRepository, ConsumivelRepository,ConsumoRepository){
         self.participanteRepository = ko.observable(getParticipanteRepository());
         self.consumivelRepository = ko.observable(ConsumivelRepository.initialize(self.idEvento,self.params));
         self.consumoRepository = ko.observable(ConsumoRepository.initialize(self.idEvento,self.params));
+        self.colaboracaoRepository = ko.observable(ColaboracaoRepository.initialize(self.idEvento,self.params));
 
         function getParticipanteRepository(){
             var options = {

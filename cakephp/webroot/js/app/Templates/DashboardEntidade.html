@@ -85,30 +85,32 @@
     </div>
 
     <div class='colaboracao' data-bind='with:painelColaboracao, visible: modoColaboracao'>
-        <div class='crud participantes'>
+        <div class='crud participantes' data-bind='with: repository().participanteRepository'>
             <div class='list'>
                 <h5> Participantes </h5>
-                <ul>
-                    <li> Joaozinho </li>
-                    <li> Pedrinho </li>
+                <ul data-bind='foreach: participantes'>
+                    <li data-bind='css : $parents[1].getCssParticipante($data)'>
+                        <p data-bind="text: nome, click: $parents[1].participanteSelecionado.bind(this,$data)"></p>
+                    </li>
                 </ul>
             </div>
             <div class='controle'>
-                <input type='text' />
-                <a class='adicionar'> <i class='fa fa-plus fa-fw'></i> </a>
+                <input type='text' name='nomeParticipante' data-bind='value: nomeParticipante' required/>
+                <a class='adicionar' data-bind='click: criaParticipante'> <i class='fa fa-plus fa-fw'></i> </a>
             </div>
         </div>
-        <div class='crud consumiveis'>
+        <div class='crud consumiveis' data-bind='with: repository().consumivelRepository'>
             <div class='list'>
                 <h5> Consumíveis </h5>
-                <ul>
-                    <li> Carne </li>
-                    <li> Cerveja </li>
+                <ul data-bind='foreach: consumiveis'>
+                    <li data-bind='css : $parents[1].getCssConsumivel($data)'>
+                        <p data-bind="text: nome, click: $parents[1].consumivelSelecionado.bind(this,$data)"></p>
+                    </li>
                 </ul>
             </div>
             <div class='controle'>
-                <input type='text' />
-                <a class='adicionar'> <i class='fa fa-plus fa-fw'></i> </a>
+                <input type='text' data-bind='value: nomeConsumivel' name='nomeConsumivel' />
+                <a class='adicionar' data-bind='click:criaConsumivel'> <i class='fa fa-plus fa-fw'></i> </a>
             </div>
         </div>
     </div>

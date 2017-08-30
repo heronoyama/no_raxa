@@ -34,11 +34,19 @@ define(['knockout','models/Participante','gateway'],function(ko,Participante,Gat
             var data = {
                 eventos_id : self.idEvento(),
                 nome : self.nomeParticipante()
-            }
+            };
             self.novo(data,function(){
                 self.nomeParticipante(null);
             });
-        }
+        };
+
+        self.novoParticipante = function(nome,callback){
+            var data = {
+                eventos_id: self.idEvento(),
+                nome: nome
+            };
+            self.novo(data,callback);
+        };
 
         self.novo = function(data,callback){
 
