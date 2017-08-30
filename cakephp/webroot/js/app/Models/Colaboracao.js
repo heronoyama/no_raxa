@@ -1,12 +1,12 @@
-define(['knockout','gateway','models/Participante','models/Consumivel'],
-		function(ko,Gateway,Participante,Consumivel){
+define(['knockout','gateway'],
+		function(ko,Gatewa){
 	
 	function Colaboracao(data){
 		var self = this;
 		self.id = ko.observable(data.id);
-		self.valor = ko.observable(parseInt(data.value));
+		self.valor = ko.observable(parseInt(data.valor));
 		self.participante = ko.observable(data.participante);
-		self.consumable = ko.observable(data.consumable);
+		self.consumable = ko.observable(data.consumivel);
 
 		self.editing = ko.observable(false);
 		self.edit = function() { 

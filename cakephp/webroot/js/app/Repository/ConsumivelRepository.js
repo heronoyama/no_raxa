@@ -9,7 +9,6 @@ define(['knockout','gateway','models/Consumivel'],function(ko,Gateway,Consumivel
 				controller: 'consumables',
 				callback : function(allData){
 					var consumiveis = allData.consumables.map(function(data){
-						data.idEvento = options.idEvento;
 						consumivel = new Consumivel(data);
 						if(options.editMode){
                             consumivel.subscribeNome(self.update);

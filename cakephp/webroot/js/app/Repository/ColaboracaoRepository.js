@@ -28,8 +28,8 @@ function(ko, Gateway, Colaboracao,Participante,Consumivel){
             var dataItem = {
                 id: data.id,
                 participante: new Participante(data.participante),
-                consumable: new Consumivel(data.consumable),
-                value: data.value
+                consumivel: new Consumivel(data.consumable),
+                valor: data.value
             };
             var colaboracao = new Colaboracao(dataItem);
             if(options.editMode)

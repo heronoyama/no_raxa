@@ -48,8 +48,8 @@ define(['knockout','gateway'],function(ko,Gateway){
 				self.id(data.id);
 			if(data.nome)
 				self.nome(data.nome);	
-			if(data.idEvento)
-				self.idEvento(data.idEvento);
+			if(data.eventos_id)
+				self.idEvento(data.eventos_id);
 			if(data.collaborations){
 				var colaboracoes  = data.collaborations.map(function(item){
 					return {
