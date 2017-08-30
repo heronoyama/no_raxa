@@ -1,8 +1,8 @@
 define(['knockout',
     'models/Consumo',
     'repository/ParticipanteRepository',
-    'models/Consumivel'],
-		function(ko,Consumo,ParticipanteRepository,Consumivel){
+    'repository/ConsumivelRepository'],
+		function(ko,Consumo,ParticipanteRepository,ConsumivelRepository){
 
 	function ConsumosDataSet(options){
         var self = this;
@@ -95,8 +95,7 @@ define(['knockout',
         }
 
          function loadConsumiveis(){
-            Consumivel.loadAll({
-                idEvento : self.idEvento(),
+            new ConsumivelRepository(self.idEvento()).all({
                 callback : function(consumiveis){
                     self.owner(consumiveis);
                 }
