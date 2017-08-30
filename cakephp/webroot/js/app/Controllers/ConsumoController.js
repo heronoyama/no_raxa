@@ -69,7 +69,7 @@ define(['knockout','repository/ConsumoRepository'],function(ko,ConsumoRepository
 
         self.consumosDoConsumivel = function(consumivel){
             return self.consumos().filter(function(each){
-                return each.consumable().id() == consumivel.id();
+                return each.consumivel().id() == consumivel.id();
             });
         }
 

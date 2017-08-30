@@ -6,7 +6,7 @@ define(['knockout','gateway'],
 		self.id = ko.observable(data.id);
 		self.valor = ko.observable(parseInt(data.valor));
 		self.participante = ko.observable(data.participante);
-		self.consumable = ko.observable(data.consumivel);
+		self.consumivel = ko.observable(data.consumivel);
 
 		self.editing = ko.observable(false);
 		self.edit = function() { 
@@ -28,7 +28,7 @@ define(['knockout','gateway'],
 				var comparisonParticipante = self.participante().compareTo(other.participante());
 				if(comparisonParticipante == 0)
 					return comparisonParticipante;
-				return self.consumable().compareTo(other.consumable());
+				return self.consumivel().compareTo(other.consumivel());
 			}
 			return (valor < otherValor) ? -1 : 1;
 		}
@@ -37,7 +37,7 @@ define(['knockout','gateway'],
 			return {
 					id : self.id(),
 					paritcipantes_id : self.participante().id(),
-					consumableS_id : self.consumable().id(),
+					sS_id : self.consumivel().id(),
 					value : parseInt(self.valor())
 					}
 		});

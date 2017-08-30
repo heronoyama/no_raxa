@@ -3,15 +3,13 @@ define(['knockout','gateway','components/PathUtils',
         'components/PainelConsumo',
         'components/PainelColaboracao',
         'controllers/ParticipanteController',
-        'controllers/ConsumivelController',
-        'controllers/ConsumoController'],
+        'controllers/ConsumivelController'],
     function(ko,Gateway,PathUtils,
         PainelListagem,
         PainelConsumo,
         PainelColaboracao,
         ParticipanteController,
-        ConsumivelController,
-        ConsumoController){
+        ConsumivelController){
 
 
     function DashboardEntidade(){
@@ -21,12 +19,10 @@ define(['knockout','gateway','components/PathUtils',
 
         self.participanteController = ko.observable(new ParticipanteController(self.idEvento()));
         self.consumivelController = ko.observable(new ConsumivelController(self.idEvento()));
-        self.consumoController = ko.observable(new ConsumoController(self.idEvento()));
-        self.consumoController().loadConsumos();
 
         self.painelListagem = ko.observable(new PainelListagem(self.participanteController(),self.consumivelController()));
-        self.painelConsumo = ko.observable(new PainelConsumo(self.idEvento(),self.participanteController(),self.consumivelController(),self.consumoController()));
-        self.painelColaboracao = ko.observable(new PainelColaboracao(self.idEvento()));
+        self.painelConsumo = ko.observable(new PainelConsumo(self.idEvento(),self.participanteController(),self.consumivelController()));
+        self.painelColaboracao = ko.observable(new PainelColaboracao(self.idEvento(),self.participanteController(),self.consumivelController()));
 
         self.modoListagem = ko.observable(true);
         self.modoConsumo = ko.observable(false);

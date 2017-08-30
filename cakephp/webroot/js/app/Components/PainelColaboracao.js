@@ -1,18 +1,20 @@
-define(['knockout'],function(ko){
- function PainelColaboracao(idEvento,repository){
+define(['knockout','controllers/ColaboracaoController'],function(ko,ColaboracaoController){
+
+    function PainelColaboracao(idEvento,participanteController,consumivelController){
         var self = this;
         self.idEvento = ko.observable(idEvento);
-        self.repository = ko.observable(repository);
+
+        self.participanteController = ko.observable(participanteController);
+        self.consumivelController = ko.observable(consumivelController);
+        self.colaboracaoController = ko.observable(new ColaboracaoController(self.idEvento()));
+        self.colaboracaoController().loadColaboracoes();
 
         self.participanteFoco = ko.observable();
         self.consumivelFoco = ko.observable();
-        self.colaboracoes = ko.observableArray([]);
-
-          self.participanteSelecionado = function(participante){
+        
+        self.participanteSelecionado = function(participante){
             self.participanteFoco(participante);
             self.consumivelFoco(null);
-            var colaboracoes = self.repository().colaboracaoRepository().colaboracoesDoParticipante(self.participanteFoco());
-            self.colaboracoes(colaboracoes);
         }
 
         self.consumivelSelecionado = function(consumivel){
@@ -34,6 +36,29 @@ define(['knockout'],function(ko){
             
             return self.consumivelFoco() == consumivel ? "active" : '';
         }
+
+        self.colaboracaoDoParticipante = function(participante){
+            if(self.nadaSelecionado())
+                return {valor : ko.observable(0), editing: ko.observable(false), click : function(){} };
+            if(self.participanteFoco())
+                return {valor : ko.observable(0), editing: ko.observable(false), click : function(){} };
+
+            return self.colaboracaoController().colaboracaoDado(participante,self.consumivelFoco());
+        }
+
+        self.colaboracaoDoConsumivel = function(consumivel){
+            if(self.nadaSelecionado())
+                return {valor : ko.observable(0), editing: ko.observable(false), click : function(){} };
+            if(self.consumivelFoco())
+                return {valor : ko.observable(0), editing: ko.observable(false), click : function(){} };
+
+            return self.colaboracaoController().colaboracaoDado(self.participanteFoco(),consumivel);
+        }
+
+        self.nadaSelecionado = function(){
+            return !self.participanteFoco() && !self.consumivelFoco();
+        }
+
     }
     return PainelColaboracao;
 });

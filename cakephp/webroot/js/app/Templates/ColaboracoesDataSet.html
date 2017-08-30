@@ -19,7 +19,7 @@
 		<tbody data-bind='foreach: colaboracoes'>
 			<tr>
 				<td data-bind='text:participante().nome, visible:!$component.isParticipante()'></td>
-				<td data-bind='text:consumable().nome, visible:$component.isParticipante'></td>
+				<td data-bind='text:consumivel().nome, visible:$component.isParticipante'></td>
                 <td data-bind='text:valor'></td>
                 <td>
                     <a data-bind='click: $component.delete.bind(this,$data)'>Deletar</a>

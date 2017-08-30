@@ -86,12 +86,16 @@
     </div>
 
     <div class='colaboracao' data-bind='with:painelColaboracao, visible: modoColaboracao'>
-        <div class='crud participantes' data-bind='with: repository().participanteRepository'>
+        <div class='crud participantes' data-bind='with: participanteController'>
             <div class='list'>
                 <h5> Participantes </h5>
                 <ul data-bind='foreach: participantes'>
                     <li data-bind='css : $parents[1].getCssParticipante($data)'>
                         <p data-bind="text: nome, click: $parents[1].participanteSelecionado.bind(this,$data)"></p>
+                        <div class='editControl' data-bind='visible: $parents[1].consumivelFoco, with:$parents[1].colaboracaoDoParticipante($data) '>
+                            <b data-bind="visible: !editing(), text: valor, click: edit">&nbsp;</b>
+                            <input data-bind="visible: editing, value: valor, hasFocus: editing"/>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -100,12 +104,16 @@
                 <a class='adicionar' data-bind='click: criaParticipante'> <i class='fa fa-plus fa-fw'></i> </a>
             </div>
         </div>
-        <div class='crud consumiveis' data-bind='with: repository().consumivelRepository'>
+        <div class='crud consumiveis' data-bind='with: consumivelController'>
             <div class='list'>
                 <h5> Consumíveis </h5>
                 <ul data-bind='foreach: consumiveis'>
                     <li data-bind='css : $parents[1].getCssConsumivel($data)'>
                         <p data-bind="text: nome, click: $parents[1].consumivelSelecionado.bind(this,$data)"></p>
+                         <div class='editControl' data-bind='visible: $parents[1].participanteFoco, with:$parents[1].colaboracaoDoConsumivel($data) '>
+                            <b data-bind="visible: !editing(), text: valor, click: edit">&nbsp;</b>
+                            <input data-bind="visible: editing, value: valor, hasFocus: editing"/>
+                        </div>
                     </li>
                 </ul>
             </div>

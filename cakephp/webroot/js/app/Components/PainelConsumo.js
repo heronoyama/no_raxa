@@ -1,13 +1,14 @@
-define(['knockout'],function(ko){
+define(['knockout','controllers/ConsumoController'],function(ko,ConsumoController){
 
-    function PainelConsumo(idEvento, participanteController,consumivelController,consumoController){
+    function PainelConsumo(idEvento, participanteController,consumivelController){
         var self = this;
         
         self.idEvento = ko.observable(idEvento);
 
         self.participanteController = ko.observable(participanteController);
         self.consumivelController = ko.observable(consumivelController);
-        self.consumoController = ko.observable(consumoController);
+        self.consumoController = ko.observable(new ConsumoController(self.idEvento()));
+        self.consumoController().loadConsumos();
 
         self.participanteFoco = ko.observable();
         self.consumivelFoco = ko.observable();
@@ -32,7 +33,7 @@ define(['knockout'],function(ko){
         }
 
         self.consumoDoConsumivel = function(consumivel){
-            return self.consumosSelecionados().find(function(consumo){ return consumo.consumable().id() == consumivel.id();});
+            return self.consumosSelecionados().find(function(consumo){ return consumo.consumivel().id() == consumivel.id();});
         }
 
         self.getCssParticipante = function(participante){
@@ -63,7 +64,7 @@ define(['knockout'],function(ko){
 
         self.findConsumo = function(participante,consumivel){
             return self.consumosSelecionados().find(function(consumo){ 
-                return consumo.participante().id() == participante.id() && consumo.consumable().id() == consumivel.id();
+                return consumo.participante().id() == participante.id() && consumo.consumivel().id() == consumivel.id();
             });
         }
 

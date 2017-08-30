@@ -5,7 +5,7 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 		var self = this;
 		self.id = ko.observable();
 		self.participante = ko.observable();
-		self.consumable = ko.observable();
+		self.consumivel = ko.observable();
 
 		self.updateData = function(data){
 			if(!data)
@@ -15,7 +15,7 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 			if(data.participante)
 				self.participante(data.participante);
 			if(data.consumivel)
-				self.consumable(data.consumivel);
+				self.consumivel(data.consumivel);
 		}
 		self.updateData(data);
 
@@ -23,7 +23,7 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 			var comparisonParticipante = self.participante().compareTo(other.participante());
 			if(comparisonParticipante == 0)
 				return comparisonParticipante;
-			return self.consumable().compareTo(other.consumable());
+			return self.consumivel().compareTo(other.consumivel());
 			
 		}
 
@@ -31,7 +31,7 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 			return {
 					id : self.id(),
 					participantes_id : self.participante().id(),
-					consumables_id : self.consumable().id()
+					consumables_id : self.consumivel().id()
 					}
 		});
 

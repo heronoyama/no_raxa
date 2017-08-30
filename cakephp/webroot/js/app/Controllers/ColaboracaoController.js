@@ -1,5 +1,5 @@
-define(['knockout','repository/ColaboracaoRepository'],function(ko,ColaboracaoRepository){
-
+define(['knockout','models/Colaboracao','repository/ColaboracaoRepository'],function(ko,Colaboracao,ColaboracaoRepository){
+    
     function ColaboracaoController(idEvento){
         var self = this;
         self.idEvento = ko.observable(idEvento);
@@ -20,6 +20,17 @@ define(['knockout','repository/ColaboracaoRepository'],function(ko,ColaboracaoRe
                 options.params = params;
 
             self.repository().all(options);
+        }
+
+        self.colaboracaoDado = function(participante,consumivel){
+            var colaboracao = self.colaboracoes().find(function(each){
+                return each.participante().id() == participante.id() && each.consumivel().id() == consumivel.id();
+            });
+            return colaboracao ? colaboracao : self.colaboracaoFake(participante,consumivel);
+        }
+
+        self.colaboracaoFake = function(participante,consumivel){
+            return new Colaboracao({valor: 0 , participante: participante, consumivel : consumivel});
         }
 
         self.sortColaboracoes = function(sort){

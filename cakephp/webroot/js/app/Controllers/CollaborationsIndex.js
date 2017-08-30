@@ -73,7 +73,7 @@ requirejs(['knockout',
 
 		self.sortByConsumiveis = function(){
 			self.controller().sortColaboracoes(function(left,right){
-				return left.consumable().compareTo(right.consumable());
+				return left.consumivel().compareTo(right.consumivel());
 			});
 		}
 
