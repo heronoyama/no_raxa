@@ -77,7 +77,7 @@ define(['knockout'],function(ko){
         self.removeConsumivelAoParticipante = function(entidade){
             var consumo = self.getConsumo(entidade);
 
-            self.consumoController().delete(consumo,function(){
+            self.consumoController().deleteCallback(consumo,function(){
                 self.consumosSelecionados.remove(consumo);
                 self.consumosSelecionados.valueHasMutated();
             });

@@ -1,20 +1,23 @@
-define(['knockout',
-        'gateway',
-        'components/PathUtils',
+define(['knockout','gateway','components/PathUtils',
         'components/PainelListagem',
         'components/PainelConsumo',
         'components/PainelColaboracao',
-        'repository/Repository',
         'controllers/ParticipanteController',
         'controllers/ConsumivelController',
         'controllers/ConsumoController'],
-            function(ko,Gateway,PathUtils,PainelListagem,PainelConsumo,PainelColaboracao,Repository,ParticipanteController,ConsumivelController,ConsumoController){
+    function(ko,Gateway,PathUtils,
+        PainelListagem,
+        PainelConsumo,
+        PainelColaboracao,
+        ParticipanteController,
+        ConsumivelController,
+        ConsumoController){
+
 
     function DashboardEntidade(){
         var self = this;
     
         self.idEvento = ko.observable(PathUtils.extractEventoId());
-        self.repository = ko.observable(Repository.initalize(self.idEvento(),['Consumptions','Collaborations']));
 
         self.participanteController = ko.observable(new ParticipanteController(self.idEvento()));
         self.consumivelController = ko.observable(new ConsumivelController(self.idEvento()));
@@ -23,7 +26,7 @@ define(['knockout',
 
         self.painelListagem = ko.observable(new PainelListagem(self.participanteController(),self.consumivelController()));
         self.painelConsumo = ko.observable(new PainelConsumo(self.idEvento(),self.participanteController(),self.consumivelController(),self.consumoController()));
-        self.painelColaboracao = ko.observable(new PainelColaboracao(self.idEvento(),self.repository()));
+        self.painelColaboracao = ko.observable(new PainelColaboracao(self.idEvento()));
 
         self.modoListagem = ko.observable(true);
         self.modoConsumo = ko.observable(false);

@@ -45,8 +45,19 @@ define(['knockout','repository/ConsumoRepository'],function(ko,ConsumoRepository
 
         self.delete = function(consumo){
             self.repository().delete(consumo,function(consumo){
-                self.consumos.remove(consumo);
-                self.consumos.valueHasMutated();
+                self.removeConsumo(consumo);
+            });
+        }
+
+        self.removeConsumo = function(consumo){
+            self.consumos.remove(consumo);
+            self.consumos.valueHasMutated();
+        }
+
+        self.deleteCallback = function(consumo,callback){
+            self.repository().delete(consumo,function(consumo){
+                self.removeConsumo(consumo);
+                callback(consumo);
             });
         }
 
