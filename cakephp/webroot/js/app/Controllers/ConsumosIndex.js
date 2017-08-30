@@ -1,10 +1,9 @@
 requirejs(['knockout',
-'models/Consumo',
 'repository/ParticipanteRepository',
 'repository/ConsumivelRepository',
 'components/PathUtils',
 'controllers/ConsumoController'],
-	function(ko,Consumo,ParticipanteRepository,ConsumivelRepository,PathUtils,ConsumoController){
+	function(ko,ParticipanteRepository,ConsumivelRepository,PathUtils,ConsumoController){
 
 	function ConsumosIndexModel(idEvento){
 		var self = this;
@@ -26,6 +25,7 @@ requirejs(['knockout',
 			if(!self.novoParticipante() || !self.novoConsumivel())
 				return;
 			self.controller().novoConsumo(self.novoParticipante(),self.novoConsumivel());
+			//todo limpar filtro
 		}
 
 		//TODO quebrar filtro em outra classe

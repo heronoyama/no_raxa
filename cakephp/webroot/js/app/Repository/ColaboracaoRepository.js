@@ -11,14 +11,8 @@ function(ko, Gateway, Colaboracao,Participante,Consumivel){
                 controller: 'collaborations',
                 callback : function(allData){
                         var colaboracoes = allData.collaborations.map(function(data){
-						var dataItem = {
-							id: data.id,
-							participante: new Participante(data.participante),
-                            consumable: new Consumivel(data.consumable),
-                            value: data.valor
-                        };
-                        var model = options.ediMode ? Colaboracao.editModel : Colaboracao.model;
-						return new model(dataItem);
+                            return mapColaboracao(options,data);
+
 					});
                     options.callback(colaboracoes);
                 }
@@ -30,6 +24,19 @@ function(ko, Gateway, Colaboracao,Participante,Consumivel){
 
         }
 
+        function mapColaboracao(options,data){
+            var dataItem = {
+                id: data.id,
+                participante: new Participante(data.participante),
+                consumable: new Consumivel(data.consumable),
+                value: data.value
+            };
+            var colaboracao = new Colaboracao(dataItem);
+            if(options.editMode)
+                colaboracao.subscribeValor(self.update);
+            return colaboracao;
+        }
+
         self.novaColaboracaoEdit = function(data,callback){
             self.novaColaboracao(data,true,callback);
         }
@@ -39,8 +46,9 @@ function(ko, Gateway, Colaboracao,Participante,Consumivel){
 				controller: 'collaborations',
 				data: data,
 				callback : function(result){
-					var model = editMode ? Colaboracao.model : Colaboracao.editModel;
-					var colaboracao = new model(result.collaboration);
+                    var options = { editMode : editMode };
+					var colaboracao = mapColaboracao(options,result.collaboration);
+                    
 					callback(colaboracao);
 				}
 			}
@@ -60,6 +68,10 @@ function(ko, Gateway, Colaboracao,Participante,Consumivel){
         }
 
         self.delete = function(colaboracao,callback){
+            var result = confirm("Deseja realmente deletar?");
+			if(!result)
+                return;
+            
             var gatewayOptions = {
 				controller: 'collaborations',
 				id:colaboracao.id(),

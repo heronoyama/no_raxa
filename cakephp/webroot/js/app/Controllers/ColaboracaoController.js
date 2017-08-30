@@ -9,6 +9,7 @@ define(['knockout','repository/ColaboracaoRepository'],function(ko,ColaboracaoRe
 
         self.loadColaboracoes = function(callback,params){
             var options = {
+                editMode:true,
                 callback : function(colaboracoes){
                     self.colaboracoes(colaboracoes);
                     if(callback)
@@ -34,8 +35,17 @@ define(['knockout','repository/ColaboracaoRepository'],function(ko,ColaboracaoRe
             };
             
             //TODO alterar para passar a entidade ao invés de data
-            self.repository().novo(data,function(colaboracao){
+            self.repository().novaColaboracaoEdit(data,function(colaboracao){
                 var colaboracoes = self.colaboracoes();
+
+                var found = self.colaboracoes().find(function(each){
+                    return each.id() == colaboracao.id();
+                });
+                if(found){
+                    found.valor(colaboracao.valor());
+                    return;
+                }
+                
                 ko.utils.arrayPushAll(colaboracoes,[colaboracao]);
                 self.colaboracoes(colaboracoes);
                 self.colaboracoes.valueHasMutated();
@@ -45,19 +55,13 @@ define(['knockout','repository/ColaboracaoRepository'],function(ko,ColaboracaoRe
                 
         }
 
-        self.delete = function(colaboracao,callback){
+
+        self.delete = function(colaboracao){
             self.repository().delete(colaboracao,function(consumo){
                 self.colaboracoes.remove(colaboracao);
                 self.colaboracoes.valueHasMutated();
-                if(callback)
-                    callback(colaboracao);
             });
         }
-
-        self.update = function(colaboracao,callback){
-            self.repository().update(colaboracao,callback);
-        }
-
 
         function load(){
             self.repository(new ColaboracaoRepository(self.idEvento()));

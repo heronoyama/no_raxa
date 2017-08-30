@@ -1,33 +1,17 @@
 requirejs(['knockout',
-			'models/Colaboracao',
+			'controllers/ColaboracaoController',
 			'repository/ParticipanteRepository',
-			'models/Consumivel',
+			'repository/ConsumivelRepository',
 			'components/PathUtils'],
-	function(ko,Colaboracao,ParticipanteRepository,Consumivel,PathUtils){
-
-	function ColaboracaoEdit(data){
-		var self = this;
-		Colaboracao.model.call(self,data);
-		self.editing = ko.observable(false);
-		self.edit = function(){
-			self.editing(true);
-		}
-
-		self.valor.subscribe(function() {
-            self.updateValue({
-            	callback: function(){
-            		alert("Colaboração atualizada com sucesso!");
-                	self.editing(false);
-    	    	}
-    		});
-        });
-	}	
+	function(ko,ColaboracaoController,ParticipanteRepository,ConsumivelRepository,PathUtils){
 
 	function CollaborationsIndexModel(idEvento){
 		var self = this;
 		//TODO quebrar em mais classes
 		self.idEvento = ko.observable(idEvento);
-		self.colaboracoes =  ko.observableArray([]);
+		
+		self.controller = ko.observable(new ColaboracaoController(idEvento));
+
 		self.participantes = ko.observableArray([]);
 		self.consumiveis = ko.observableArray([]);
 
@@ -38,48 +22,16 @@ requirejs(['knockout',
 		self.novoConsumivel = ko.observable();
 		self.novoValor = ko.observable();
 
-		self.delete = function(colaboracaoToDelete){
-			colaboracaoToDelete.delete({callback:function(colaboracao){
-				self.colaboracoes.remove(colaboracao);
-				self.colaboracoes.valueHasMutated();
-			}});
-
-		}
-
 		self.novaColaboracao = function(){
 			if(!self.novoParticipante() || !self.novoConsumivel())
 				return;
 			var valor = self.novoValor()? self.novoValor() : 0;
-
-			Colaboracao.new({
-				data : {
-					eventos_id : self.idEvento(),
-					participantes_id :self.novoParticipante().id(),
-					consumables_id : self.novoConsumivel().id(),
-					value: valor
-				},
-				model : ColaboracaoEdit,
-				callback: function(colaboracao){
+			self.controller().novaColaboracao(self.novoParticipante(),self.novoConsumivel(),valor,function(colaboracao){
 					if(self.isFiltered()){
 						self.clearFilter();
-						return;
-					}
-
-					var found = self.colaboracoes().find(function(each){
-						return each.id() == colaboracao.id();
-					});
-					if(found){
-						found.valor(colaboracao.valor());
-						return;
-					}
-
-					var colaboracoes = self.colaboracoes();
-					ko.utils.arrayPushAll(colaboracoes,[colaboracao]);
-					self.colaboracoes(colaboracoes);
-					self.colaboracoes.valueHasMutated();
-
 				}
 			});
+
 		}
 
 		self.isFiltered = ko.observable(false);
@@ -94,6 +46,9 @@ requirejs(['knockout',
 		self.filterConsumiveis = ko.computed(function(){
 			if(self.selectedConsumiveis().length == 0)
 				return [];
+			if(self.selectedConsumiveis().length ==1 && !self.selectedConsumiveis()[0])
+				return [];
+
 			var ids = [];
 			self.selectedConsumiveis().forEach(function(consumivel){
 				ids.push(consumivel.id());
@@ -105,6 +60,9 @@ requirejs(['knockout',
 		self.filterParticipantes = ko.computed(function(){
 			if(self.selectedParticipantes().length == 0)
 				return [];
+			if(self.selectedParticipantes().length ==1 && !self.selectedParticipantes()[0])
+				return [];
+
 			var ids = [];
 			self.selectedParticipantes().forEach(function(participante){
 				ids.push(participante.id());
@@ -114,50 +72,37 @@ requirejs(['knockout',
 		});
 
 		self.sortByConsumiveis = function(){
-			self.colaboracoes.sort(function(left,right){
+			self.controller().sortColaboracoes(function(left,right){
 				return left.consumable().compareTo(right.consumable());
 			});
 		}
 
 		self.sortByParticipantes = function(){
-			self.colaboracoes.sort(function(left,right){
+			self.controller().sortColaboracoes(function(left,right){
 				return left.participante().compareTo(right.participante());
 			});
 		}
 
 		self.sortByValores = function(){
-			self.colaboracoes.sort(function(left,right){
+			self.controller().sortColaboracoes(function(left,right){
 				return left.compareTo(right);
 			});	
 		}
 
 		self.filtrar = function(){
-			var options = {
-				model : ColaboracaoEdit,
-				idEvento : self.idEvento(),
-				callback : function(colaboracoes){
-					self.colaboracoes(colaboracoes);
-					self.isFiltered(true);
-				}
-			};
-
 			var filtros = self.filterConsumiveis();
 			filtros.push(self.filterParticipantes());
-			if(filtros.length > 0)
-				options.params = filtros.join('&');
+			if(filtros.length <= 0)
+				return self.loadColaboracoes();
 
-			Colaboracao.loadAll(options);
-		
+			self.controller().loadColaboracoes(function(colaboracoes){
+				self.isFiltered(true);
+			},filtros.join('&'));
+
 		}
 
 		function loadColaboracoes(){
-			Colaboracao.loadAll({
-				idEvento : self.idEvento(),
-				model : ColaboracaoEdit,
-				callback : function(colaboracoes){
-					self.colaboracoes(colaboracoes);
-				}
-			});
+			self.controller().loadColaboracoes();
 		}
 
 		function load(){
@@ -168,8 +113,7 @@ requirejs(['knockout',
 				}
 			});
 
-			Consumivel.loadAll({
-				idEvento : self.idEvento(),
+			new ConsumivelRepository(self.idEvento()).all({
 				callback : function(consumiveis){
 					self.consumiveis(consumiveis);
 				}

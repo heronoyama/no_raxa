@@ -5,8 +5,21 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 		var self = this;
 		self.id = ko.observable(data.id);
 		self.valor = ko.observable(parseInt(data.value));
-		self.participante = ko.observable(new Participante(data.participante));
-		self.consumable = ko.observable(new Consumivel(data.consumable));
+		self.participante = ko.observable(data.participante);
+		self.consumable = ko.observable(data.consumable);
+
+		self.editing = ko.observable(false);
+		self.edit = function() { 
+			self.editing(true) 
+		};
+
+		self.subscribeValor = function(subscribeCallback){
+			self.valor.subscribe(function(){
+				subscribeCallback(self,function(){
+					self.editing(false);
+				});
+			});
+		}
 
 		self.compareTo = function(other){
 			var valor = self.valor();
@@ -29,72 +42,7 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 					}
 		});
 
-		self.updateValue = function(options){
-			var gatewayOptions = {
-				controller: 'collaborations',
-				id: self.id(),
-				data : self.toJson(),
-				callback: function(result){
-					options.callback(self);
-				}
-			};
-			Gateway.update(gatewayOptions);
-		}
-
-		self.delete = function(options){
-			var gatewayOptions = {
-				controller: 'collaborations',
-				id:self.id(),
-				callback : function(result){
-					options.callback(self);
-				}
-			};
-			Gateway.delete(gatewayOptions);
-		}
-
-		self.save = function(){
-			var gatewayOptions = {
-				controller: 'collaborations',
-				data: self.toJson(),
-				callback : function(result){
-					options.callback(self);
-				}
-			}
-			Gateway.new(gatewayOptions);
-		}
 	}
 
-	return {
-		model : Colaboracao,
-		loadAll : function(options){
-			var gatewayOptions = {
-				idEvento : options.idEvento,
-				controller: 'collaborations',
-				callback : function(allData){
-					var model = options.model ? options.model : Colaboracao;
-					var colaboracoes =allData.collaborations.map(function(data){
-						return new model(data);
-					});
-                    options.callback(colaboracoes);
-				}
-			}
-            if(options.params)
-			   gatewayOptions.params = options.params;
-			
-			Gateway.getAll(gatewayOptions);
-		},
-
-		new : function(options){
-			var gatewayOptions = {
-				controller: 'collaborations',
-				data: options.data,
-				callback : function(result){
-					var model = options.model ? options.model : Colaboracao;
-					var colaboracao = new model(result.collaboration);
-					options.callback(colaboracao);
-				}
-			}
-			Gateway.new(gatewayOptions);
-		}
-	}
+	return Colaboracao;
 });
