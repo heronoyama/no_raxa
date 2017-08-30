@@ -9,12 +9,15 @@ define(['knockout','gateway','models/Participante'], function(ko,Gateway,Partici
             var gatewayOptions = {
                 idEvento : self.idEvento(),
                 controller: 'participantes',
-
                 callback : function(allData){
-                    var model = options.editMode ? Participante.editModel : Participante.model;
 					var participantes = allData.participantes.map(function(data){ 
 						data.idEvento = self.idEvento();
-						return new model(data);
+                        participante = new Participante(data);
+                        if(options.editMode){
+                            participante.subscribeNome(self.update);
+                        }
+                            
+                        return participante;
 					});
                     options.callback(participantes);
                 }
@@ -39,8 +42,9 @@ define(['knockout','gateway','models/Participante'], function(ko,Gateway,Partici
 				controller: 'participantes',
 				data: data,
 				callback : function(result){
-                    var model  = editMode? Participante.editModel : Participante.model;
-                    var participante = new model(result.participante);
+                    var participante = new Participante(result.participante);
+                    if(editMode)
+                        participante.subscribeNome(self.update);
                     callback(participante);
 				}
             };

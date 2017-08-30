@@ -1,22 +1,4 @@
-define(['knockout','gateway'],function(ko,Gateway){
-
-
-	function ParticipanteEdit(data){
-		var self=this;
-		Participante.call(self,data);
-
-		self.editing = ko.observable(false);
-		self.edit = function() { 
-			self.editing(true) 
-		};
-
-		self.nome.subscribe(function(){
-			self.save(function(){
-					self.editing(false);
-			});
-		});
-
-	};
+define(['knockout'],function(ko){
 
 	//TODO extract superclass to remove duplicated code
 	function Participante(data){
@@ -24,9 +6,23 @@ define(['knockout','gateway'],function(ko,Gateway){
 		self.idEvento = ko.observable();
 		self.id = ko.observable();
 		self.nome = ko.observable();
+
 		//Todo trocar para a entidade de fato
 		self.consumosData = ko.observableArray();
 		self.colaboracoesData = ko.observableArray([]);
+
+		self.editing = ko.observable(false);
+		self.edit = function() { 
+			self.editing(true) 
+		};
+
+		self.subscribeNome = function(subscribeCallback){
+			self.nome.subscribe(function(){
+				subscribeCallback(self,function(){
+					self.editing(false);
+				});
+			});
+		}
 
 		self.compareTo = function(other){
 			var nome = self.nome();
@@ -76,51 +72,6 @@ define(['knockout','gateway'],function(ko,Gateway){
 			}
 		};
 
-		self.delete = function(callback){
-			var gatewayOptions = {
-				controller: 'participantes',
-				id:self.id(),
-				callback : function(result){
-					callback(self);
-				}
-			};
-			Gateway.delete(gatewayOptions);
-		};
-
-		self.save = function(callback){
-			if(self.id()){
-				self.update(callback);
-				return;
-			}
-			self.create(callback);
-		};
-
-		self.create = function(callback){
-			var dateToSave = self.toJson();
-			var gatewayOptions = {
-				controller: 'participantes',
-				data: dateToSave,
-				callback : function(result){
-					self.updateData(result.participante);
-					callback(self);
-				}
-			};
-			Gateway.new(gatewayOptions);
-		};
-
-		self.update = function(callback){
-			var gatewayOptions = {
-				controller: 'participantes',
-				id: self.id(),
-				data : self.toJson(),
-				callback: function(result){
-					callback(self);
-				}
-			};
-
-			Gateway.update(gatewayOptions);
-		}
-
 		self.viewUrl = ko.computed(function(){
 			return '/eventos/:idEvento/participantes/view/:idParticipante'.replace(":idEvento",self.idEvento()).replace(":idParticipante",self.id());
 		});
@@ -128,27 +79,6 @@ define(['knockout','gateway'],function(ko,Gateway){
 		self.updateData(data);
 	};
 
-	return {
-		model : Participante,
-		editModel : ParticipanteEdit,
-		loadAll: function(options){
-			var gatewayOptions = {
-				idEvento : options.idEvento,
-				controller: 'participantes',
-				callback : function(allData){
-					var model = options.model ? options.model : Participante;
-					var participantes = allData.participantes.map(function(data){ 
-						data.idEvento = options.idEvento;
-						return new model(data);
-					});
-                    options.callback(participantes);
-				}
-			}
-			if(options.params)
-				gatewayOptions.params = options.params;
-			
-			Gateway.getAll(gatewayOptions);
-		}
-	}
+	return Participante;
 
 });

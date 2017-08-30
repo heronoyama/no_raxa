@@ -72,8 +72,8 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 					var consumos = allData.consumptions.map(function(data){
 						var dataItem = {
 							id: data.id,
-							participante: new Participante.model(data.participante),
-							consumivel: new Consumivel.model(data.consumable)
+							participante: new Participante(data.participante),
+							consumivel: new Consumivel(data.consumable)
 						};
 						return new model(dataItem);
 					});
@@ -95,8 +95,8 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 					var consumption = result.consumption;
 					var participante = consumption.participante;
 					var consumable = consumption.consumable;
-					consumption.participante = new Participante.model(participante)
-					consumption.consumivel = new Consumivel.model(consumable);
+					consumption.participante = new Participante(participante)
+					consumption.consumivel = new Consumivel(consumable);
 					var consumo = new model(consumption);
 					options.callback(consumo);
 				}

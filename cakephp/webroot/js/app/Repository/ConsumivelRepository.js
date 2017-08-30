@@ -8,10 +8,13 @@ define(['knockout','gateway','models/Consumivel'],function(ko,Gateway,Consumivel
 				idEvento : self.idEvento(),
 				controller: 'consumables',
 				callback : function(allData){
-					var model = options.editMode ? Consumivel.editModel : Consumivel.model;
 					var consumiveis = allData.consumables.map(function(data){
 						data.idEvento = options.idEvento;
-						return new model(data);
+						consumivel = new Consumivel(data);
+						if(options.editMode){
+                            consumivel.subscribeNome(self.update);
+						}
+						return consumivel;
 					});
                     options.callback(consumiveis);
 				}
@@ -35,8 +38,9 @@ define(['knockout','gateway','models/Consumivel'],function(ko,Gateway,Consumivel
 				controller: 'consumables',
 				data: data,
 				callback : function(result){
-                    var model  = editMode ? Consumivel.editModel : Consumivel.model;
-                    var consumivel = new model(result.consumable);
+					var consumivel = new Consumivel(result.consumable);
+					if(editMode)
+						consumivel.subscribeNome(self.update);
                     callback(consumivel);
 				}
             };
@@ -44,7 +48,7 @@ define(['knockout','gateway','models/Consumivel'],function(ko,Gateway,Consumivel
 			Gateway.new(gatewayOptions);
         }
 
-        self.update = function(consumivel){
+        self.update = function(consumivel,callback){
             var gatewayOptions = {
 				controller: 'consumables',
 				id: consumivel.id(),

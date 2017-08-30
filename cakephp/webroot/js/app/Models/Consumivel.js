@@ -1,31 +1,27 @@
 define(['knockout','gateway'],function(ko,Gateway){
 
-	function ConsumivelEdit(data){
-		var self = this;
-		Consumivel.call(self,data);
-
-		self.editing = ko.observable(false);
-
-		self.edit = function() { 
-			self.editing(true) 
-		};
-
-		self.nome.subscribe(function(){
-			self.save(function(){
-					self.editing(false);
-				}
-			);
-		});
-	};
-	
 	function Consumivel(data){
 		var self = this;
 		self.idEvento = ko.observable();
 		self.id = ko.observable();
 		self.nome = ko.observable();
+		
 		//Todo trocar para a entidade de fato
 		self.consumosData = ko.observableArray();
 		self.colaboracoesData = ko.observableArray([]);
+
+		self.editing = ko.observable(false);
+		self.edit = function() { 
+			self.editing(true) 
+		};
+
+		self.subscribeNome = function(subscribeCallback){
+			self.nome.subscribe(function(){
+				subscribeCallback(self,function(){
+					self.editing(false);
+				});
+			});
+		}
 
 		self.compareTo = function(other){
 			var nome = self.nome();
@@ -75,50 +71,6 @@ define(['knockout','gateway'],function(ko,Gateway){
 			}
 		};
 
-		self.delete = function(callback){
-			var gatewayOptions = {
-				controller: 'consumables',
-				id:self.id(),
-				callback : function(result){
-					callback(self);
-				}
-			};
-			Gateway.delete(gatewayOptions);
-		};
-
-		self.save = function(callback){
-			if(self.id()){
-				self.update(callback);
-				return;
-			}
-			self.create(callback);
-		};
-
-		self.create = function(callback){
-			var dateToSave = self.toJson();
-			var gatewayOptions = {
-				controller: 'consumables',
-				data: dateToSave,
-				callback : function(result){
-					self.updateData(result.consumable);
-					callback(self);
-				}
-			};
-			Gateway.new(gatewayOptions);
-		};
-
-		self.update = function(callback){
-			var gatewayOptions = {
-				controller: 'consumables',
-				id: self.id(),
-				data : self.toJson(),
-				callback: function(result){
-					callback(self);
-				}
-			};
-
-			Gateway.update(gatewayOptions);
-		}
 
 		self.viewUrl = ko.computed(function(){
 			return '/eventos/:idEvento/consumables/view/:idConsumivel'.replace(":idEvento",self.idEvento()).replace(":idConsumivel",self.id());
@@ -127,28 +79,6 @@ define(['knockout','gateway'],function(ko,Gateway){
 		self.updateData(data);
 	};
 
-	return {
-		model : Consumivel,
-		editModel: ConsumivelEdit,
-		loadAll : function(options){
-			var gatewayOptions = {
-				idEvento : options.idEvento,
-				controller: 'consumables',
-				callback : function(allData){
-					var model = options.model ? options.model : Consumivel;
-					var consumiveis = allData.consumables.map(function(data){
-						data.idEvento = options.idEvento;
-						return new model(data);
-					});
-                    options.callback(consumiveis);
-				}
-			}
-			if(options.params)
-				gatewayOptions.params = options.params;
-			
-			Gateway.getAll(gatewayOptions);
-		}
-	}
-
+	return Consumivel;
 
 });

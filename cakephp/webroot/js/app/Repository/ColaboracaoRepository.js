@@ -13,8 +13,8 @@ function(ko, Gateway, Colaboracao,Participante,Consumivel){
                         var colaboracoes = allData.collaborations.map(function(data){
 						var dataItem = {
 							id: data.id,
-							participante: new Participante.model(data.participante),
-                            consumable: new Consumivel.model(data.consumable),
+							participante: new Participante(data.participante),
+                            consumable: new Consumivel(data.consumable),
                             value: data.valor
                         };
                         var model = options.ediMode ? Colaboracao.editModel : Colaboracao.model;

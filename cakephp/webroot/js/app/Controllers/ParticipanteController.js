@@ -29,7 +29,7 @@ define(['knockout','repository/ParticipanteRepository'],function(ko,Participante
         function load(){
             self.repository(new ParticipanteRepository(self.idEvento()));
             self.repository().all({
-                editMode : true,
+                editMode:true,
                 callback: function(participantes){
                     self.participantes(participantes);
                 }

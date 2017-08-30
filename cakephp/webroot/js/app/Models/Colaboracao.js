@@ -5,8 +5,8 @@ define(['knockout','gateway','models/Participante','models/Consumivel'],
 		var self = this;
 		self.id = ko.observable(data.id);
 		self.valor = ko.observable(parseInt(data.value));
-		self.participante = ko.observable(new Participante.model(data.participante));
-		self.consumable = ko.observable(new Consumivel.model(data.consumable));
+		self.participante = ko.observable(new Participante(data.participante));
+		self.consumable = ko.observable(new Consumivel(data.consumable));
 
 		self.compareTo = function(other){
 			var valor = self.valor();
