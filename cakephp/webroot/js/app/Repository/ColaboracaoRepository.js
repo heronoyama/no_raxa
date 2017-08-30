@@ -1,20 +1,12 @@
-define(['knockout','gateway','models/Participante','models/Consumivel','models/Colaboracao'],
-function(ko,Gateway,Participante,Consumivel,Colaboracao){
+define(['knockout','gateway','models/Colaboracao','models/Participante','models/Consumivel'],
+function(ko, Gateway, Colaboracao,Participante,Consumivel){
 
-    function ColaboracaoRepository(idEvento,params){
+    function ColaboracaoRepository(idEvento){
         var self = this;
         self.idEvento = ko.observable(idEvento);
-        self.params = params;
-        self.colaboracoes = ko.observableArray([]);
 
-        self.colaboracoesDoParticipante = function(participante){
-            return self.colaboracoes().filter(function(each){
-                return each.participante().id() == participante.id();
-            })
-        }
-
-        function load(){
-            var gatewayOptions = {
+        self.all = function(options){
+             var gatewayOptions = {
                 idEvento : self.idEvento(),
                 controller: 'collaborations',
                 callback : function(allData){
@@ -24,26 +16,62 @@ function(ko,Gateway,Participante,Consumivel,Colaboracao){
 							participante: new Participante.model(data.participante),
                             consumable: new Consumivel.model(data.consumable),
                             value: data.valor
-						};
-						return new Colaboracao.model(dataItem);
+                        };
+                        var model = options.ediMode ? Colaboracao.editModel : Colaboracao.model;
+						return new model(dataItem);
 					});
-                    self.colaboracoes(colaboracoes);
+                    options.callback(colaboracoes);
                 }
             };
-            if(self.params)
+            if(options.params)
                 gatewayOptions.params = 'include=('+self.params.join(',')+')';
 
 			Gateway.getAll(gatewayOptions);
+
         }
 
-        load();
+        self.novaColaboracaoEdit = function(data,callback){
+            self.novaColaboracao(data,true,callback);
+        }
+
+        self.novaColaboracao = function(data,editMode,callback){
+            var gatewayOptions = {
+				controller: 'collaborations',
+				data: data,
+				callback : function(result){
+					var model = editMode ? Colaboracao.model : Colaboracao.editModel;
+					var colaboracao = new model(result.collaboration);
+					callback(colaboracao);
+				}
+			}
+			Gateway.new(gatewayOptions);
+        }
+
+        self.update = function(colaboracao,callback){
+            var gatewayOptions = {
+				controller: 'collaborations',
+				id: colaboracao.id(),
+				data : colaboracao.toJson(),
+				callback: function(result){
+					callback(colaboracao);
+				}
+			};
+			Gateway.update(gatewayOptions);
+        }
+
+        self.delete = function(colaboracao,callback){
+            var gatewayOptions = {
+				controller: 'collaborations',
+				id:colaboracao.id(),
+				callback : function(result){
+					callback(colaboracao);
+				}
+			};
+			Gateway.delete(gatewayOptions);
+        }
 
     }
 
-    return {
-        initialize : function(idEvento, params){
-            return new ColaboracaoRepository(idEvento,params);
-        }
-    }
+    return ColaboracaoRepository;
 
 });

@@ -25,7 +25,7 @@
         </tbody>
     </table>
 
-    <form data-bind='submit: criaConsumable' method="POST">
+    <form data-bind='submit: criaConsumivel' method="POST">
         <label>Nome</label>
         <input type='text' name='nomeConsumivel' data-bind='value: nomeConsumivel' required/>
         <button type='submit'> Criar </button>

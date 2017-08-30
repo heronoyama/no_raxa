@@ -1,9 +1,9 @@
 define(['knockout'],function(ko){
-    function PainelListagem(participanteController,repository){
+    function PainelListagem(participanteController,consumivelController){
         var self = this;
-        self.repository = ko.observable(repository);
-
+        
         self.participantesController = ko.observable(participanteController);
+        self.consumivelController = ko.observable(consumivelController);
     };
 
     return PainelListagem;

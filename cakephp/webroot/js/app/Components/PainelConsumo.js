@@ -1,27 +1,30 @@
 define(['knockout'],function(ko){
 
-    function PainelConsumo(idEvento, repository){
+    function PainelConsumo(idEvento, participanteController,consumivelController,consumoController){
         var self = this;
         
         self.idEvento = ko.observable(idEvento);
-        self.repository = ko.observable(repository);
+
+        self.participanteController = ko.observable(participanteController);
+        self.consumivelController = ko.observable(consumivelController);
+        self.consumoController = ko.observable(consumoController);
 
         self.participanteFoco = ko.observable();
         self.consumivelFoco = ko.observable();
         self.consumosSelecionados = ko.observableArray([]);
-
+        
         self.participanteSelecionado = function(participante){
             self.participanteFoco(participante);
             self.consumivelFoco(null);
             self.consumosSelecionados([]);
-            self.consumosSelecionados(self.repository().consumoRepository().consumosDoParticipante(participante));
+            self.consumosSelecionados(self.consumoController().consumosDoParticipante(participante));
         }
 
         self.consumivelSelecionado = function(consumivel){
             self.consumivelFoco(consumivel);
             self.participanteFoco(null);
             self.consumosSelecionados([]);
-            self.consumosSelecionados(self.repository().consumoRepository().consumosDoConsumivel(consumivel));
+            self.consumosSelecionados(self.consumoController().consumosDoConsumivel(consumivel));
         }
 
         self.consumoDoParticipante = function(participante){
@@ -74,32 +77,21 @@ define(['knockout'],function(ko){
         self.removeConsumivelAoParticipante = function(entidade){
             var consumo = self.getConsumo(entidade);
 
-            self.repository().consumoRepository().delete(consumo,function(){
+            self.consumoController().delete(consumo,function(){
                 self.consumosSelecionados.remove(consumo);
                 self.consumosSelecionados.valueHasMutated();
             });
         }
 
         self.adicionaConsumivelAoParticipante = function(entidade){
-            var data = {
-                    eventos_id : self.idEvento(),
-            };
-            if(self.participanteFoco()){
-                data.participantes_id = self.participanteFoco().id();
-                data.consumables_id = entidade.id();
-            } else {
-                data.participantes_id = entidade.id();
-                data.consumables_id = self.consumivelFoco().id();
-            }
-
-            self.repository().consumoRepository().novo(data,
-                function(consumo){
+           var participante = self.participanteFoco() ? self.participanteFoco() : entidade;
+           var consumivel = self.consumivelFoco() ? self.consumivelFoco() : entidade;
+           self.consumoController().novoConsumo(participante,consumivel,function(consumo){
                     var consumos = self.consumosSelecionados();
                     ko.utils.arrayPushAll(consumos,[consumo]);
                     self.consumosSelecionados(consumos);
                     self.consumosSelecionados.valueHasMutated();
-                });
-           
+            });
         }
 
     }

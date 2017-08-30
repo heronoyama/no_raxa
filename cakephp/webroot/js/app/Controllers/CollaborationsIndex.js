@@ -1,4 +1,8 @@
-requirejs(['knockout','models/Colaboracao','repository/ParticipanteRepository','models/Consumivel','components/PathUtils'],
+requirejs(['knockout',
+			'models/Colaboracao',
+			'repository/ParticipanteRepository',
+			'models/Consumivel',
+			'components/PathUtils'],
 	function(ko,Colaboracao,ParticipanteRepository,Consumivel,PathUtils){
 
 	function ColaboracaoEdit(data){

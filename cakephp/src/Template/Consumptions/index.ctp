@@ -10,6 +10,7 @@
             </tr>
         </thead>
         <tbody>
+            <!-- ko with: controller -->
             <!-- ko foreach: consumos -->
             <tr class='Consumos'>
                 <td data-bind="text:consumable().nome"></td>
@@ -17,9 +18,10 @@
                 
                 <td>
                     <input type='hidden' data-bind="value:id" />
-                    <a data-bind='click: $root.delete.bind(this,$data)'>Deletar</a>
+                    <a data-bind='click: $parent.delete.bind(this,$data)'>Deletar</a>
                 </td>
             </tr>
+            <!-- /ko -->
             <!-- /ko -->
         </tbody>
     </table>

@@ -24,7 +24,7 @@
             </div>
         </div>
         
-        <div class='crud consumiveis' data-bind='with: repository().consumivelRepository'>
+        <div class='crud consumiveis' data-bind='with: consumivelController'>
             <div class='list'>
                 <h5> Consumíveis </h5>
                 <ul data-bind='foreach: consumiveis'>
@@ -43,7 +43,7 @@
     </div>
 
     <div class='consumo' data-bind='with:painelConsumo, visible: modoConsumo'>
-        <div class='crud participantes' data-bind='with: repository().participanteRepository'>
+        <div class='crud participantes' data-bind='with: participanteController'>
             <div class='list'>
                 <h5> Participantes </h5>
                 <ul data-bind='foreach: participantes'>
@@ -63,7 +63,7 @@
                 <a class='adicionar' data-bind='click: criaParticipante'> <i class='fa fa-plus fa-fw'></i> </a>
             </div>
         </div>
-        <div class='crud consumiveis' data-bind='with: repository().consumivelRepository'>
+        <div class='crud consumiveis' data-bind='with: consumivelController'>
             <div class='list'>
                 <h5> Consumíveis </h5>
                 <ul data-bind='foreach: consumiveis'>

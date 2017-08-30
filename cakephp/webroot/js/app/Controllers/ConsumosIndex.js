@@ -1,21 +1,16 @@
-requirejs(['knockout','models/Consumo','repository/ParticipanteRepository','models/Consumivel','components/PathUtils'],
-	function(ko,Consumo,ParticipanteRepository,Consumivel,PathUtils){
-
-	function ConsumoEdit(data){
-		var self = this;
-		Consumo.model.call(self,data);
-		self.editing = ko.observable(false);
-		self.edit = function(){
-			self.editing(true);
-		}
-
-	}	
+requirejs(['knockout',
+'models/Consumo',
+'repository/ParticipanteRepository',
+'models/Consumivel',
+'components/PathUtils',
+'controllers/ConsumoController'],
+	function(ko,Consumo,ParticipanteRepository,Consumivel,PathUtils,ConsumoController){
 
 	function ConsumosIndexModel(idEvento){
 		var self = this;
 		//TODO quebrar em mais classes
 		self.idEvento = ko.observable(idEvento);
-		self.consumos =  ko.observableArray([]);
+
 		self.participantes = ko.observableArray([]);
 		self.consumiveis = ko.observableArray([]);
 
@@ -24,39 +19,16 @@ requirejs(['knockout','models/Consumo','repository/ParticipanteRepository','mode
 
 		self.novoParticipante = ko.observable();
 		self.novoConsumivel = ko.observable();
+
+		self.controller = ko.observable(new ConsumoController(idEvento));
 		
-		self.delete = function(consumoToDelete){
-			consumoToDelete.delete(function(consumo){
-				self.consumos.remove(consumo);
-				self.consumos.valueHasMutated();
-			});
-
-		}
-
 		self.novoConsumo = function(){
 			if(!self.novoParticipante() || !self.novoConsumivel())
 				return;
-			Consumo.new({
-				data : {
-					eventos_id : self.idEvento(),
-					participantes_id :self.novoParticipante().id(),
-					consumables_id : self.novoConsumivel().id()
-				},
-				model : ConsumoEdit,
-				callback: function(consumo){
-					if(self.isFiltered()){
-						self.clearFilter();
-						return;
-					}
-					var consumos = self.consumos();
-					ko.utils.arrayPushAll(consumos,[consumo]);
-					self.consumos(consumos);
-					self.consumos.valueHasMutated();
-				}
-			});
-		
+			self.controller().novoConsumo(self.novoParticipante(),self.novoConsumivel());
 		}
 
+		//TODO quebrar filtro em outra classe
 		self.isFiltered = ko.observable(false);
 
 		self.clearFilter = function(){
@@ -69,10 +41,10 @@ requirejs(['knockout','models/Consumo','repository/ParticipanteRepository','mode
 		self.filterConsumiveis = ko.computed(function(){
 			if(self.selectedConsumiveis().length == 0)
 				return [];
-			var ids = [];
-			self.selectedConsumiveis().forEach(function(consumivel){
-				ids.push(consumivel.id());
-			})
+			var ids = self.selectedConsumiveis().map(function(consumivel){
+				return consumivel.id();
+			});
+
 			return ['consumiveis=in('+ids.join(',')+')'];
 
 		});
@@ -80,53 +52,42 @@ requirejs(['knockout','models/Consumo','repository/ParticipanteRepository','mode
 		self.filterParticipantes = ko.computed(function(){
 			if(self.selectedParticipantes().length == 0)
 				return [];
-			var ids = [];
-			self.selectedParticipantes().forEach(function(participante){
-				ids.push(participante.id());
-			})
+			
+			var ids =  self.selectedParticipantes().map(function(participante){
+				return participante.id();
+			});
+			
 			return ['participantes=in('+ids.join(',')+')'];
 
 		});
 
 		self.sortByConsumiveis = function(){
-			self.consumos.sort(function(left,right){
+			self.controller().sortConsumos(function(left,right){
 				return left.consumable().compareTo(right.consumable());
 			});
+
 		}
 
 		self.sortByParticipantes = function(){
-			self.consumos.sort(function(left,right){
+			self.controller().sortConsumos(function(left,right){
 				return left.participante().compareTo(right.participante());
 			});
 		}
 
 		self.filtrar = function(){
-			var options = {
-				model : ConsumoEdit,
-				idEvento : self.idEvento(),
-				callback : function(consumos){
-					self.consumos(consumos);
-					self.isFiltered(true);
-				}
-			};
-
 			var filtros = self.filterConsumiveis();
 			filtros.push(self.filterParticipantes());
-			if(filtros.length > 0)
-				options.params = filtros.join('&');
+			if(filtros.length <= 0)
+				return self.loadConsumos();
 
-			Consumo.loadAll(options);
+			self.controller().loadConsumos(function(consumos){
+				self.isFiltered(true);
+			}, filtros.join('&'));
 		
 		}
 
 		function loadConsumos(){
-			Consumo.loadAll({
-				idEvento : self.idEvento(),
-				model : ConsumoEdit,
-				callback : function(consumos){
-					self.consumos(consumos);
-				}
-			});
+			self.controller().loadConsumos();
 		}
 
 		function load(){
