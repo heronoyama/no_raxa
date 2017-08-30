@@ -1,8 +1,8 @@
 define(['knockout',
     'models/Colaboracao',
-    'models/Participante',
+    'repository/ParticipanteRepository',
     'models/Consumivel'],
-		function(ko,Colaboracao,Participante,Consumivel){
+		function(ko,Colaboracao,ParticipanteRepository,Consumivel){
 
 	function ColaboracoesDataSet(options){
         var self = this;
@@ -91,12 +91,11 @@ define(['knockout',
         }
 
         function loadParticipantes(){
-            Participante.loadAll({
-                idEvento : self.idEvento(),
+            new ParticipanteRepository(self.idEvento()).all({
                 callback : function(participantes){
                     self.owner(participantes);
                 }
-            })
+            });
         }
 
          function loadConsumiveis(){

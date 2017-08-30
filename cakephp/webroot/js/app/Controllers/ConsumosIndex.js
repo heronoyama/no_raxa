@@ -1,5 +1,5 @@
-requirejs(['knockout','models/Consumo','models/Participante','models/Consumivel','components/PathUtils'],
-	function(ko,Consumo,Participante,Consumivel,PathUtils){
+requirejs(['knockout','models/Consumo','repository/ParticipanteRepository','models/Consumivel','components/PathUtils'],
+	function(ko,Consumo,ParticipanteRepository,Consumivel,PathUtils){
 
 	function ConsumoEdit(data){
 		var self = this;
@@ -131,12 +131,11 @@ requirejs(['knockout','models/Consumo','models/Participante','models/Consumivel'
 
 		function load(){
 			loadConsumos();
-			Participante.loadAll({
-				idEvento : self.idEvento(),
-				callback : function(participantes){
+
+			new ParticipanteRepository(self.idEvento()).all({
+				callback: function(participantes){
 					self.participantes(participantes);
 				}
-
 			});
 
 			Consumivel.loadAll({

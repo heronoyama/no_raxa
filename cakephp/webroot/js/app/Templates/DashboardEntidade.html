@@ -7,7 +7,7 @@
 </div>
 <div class='paineis'>
     <div class='listagem' data-bind='with:painelListagem, visible: modoListagem'>
-        <div class='crud participantes' data-bind='with: repository().participanteRepository'>
+        <div class='crud participantes' data-bind='with: participantesController'>
             <div class='list'>
                 <h5> Participantes </h5>
                 <ul data-bind='foreach: participantes'>
@@ -23,6 +23,7 @@
                 <a class='adicionar' data-bind='click: criaParticipante'> <i class='fa fa-plus fa-fw'></i> </a>
             </div>
         </div>
+        
         <div class='crud consumiveis' data-bind='with: repository().consumivelRepository'>
             <div class='list'>
                 <h5> Consumíveis </h5>

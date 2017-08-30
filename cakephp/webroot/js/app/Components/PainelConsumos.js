@@ -1,14 +1,8 @@
-define(['knockout',
-        'components/PathUtils',
-        'components/PainelListagem',
-        'gateway',
-        'repository/Repository',
-        'controllers/ParticipanteController'],
-            function(ko,PathUtils,PainelListagem,Gateway,Repository,ParticipanteController){
+define(['knockout'],function(ko){
 
-    //TODO break me plzzz
     function PainelConsumo(idEvento, repository){
         var self = this;
+        
         self.idEvento = ko.observable(idEvento);
         self.repository = ko.observable(repository);
 
@@ -110,88 +104,5 @@ define(['knockout',
 
     }
 
-    function PainelColaboracao(idEvento,repository){
-        var self = this;
-        self.idEvento = ko.observable(idEvento);
-        self.repository = ko.observable(repository);
-
-        self.participanteFoco = ko.observable();
-        self.consumivelFoco = ko.observable();
-        self.colaboracoes = ko.observableArray([]);
-
-          self.participanteSelecionado = function(participante){
-            self.participanteFoco(participante);
-            self.consumivelFoco(null);
-            var colaboracoes = self.repository().colaboracaoRepository().colaboracoesDoParticipante(self.participanteFoco());
-            self.colaboracoes(colaboracoes);
-        }
-
-        self.consumivelSelecionado = function(consumivel){
-            self.consumivelFoco(consumivel);
-            self.participanteFoco(null);
-        }
-
-         self.getCssParticipante = function(participante){
-            if(!self.participanteFoco())
-                return self.consumivelFoco()? 'marked': '';
-            
-            return self.participanteFoco() == participante ? "active" : '';
-            
-        }
-
-        self.getCssConsumivel = function(consumivel){
-            if(!self.consumivelFoco())
-                return self.participanteFoco()? 'marked' : '';
-            
-            return self.consumivelFoco() == consumivel ? "active" : '';
-        }
-
-    }
-
-
-    function DashboardEntidade(){
-        var self = this;
-    
-        self.idEvento = ko.observable(PathUtils.extractEventoId());
-        self.repository = ko.observable(Repository.initalize(self.idEvento(),['Consumptions','Collaborations']));
-
-        self.painelListagem = ko.observable(new PainelListagem(new ParticipanteController(self.idEvento()),self.repository()));
-        self.painelConsumo = ko.observable(new PainelConsumo(self.idEvento(),self.repository()));
-        self.painelColaboracao = ko.observable(new PainelColaboracao(self.idEvento(),self.repository()));
-
-        self.modoListagem = ko.observable(true);
-        self.modoConsumo = ko.observable(false);
-        self.modoColaboracao = ko.observable(false);
-
-        self.setModoListagem = function(){
-            self.modoListagem(true);
-            self.modoConsumo(false);
-            self.modoColaboracao(false);
-        }
-
-        self.setModoConsumo = function(){
-            self.modoListagem(false);
-            self.modoConsumo(true);
-            self.modoColaboracao(false);
-        }
-
-        self.setModoColaboracao = function(){
-            self.modoListagem(false);
-            self.modoConsumo(false);
-            self.modoColaboracao(true);
-        }
-
-    }
-
-    function initializeComponente(){
-		 ko.components.register('dashboard-entidade', {
-	        viewModel: DashboardEntidade,
-	        template: {require: 'text!templates/DashboardEntidade.html'}
-	    });
-    }
-    
-    return {
-		loadComponent: initializeComponente
-	}
-
+    return PainelConsumo;
 });
