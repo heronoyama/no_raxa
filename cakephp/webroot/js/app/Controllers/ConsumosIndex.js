@@ -1,10 +1,10 @@
 requirejs(['knockout',
 'models/Consumo',
 'repository/ParticipanteRepository',
-'models/Consumivel',
+'repository/ConsumivelRepository',
 'components/PathUtils',
 'controllers/ConsumoController'],
-	function(ko,Consumo,ParticipanteRepository,Consumivel,PathUtils,ConsumoController){
+	function(ko,Consumo,ParticipanteRepository,ConsumivelRepository,PathUtils,ConsumoController){
 
 	function ConsumosIndexModel(idEvento){
 		var self = this;
@@ -41,6 +41,10 @@ requirejs(['knockout',
 		self.filterConsumiveis = ko.computed(function(){
 			if(self.selectedConsumiveis().length == 0)
 				return [];
+
+			if(self.selectedConsumiveis().length ==1 && !self.selectedConsumiveis()[0])
+				return [];
+
 			var ids = self.selectedConsumiveis().map(function(consumivel){
 				return consumivel.id();
 			});
@@ -52,7 +56,9 @@ requirejs(['knockout',
 		self.filterParticipantes = ko.computed(function(){
 			if(self.selectedParticipantes().length == 0)
 				return [];
-			
+			if(self.selectedParticipantes().length ==1 && !self.selectedParticipantes()[0])
+				return [];
+
 			var ids =  self.selectedParticipantes().map(function(participante){
 				return participante.id();
 			});
@@ -99,8 +105,7 @@ requirejs(['knockout',
 				}
 			});
 
-			Consumivel.loadAll({
-				idEvento : self.idEvento(),
+			new ConsumivelRepository(self.idEvento()).all({
 				callback : function(consumiveis){
 					self.consumiveis(consumiveis);
 				}

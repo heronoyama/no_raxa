@@ -16,7 +16,7 @@ define(['knockout','gateway','models/Participante','models/Consumivel','models/C
                             participante: new Participante(data.participante),
                             consumivel: new Consumivel(data.consumable)
                         };
-                        return new Consumo.model(dataItem);
+                        return new Consumo(dataItem);
                     });
                     options.callback(consumos);
                 }
@@ -37,7 +37,7 @@ define(['knockout','gateway','models/Participante','models/Consumivel','models/C
                     var consumable = consumption.consumable;
                     consumption.participante = new Participante(participante)
                     consumption.consumivel = new Consumivel(consumable);
-                    var consumo = new Consumo.model(consumption);
+                    var consumo = new Consumo(consumption);
                     callback(consumo);
                 }
             }
