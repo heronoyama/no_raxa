@@ -3,6 +3,7 @@
                     options: relatorios,
                     optionsText: 'nome',
                     value: selectedRelatorio,
-                    optionsCaption: 'selecione...'">                  >
+                    optionsCaption: 'selecione...'">                  
 </select>
-<a data-bind='attr:{href : computedUrl}'> Baixar </a>
+<span class="notLink" data-bind="visible: !selectedRelatorio()">Baixar </span>
+<a data-bind='attr:{href : computedUrl}, visible:selectedRelatorio '> Baixar </a>
