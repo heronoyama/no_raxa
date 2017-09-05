@@ -1,0 +1,8 @@
+<select id='relatoriosOptions' name='relatorio' 
+                data-bind="
+                    options: relatorios,
+                    optionsText: 'nome',
+                    value: selectedRelatorio,
+                    optionsCaption: 'selecione...'">                  >
+</select>
+<a data-bind='attr:{href : computedUrl}'> Baixar </a>

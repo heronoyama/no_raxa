@@ -376,3 +376,35 @@ table tr th , .content h4{
 #entidades .paineis .controle a:hover {
 	background-color:  #d8d8d8;	
 }
+
+#dashboard section#relatorios {
+	height: 50px;
+}
+
+#dashboard section#relatorios #relatoriosOptions{
+	float: left;
+	width: 200px;
+	margin: 5px;
+}
+
+#dashboard section#relatorios a {
+	display: inline-block;
+	padding:10px;
+}
+
+#dashboard section#divisor {
+	border: none;
+}
+
+/* utils */
+.fleft {
+	float: left;
+}
+.fright { 
+	float : right;
+}
+
+.half-size {
+	width: 50%;
+}
+
