@@ -7,6 +7,7 @@ define(['knockout','gateway'],
 		self.valor = ko.observable(parseInt(data.valor));
 		self.participante = ko.observable(data.participante);
 		self.consumivel = ko.observable(data.consumivel);
+		self.idEvento = ko.observable(data.idEvento);
 
 		self.editing = ko.observable(false);
 		self.edit = function() { 
@@ -34,12 +35,15 @@ define(['knockout','gateway'],
 		}
 
 		self.toJson = ko.computed(function(){
-			return {
+			var data = {
 					id : self.id(),
-					paritcipantes_id : self.participante().id(),
-					sS_id : self.consumivel().id(),
+					participantes_id : self.participante().id(),
+					consumables_id : self.consumivel().id(),
 					value : parseInt(self.valor())
-					}
+					};
+			if(self.idEvento())
+				data.eventos_id = self.idEvento();
+			return data;
 		});
 
 	}

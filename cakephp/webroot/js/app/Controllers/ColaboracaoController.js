@@ -6,12 +6,14 @@ define(['knockout','models/Colaboracao','repository/ColaboracaoRepository'],func
 
         self.colaboracoes = ko.observableArray([]);
         self.repository = ko.observable();
+        self.mapaColaboracoes = ko.observableArray([]);
 
         self.loadColaboracoes = function(callback,params){
             var options = {
                 editMode:true,
                 callback : function(colaboracoes){
                     self.colaboracoes(colaboracoes);
+                    self.mapColaboracoes(colaboracoes);
                     if(callback)
                         callback(colaboracoes);
                 }
@@ -22,15 +24,35 @@ define(['knockout','models/Colaboracao','repository/ColaboracaoRepository'],func
             self.repository().all(options);
         }
 
-        self.colaboracaoDado = function(participante,consumivel){
-            var colaboracao = self.colaboracoes().find(function(each){
-                return each.participante().id() == participante.id() && each.consumivel().id() == consumivel.id();
+        self.mapColaboracoes = function(colaboracoes){
+            var mapaColaboracoes = [];
+            colaboracoes.forEach(function(colaboracao){
+                var participante = colaboracao.participante().nome();
+                var consumivel = colaboracao.consumivel().nome();
+
+                var found = false;
+                for(var nome in mapaColaboracoes)
+                    found = found || nome==participante;
+                if(!found)
+                    mapaColaboracoes[participante] = [];
+
+                mapaColaboracoes[participante][consumivel] = colaboracao;
+                
             });
+            self.mapaColaboracoes(mapaColaboracoes);
+        }
+
+        self.colaboracaoDado = function(participante,consumivel){
+            var colaboracoesDoParticipante = self.mapaColaboracoes()[participante.nome()];
+            if(!colaboracoesDoParticipante)
+                return self.colaboracaoFake(participante,consumivel);
+            var colaboracao = colaboracoesDoParticipante[consumivel.nome()];
             return colaboracao ? colaboracao : self.colaboracaoFake(participante,consumivel);
         }
 
         self.colaboracaoFake = function(participante,consumivel){
-            return new Colaboracao({valor: 0 , participante: participante, consumivel : consumivel});
+            var data = {valor: 0,idEvento:self.idEvento(), participante: participante, consumivel : consumivel};
+            return self.repository().novaColaboracaoFake(data,self.putColaboracao);
         }
 
         self.sortColaboracoes = function(sort){
@@ -47,23 +69,27 @@ define(['knockout','models/Colaboracao','repository/ColaboracaoRepository'],func
             
             //TODO alterar para passar a entidade ao invés de data
             self.repository().novaColaboracaoEdit(data,function(colaboracao){
-                var colaboracoes = self.colaboracoes();
-
-                var found = self.colaboracoes().find(function(each){
-                    return each.id() == colaboracao.id();
-                });
-                if(found){
-                    found.valor(colaboracao.valor());
-                    return;
-                }
-                
-                ko.utils.arrayPushAll(colaboracoes,[colaboracao]);
-                self.colaboracoes(colaboracoes);
-                self.colaboracoes.valueHasMutated();
+                self.putColaboracao(colaboracao);
                 if(callback)
                     callback(colaboracao);
             });
-                
+        }
+        self.putColaboracao = function(colaboracao){
+             var colaboracoes = self.colaboracoes();
+
+            var found = self.colaboracoes().find(function(each){
+                return each.id() == colaboracao.id();
+            });
+            if(found && colaboracao.id()){
+                found.valor(colaboracao.valor());
+                return;
+            }
+            
+            ko.utils.arrayPushAll(colaboracoes,[colaboracao]);
+            self.colaboracoes(colaboracoes);
+            self.colaboracoes.valueHasMutated();
+            //TODO deve ter ficado pesado pa carai
+            self.mapColaboracoes(self.colaboracoes());
         }
 
 

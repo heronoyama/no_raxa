@@ -55,6 +55,21 @@ function(ko, Gateway, Colaboracao,Participante,Consumivel){
 			Gateway.new(gatewayOptions);
         }
 
+        self.novaColaboracaoFake = function(data,callbackController){
+            var colaboracao = new Colaboracao(data);
+            colaboracao.subscribeValor(function(colaboracao,callback){
+                self.concretize(colaboracao,function(colaboracao){
+                    callback(colaboracao);
+                    callbackController(colaboracao);
+                });
+            });
+            return colaboracao;
+        }
+
+        self.concretize = function(colaboracao,callback){
+            self.novaColaboracaoEdit(colaboracao.toJson(),callback);
+        }
+
         self.update = function(colaboracao,callback){
             var gatewayOptions = {
 				controller: 'collaborations',

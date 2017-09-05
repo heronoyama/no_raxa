@@ -39,18 +39,18 @@ define(['knockout','controllers/ColaboracaoController'],function(ko,ColaboracaoC
 
         self.colaboracaoDoParticipante = function(participante){
             if(self.nadaSelecionado())
-                return {valor : ko.observable(0), editing: ko.observable(false), click : function(){} };
+                return {valor : ko.observable(0), editing: ko.observable(false), edit : function(){} };
             if(self.participanteFoco())
-                return {valor : ko.observable(0), editing: ko.observable(false), click : function(){} };
+                return {valor : ko.observable(0), editing: ko.observable(false), edit : function(){} };
 
             return self.colaboracaoController().colaboracaoDado(participante,self.consumivelFoco());
         }
 
         self.colaboracaoDoConsumivel = function(consumivel){
             if(self.nadaSelecionado())
-                return {valor : ko.observable(0), editing: ko.observable(false), click : function(){} };
+                return {valor : ko.observable(0), editing: ko.observable(false), edit : function(){} };
             if(self.consumivelFoco())
-                return {valor : ko.observable(0), editing: ko.observable(false), click : function(){} };
+                return {valor : ko.observable(0), editing: ko.observable(false), edit : function(){} };
 
             return self.colaboracaoController().colaboracaoDado(self.participanteFoco(),consumivel);
         }

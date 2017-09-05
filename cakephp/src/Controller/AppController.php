@@ -46,10 +46,7 @@ class AppController extends Controller {
     protected function userOwnsEvento($user){
             $eventoId = $this->getEventoIdFromRequest();
             $this->loadModel("Eventos");
-            if ($this->Eventos->isOwnedBy($eventoId, $user['id'])) {
-                return true;
-            }
-            return false;
+            return ($this->Eventos->isOwnedBy($eventoId, $user['id']));
     }
 
     protected function getEventoIdFromRequest(){
