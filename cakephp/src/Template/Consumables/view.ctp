@@ -16,11 +16,11 @@
     </table>
 
 
-<!--div data-bind='component:{name:"colaboracoes-data-set", params:{ idEvento :<?=$evento->id?>,idConsumivel:<?=$consumable->id?>}}'>
+<div data-bind='component:{name:"colaboracoes-data-set", params:{ idEvento :<?=$evento->id?>,idConsumivel:<?=$consumable->id?>}}'>
 	</div>
 
 <div data-bind='component:{name:"consumos-data-set", params:{ idEvento :<?=$evento->id?>,idConsumivel:<?=$consumable->id?>}}'>
-    </div-->
+    </div>
 
 <script>
     requirejs(['/js/init.js'],function(){

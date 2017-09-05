@@ -1,59 +1,16 @@
 define(['knockout',
-    'models/Consumo',
+    'controllers/ConsumoController',
     'repository/ParticipanteRepository',
     'repository/ConsumivelRepository'],
-		function(ko,Consumo,ParticipanteRepository,ConsumivelRepository){
+		function(ko,ConsumoController,ParticipanteRepository,ConsumivelRepository){
 
-	function ConsumosDataSet(options){
+	 
+    function ConsumosForm(options,controller){
         var self = this;
         self.idEvento = ko.observable(options.idEvento);
         self.idParticipante = ko.observable(options.idParticipante);
         self.idConsumivel = ko.observable(options.idConsumivel);
-        
-        self.consumos = ko.observableArray([]);
-
-        self.param = ko.computed(function(){
-            if(self.idParticipante())
-                return 'participantes=in('+self.idParticipante()+')';
-            return 'consumiveis=in('+self.idConsumivel()+')';
-        });
-
-        self.add = function(consumo){
-            var consumos = self.consumos();
-            ko.utils.arrayPushAll(consumos,[consumo]);
-            self.consumos(consumos);
-            self.consumos.valueHasMutated();
-        };
-
-        self.remove = function(consumoToDelete){
-            consumoToDelete.delete(function(consumo){
-				self.consumos.remove(consumo);
-				self.consumos.valueHasMutated();
-			});
-        }
-
-
-        function load(){
-            var options = {
-                idEvento : self.idEvento(),
-                params : self.param(),
-                callback : function(consumos){
-                    self.consumos(consumos);
-                }
-            };
-            Consumo.loadAll(options);
-        }
-
-        load();
-
-    };
-    
-    function ConsumosForm(options,dataSet){
-        var self = this;
-        self.idEvento = ko.observable(options.idEvento);
-        self.idParticipante = ko.observable(options.idParticipante);
-        self.idConsumivel = ko.observable(options.idConsumivel);
-        self.dataSet = ko.observable(dataSet);
+        self.controller = ko.observable(controller);
 
         self.owner = ko.observableArray([]);
         self.selectedOwner = ko.observable();
@@ -67,14 +24,8 @@ define(['knockout',
 					participantes_id :participanteId,
 					consumables_id : consumivelId
             };
-            var options = {
-                data : data,
-                callback: function(consumo){
-					self.dataSet().add(consumo);
 
-				}
-            };
-            Consumo.new(options);
+            self.controller().novoConsumoData(data);
 
         };
 
@@ -99,7 +50,7 @@ define(['knockout',
                 callback : function(consumiveis){
                     self.owner(consumiveis);
                 }
-            })
+            });
         }
 
         load();
@@ -107,14 +58,31 @@ define(['knockout',
     }
 
 	function Component(params){
-		var self = this;
-		self.consumosDataSet = ko.observable(new ConsumosDataSet(params));
-        self.consumosForm = ko.observable(new ConsumosForm(params,self.consumosDataSet()));
+        var self = this;
+        
+        self.controller = ko.observable(new ConsumoController(params.idEvento));
+        self.consumosForm = ko.observable(new ConsumosForm(params,self.controller()));
+
         self.isParticipante = ko.observable(params.idParticipante);
+        self.idParticipante = ko.observable(params.idParticipante);
+        self.idConsumivel = ko.observable(params.idConsumivel);
         
         self.delete = function(consumo){
             self.consumosDataSet().remove(consumo);
         }
+
+        self.getParam = function(){
+            if(self.isParticipante())
+                return 'participantes=in('+self.idParticipante()+')';
+            return 'consumiveis=in('+self.idConsumivel()+')';
+        }
+
+        function load(){
+            var param = self.getParam();
+            self.controller().loadConsumos({params : param});
+        }
+
+        load();
 
         $("#ConsumosComponent").accordion({
                 collapsible:true,

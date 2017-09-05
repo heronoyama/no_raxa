@@ -1,7 +1,7 @@
 <div id='ColaboracoesComponent'>
 <h4> Colaborações </h4>
 <div>
-<!-- ko with: colaboracoesDataSet -->
+<!-- ko with: controller -->
 <div>
 	<table>
 		<thead>
@@ -22,7 +22,7 @@
 				<td data-bind='text:consumivel().nome, visible:$component.isParticipante'></td>
                 <td data-bind='text:valor'></td>
                 <td>
-                    <a data-bind='click: $component.delete.bind(this,$data)'>Deletar</a>
+                    <a data-bind='click: $parents[0].delete.bind(this,$data)'>Deletar</a>
                 </td>
 			</tr>
 		</tbody>

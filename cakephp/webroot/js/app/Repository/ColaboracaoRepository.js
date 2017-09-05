@@ -18,7 +18,7 @@ function(ko, Gateway, Colaboracao,Participante,Consumivel){
                 }
             };
             if(options.params)
-                gatewayOptions.params = 'include=('+self.params.join(',')+')';
+                gatewayOptions.params = options.params;
 
 			Gateway.getAll(gatewayOptions);
 

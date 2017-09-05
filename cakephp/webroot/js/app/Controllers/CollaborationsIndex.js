@@ -95,9 +95,12 @@ requirejs(['knockout',
 			if(filtros.length <= 0)
 				return self.loadColaboracoes();
 
-			self.controller().loadColaboracoes(function(colaboracoes){
-				self.isFiltered(true);
-			},filtros.join('&'));
+			self.controller().loadColaboracoes(
+			{
+				callback:	function(colaboracoes){ self.isFiltered(true);}	,
+				params: filtros.join('&')
+			}
+		);
 
 		}
 

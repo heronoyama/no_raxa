@@ -7,22 +7,33 @@ define(['knockout','repository/ConsumoRepository'],function(ko,ConsumoRepository
         self.consumos = ko.observableArray([]);
         self.repository = ko.observable();
 
-        self.loadConsumos = function(callback,params){
-            var options = {
+        self.loadConsumos = function(options){
+            var repositoryOptions = {
                 callback : function(consumos){
                     self.consumos(consumos);
-                    if(callback)
-                        callback(consumos);
+                    if(options && options.callback)
+                        options.callback(consumos);
                 }
             }
-            if(params)
-                options.params = params;
+            if(options && options.params)
+                repositoryOptions.params = options.params;
 
-            self.repository().all(options);
+            self.repository().all(repositoryOptions);
         }
 
         self.sortConsumos = function(sort){
             self.consumos.sort(sort);
+        }
+
+        self.novoConsumoData = function(data,callback){
+            self.repository().novo(data,function(consumo){
+                var consumos = self.consumos();
+                ko.utils.arrayPushAll(consumos,[consumo]);
+                self.consumos(consumos);
+                self.consumos.valueHasMutated();
+                if(callback)
+                    callback(consumo);
+            });
         }
 
         self.novoConsumo = function(participante,consumivel,callback){
@@ -32,14 +43,7 @@ define(['knockout','repository/ConsumoRepository'],function(ko,ConsumoRepository
                 consumables_id : consumivel.id()
             };
             
-            self.repository().novo(data,function(consumo){
-                var consumos = self.consumos();
-                ko.utils.arrayPushAll(consumos,[consumo]);
-                self.consumos(consumos);
-                self.consumos.valueHasMutated();
-                if(callback)
-                    callback(consumo);
-            });
+            self.novoConsumoData(data,callback);
                 
         }
 

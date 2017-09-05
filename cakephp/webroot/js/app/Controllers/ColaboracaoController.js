@@ -8,20 +8,20 @@ define(['knockout','models/Colaboracao','repository/ColaboracaoRepository'],func
         self.repository = ko.observable();
         self.mapaColaboracoes = ko.observableArray([]);
 
-        self.loadColaboracoes = function(callback,params){
-            var options = {
+        self.loadColaboracoes = function(options){
+            var repositoryOptions = {
                 editMode:true,
                 callback : function(colaboracoes){
                     self.colaboracoes(colaboracoes);
                     self.mapColaboracoes(colaboracoes);
-                    if(callback)
+                    if(options && options.callback)
                         callback(colaboracoes);
                 }
             }
-            if(params)
-                options.params = params;
+            if(options && options.params)
+                repositoryOptions.params = options.params;
 
-            self.repository().all(options);
+            self.repository().all(repositoryOptions);
         }
 
         self.mapColaboracoes = function(colaboracoes){
@@ -67,6 +67,10 @@ define(['knockout','models/Colaboracao','repository/ColaboracaoRepository'],func
                 value: parseInt(valor)
             };
             
+            self.novaColaboracaoData(data,callback);    
+        }
+
+        self.novaColaboracaoData = function(data,callback){
             //TODO alterar para passar a entidade ao invés de data
             self.repository().novaColaboracaoEdit(data,function(colaboracao){
                 self.putColaboracao(colaboracao);
@@ -74,6 +78,7 @@ define(['knockout','models/Colaboracao','repository/ColaboracaoRepository'],func
                     callback(colaboracao);
             });
         }
+
         self.putColaboracao = function(colaboracao){
              var colaboracoes = self.colaboracoes();
 

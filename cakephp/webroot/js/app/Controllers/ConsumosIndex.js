@@ -86,9 +86,12 @@ requirejs(['knockout',
 			if(filtros.length <= 0)
 				return self.loadConsumos();
 
-			self.controller().loadConsumos(function(consumos){
-				self.isFiltered(true);
-			}, filtros.join('&'));
+			self.controller().loadConsumos(
+				{callback : function(consumos){
+							self.isFiltered(true);
+						}, 
+				params : filtros.join('&')}
+			);
 		
 		}
 

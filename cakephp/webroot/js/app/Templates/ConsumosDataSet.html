@@ -1,7 +1,7 @@
 <div id='ConsumosComponent'>
 <h4> Consumos </h4>
 <div>
-<!-- ko with: consumosDataSet -->
+<!-- ko with: controller -->
 <div>
 	<table>
 		<thead>
@@ -20,7 +20,7 @@
 				<td data-bind='text:participante().nome, visible:!$component.isParticipante()'></td>
 				<td data-bind='text:consumivel().nome, visible:$component.isParticipante'></td>
                 <td>
-                    <a data-bind='click: $component.delete.bind(this,$data)'>Deletar</a>
+                    <a data-bind='click: $parents[0].delete.bind(this,$data)'>Deletar</a>
                 </td>
 			</tr>
 		</tbody>
