@@ -10,8 +10,13 @@
                  '/eventos/delete/'.$evento->id, ['escape'=>false, 'confirm' => __('Are you sure you want to delete # {0}?', $evento->id)])?>
         </div>
     <?php endforeach; ?>
-    <div class='evento novoEvento'>
-        <?= $this->Html->link($this->Html->tag('i','',['class'=>'fa fa-plus fa-fw']), ['action' => 'add'],['escape'=>false]) ?>
+
+    <?php 
+        $cssClass = $quantidadeEventos >0 ? 'naoPodeCriar' : 'podeCriar';
+        $baseClass = 'evento novoEvento '.$cssClass;
+    ?>
+    <div class='<?=$baseClass?>'>
+        <?= $this->Html->link($this->Html->tag('i','',['class'=>'fa fa-plus fa-fw ']), ['action' => 'add'],['escape'=>false]) ?>
     </div>
 
 </div>

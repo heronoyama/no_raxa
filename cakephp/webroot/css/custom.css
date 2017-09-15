@@ -420,11 +420,6 @@ table tr th , .content h4{
 	padding:20px;
 }
 
-.novoEvento {
-	padding: 0;
-	line-height: 150px;
-}
-
 .evento p {
 	margin: 5px;
 }
@@ -432,4 +427,26 @@ table tr th , .content h4{
 .evento p.date{
 	font-size : smaller;
 	color: #368a55;
+}
+
+.novoEvento {
+	padding: 0;
+	line-height: 150px;
+	border-style: dashed;
+	cursor: pointer;
+}
+
+.novoEvento a{
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+
+.novoEvento.naoPodeCriar i{
+	color: red;
+}
+
+.naoPodeCriar:hover {
+	border-color: red;
+	background-color: #ff9393;
 }

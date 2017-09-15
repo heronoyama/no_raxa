@@ -24,10 +24,12 @@ class EventosController extends AppController {
     }
 
     public function index() {
-        $eventos = $this->paginate($this->Eventos->ownedBy($this->Auth->user('id')));
 
-        $this->set(compact('eventos'));
-        $this->set('_serialize', ['eventos']);
+        $userId = $this->Auth->user('id');
+        $eventos = $this->Eventos->ownedBy($userId);
+        $quantidadeEventos = $eventos->count();
+        $this->set(compact('eventos','quantidadeEventos'));
+        $this->set('_serialize', ['eventos','quantidadeEventos']);
         $this->Auth->identify();
 
         $this->request->session()->delete("Evento.id");
