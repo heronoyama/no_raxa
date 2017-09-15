@@ -49,10 +49,16 @@ class EventosController extends AppController {
     }
 
     public function add() {
+        $userId = $this->Auth->user('id');
         $evento = $this->Eventos->newEntity();
         if ($this->request->is('post')) {
-            $evento->users_id = $this->Auth->user('id');
-            $this->saveRedirect($evento,['action' => 'index']);
+            $evento->users_id = $userId;
+            return $this->saveRedirect($evento,['action' => 'index']);
+        }
+
+        if($this->Eventos->ownedBy($userId)->count() > 0){
+            $this->Flash->error("Você já atingiu a sua cota de eventos gratuitos.");
+            return $this->redirect($this->request->referer());
         }
         
         $this->set(compact('evento'));
