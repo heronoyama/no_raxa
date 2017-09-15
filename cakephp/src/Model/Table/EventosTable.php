@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use Cake\ORM\Table;
+use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
 class EventosTable extends Table {
@@ -39,6 +40,12 @@ class EventosTable extends Table {
             'joinType' => 'INNER',
             'dependent' => true,
             'cascadeCallbacks'=>true]);
+
+        $this->belongsTo('Users', [
+            'foreignKey' => 'users_id',
+            'joinType' => 'INNER'
+        ]);
+        
     }
 
     public function isOwnedBy($eventosId, $userId) {
@@ -71,5 +78,13 @@ class EventosTable extends Table {
             ->allowEmpty('pessoas_previstas');
 
         return $validator;
+    }
+
+    public function buildRules(RulesChecker $rules) {
+        $rules->add($rules->existsIn(['users_id'], 'Users'));
+        $rules->add($rules->isUnique(['users_id'],'Usuário já possui um evento cadastrado gratuitamente.'));
+
+
+        return $rules;
     }
 }

@@ -13,7 +13,7 @@
             <!-- ko with: controller -->
             <!-- ko foreach: consumos -->
             <tr class='Consumos'>
-                <td data-bind="text:consumable().nome"></td>
+                <td data-bind="text:consumivel().nome"></td>
                 <td data-bind="text:participante().nome"></td>
                 
                 <td>

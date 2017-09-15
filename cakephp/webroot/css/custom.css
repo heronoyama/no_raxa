@@ -1,3 +1,4 @@
+/*all*/
 .concludedActivity{
 	text-decoration: line-through;
 }
@@ -408,3 +409,27 @@ table tr th , .content h4{
 	width: 50%;
 }
 
+/* List Eventos */
+.evento {
+	width: 15%;
+	height: 150px;
+    float: left;
+    border: 1px solid #1cc799;
+	margin: 5px;
+	text-align: center;
+	padding:20px;
+}
+
+.novoEvento {
+	padding: 0;
+	line-height: 150px;
+}
+
+.evento p {
+	margin: 5px;
+}
+
+.evento p.date{
+	font-size : smaller;
+	color: #368a55;
+}

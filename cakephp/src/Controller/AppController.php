@@ -87,7 +87,7 @@ class AppController extends Controller {
             $this->flashSucess();
             return $this->redirect($destiny);
         }
-        $this->flashError();
+        $this->flashError($model);
     }
 
     protected function deleteModelRedirect($model, $destiny) {
@@ -98,7 +98,7 @@ class AppController extends Controller {
         if ($success)
             $this->flashSucess();
         else
-            $this->flashError();
+            $this->flashError($model);
         return $this->redirect($destiny);
     }
 
@@ -106,8 +106,8 @@ class AppController extends Controller {
         $this->Flash->success(__('Operação realizada com sucesso'));
     }
 
-    private function flashError() {
-        $this->Flash->error(__("Oops, algo deu errado. Por favor, tente novamente."));
+    private function flashError($model) {
+        $this->Flash->error(__($model->errorMessage()));
     }
 
     protected function controller() {

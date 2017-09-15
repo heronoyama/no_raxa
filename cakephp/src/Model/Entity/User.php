@@ -5,8 +5,11 @@ use Cake\ORM\Entity;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Utility\Security;
 use Cake\Core\Configure;
+use App\Model\Entity\EntityErrorTrait;
 
 class User extends Entity {
+
+    use EntityErrorTrait;
 
     protected $_accessible = [
         '*' => true,

@@ -2,10 +2,10 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\Log\LogTrait;
+use App\Model\Entity\EntityErrorTrait;
 
 class Participante extends Entity {
-    use LogTrait;
+    use EntityErrorTrait;
 
     protected $_accessible = [
         '*' => true,

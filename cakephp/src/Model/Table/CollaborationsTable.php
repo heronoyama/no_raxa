@@ -7,6 +7,7 @@ use Cake\Validation\Validator;
 
 class CollaborationsTable extends Table {
 
+
     public function initialize(array $config) {
         parent::initialize($config);
 

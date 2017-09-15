@@ -17,6 +17,9 @@ $this->layout = false;
     <?= $this->Html->css('landingPage.css') ?>
     <?= $this->Html->css("vendor/font-awesome.css")?>
     <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
+
+    <?= $this->Html->script('vendor/scroll.js')?>
+    <?= $this->fetch('script') ?>
 </head>
 <body class="home">
 
@@ -26,9 +29,9 @@ $this->layout = false;
     </div>
     <nav class="menu">
         <ul>
-            <li> <a class='button' href="#banner"> Home </a> </li>
-            <li> <a class='button' href="#about"> Sobre  </a></li>
-            <li> <a class='button' href="#contato"> Contato </a> </li>
+            <li> <a class='button scroll'  href="#banner"> Home </a> </li>
+            <li> <a class='button scroll'  href="#about"> Sobre  </a></li>
+            <li> <a class='button scroll'  href="#contato"> Contato </a> </li>
             <li> <a class='button' href="/users/login"> Entrar </a> </li>
         </ul>
     </nav>
@@ -40,7 +43,11 @@ $this->layout = false;
     </div>
     <section id='banner'>  
             <h1>No Raxa!</h1>
+            <div>
             <a class='button' href="/users/login">Acesse! </a>
+            <?php echo $this->Html->link('Entre com o Facebook', '/loginfacebook', ['class' =>'loginBtn loginBtn--facebook']) ?>
+            <?php echo $this->Html->link('Entre com o Google', '/logingoogle', ['class' =>'loginBtn loginBtn--google']) ?>
+            </div>
     </section>
 
     <section id='about'> 

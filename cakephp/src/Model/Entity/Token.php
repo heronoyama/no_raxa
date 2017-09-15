@@ -4,8 +4,11 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 use Cake\Utility\Security;
 use Cake\Core\Configure;
+use App\Model\Entity\EntityErrorTrait;
 
 class Token extends Entity {
+
+    use EntityErrorTrait;
 
     protected $_accessible = [
         '*' => true,

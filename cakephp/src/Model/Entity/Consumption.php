@@ -2,8 +2,11 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use App\Model\Entity\EntityErrorTrait;
 
 class Consumption extends Entity {
+
+    use EntityErrorTrait;
 
     protected $_accessible = [
         '*' => true,
@@ -12,19 +15,7 @@ class Consumption extends Entity {
     
     
     
-    public function errorMessage(){
-        $errors = $this->errors();
-        if(!$errors){
-            return "";
-        }
-        $message = "";
-        foreach($errors as $key => $value){
-            foreach($value as $constraint => $errorMessage){
-                $message .=__($errorMessage);
-            }
-        }
-        return $message;
-    }
+    
     
  
 }
