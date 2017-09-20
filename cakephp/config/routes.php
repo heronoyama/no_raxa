@@ -175,6 +175,18 @@ Router::scope("/csv",function(RouteBuilder $routes){
             'routeClass'=>'EventoRoute']);
 });
 
+Router::prefix('admin',function(RouteBuilder $routes){
+    $routes->connect('/answers',
+        ['controller'=>'SurveyAnswers','action'=>'index'],
+        ['routeClass'=>'DashedRoute']);
+
+    $routes->connect('/answers/:action',
+        ['controller'=>'SurveyAnswers'],
+        ['routeClass'=>'DashedRoute']);
+
+    $routes->fallbacks(DashedRoute::class);
+});
+
 Router::prefix('api',function (RouteBuilder $routes){
     $routes->extensions(['json']);
     Router::connect('/api/users/register', 

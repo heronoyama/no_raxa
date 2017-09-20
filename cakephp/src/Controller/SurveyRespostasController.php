@@ -9,6 +9,9 @@ class SurveyRespostasController extends AppController {
         $this->loadModel("Surveys");
         $survey = $this->Surveys->get($id,['contain'=>'Perguntas']);
 
+        if($this->SurveyRespostas->alreadyAnswered($id,$this->Auth->user('id')))
+            $this->Flash->error("Usuário já respondeu esse survey!");
+
         $this->set(compact('survey'));
         $this->set('_serialize', ['surveys']);
     }
