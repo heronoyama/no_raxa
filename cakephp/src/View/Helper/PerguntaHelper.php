@@ -12,37 +12,30 @@ class PerguntaHelper extends Helper {
     protected $_defaultConfig = [];
 
     public function printPergunta($pergunta){
+        $type = $this->getType($pergunta);
+        $options = [
+            'type'=>$type,
+            'label'=>false
+        ];
+        $questionId = 'Pergunta.'.$pergunta->id;
+
+        echo '<div>';
+        echo '<legend> '.$pergunta->pergunta.'</legend>';
+        echo $this->Form->input($questionId, $options);
+        echo '</div>';
+
+    }
+
+    private function getType($pergunta){
         switch($pergunta->tipoResposta){
             case 'Booleano':
-                $this->printBooleano($pergunta);
-                break;
+                return 'checkbox';
             case 'Texto':
-                 $this->printTexto($pergunta);
-                 break;
+                 return 'text';
             case 'Numerico':
-                $this->printNumerico($pergunta);
-                break;
+                return 'number';
         }
     }
 
-    private function printBooleano($pergunta){
-        echo '<div>';
-        echo '<legend> '.$pergunta->pergunta.'?</legend>';
-        echo $this->Form->checkbox($pergunta->id);
-        echo '</div>';
-    }
-
-    private function printTexto($pergunta){
-        echo '<div> ';
-        echo $this->Form->control($pergunta->pergunta);
-        echo ' </div>';
-    }
-
-    private function printNumerico($pergunta){
-        echo '<div> ';
-        echo $this->Form->control($pergunta->pergunta, ['type' => 'number']);
-        echo ' </div>';
-    }
-
-
+    
 }
