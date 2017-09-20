@@ -134,6 +134,14 @@ Router::scope('/', function (RouteBuilder $routes) {
             'pass' => ['token'],
             'routeClass'=>'DashedRoute'
         ]);
+
+    $routes->connect(
+        '/survey/:action/:id',
+        ['controller'=>'SurveyRespostas'],
+        ['id' => '\d+',
+        'pass'=>['id'],
+        'routeClass'=>'DashedRoute']
+    );
     
     //TODO #HERON beautifull routing para RESTful
 

@@ -38,7 +38,8 @@ class UsersController extends AppController {
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
-            $user['active'] = false;
+            //TODO use Strategy
+            $user['active'] = true;
             if ($this->Users->save($user)) {
                 $success = $this->_sendVerificationEmail($user);
                 if($success){
