@@ -34,7 +34,6 @@
     </header>
     <nav class="menu open" id='menu' role="navigation">
         <?php 
-            $session = $this->request->session();
             echo $this->element('menuEventos');
         ?>
     </nav>

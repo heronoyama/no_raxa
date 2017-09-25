@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\ORM\TableRegistry;
 
 class SurveyRespostasTable extends Table {
 
@@ -31,8 +32,6 @@ class SurveyRespostasTable extends Table {
             'joinType' => 'INNER',
             'dependent' => true,
             'cascadeCallbacks'=>true]);
-
-
     }
 
     public function validationDefault(Validator $validator) {
@@ -52,5 +51,27 @@ class SurveyRespostasTable extends Table {
     
     public function alreadyAnswered($idSurvey, $userId){
         return $this->exists(['surveys_id' => $idSurvey, 'users_id'=>$userId]);
+    }
+
+    public function registerAswers($surveyId,$userId,$respostas){
+        $surveyResposta = $this->newEntity();
+        $surveyResposta['surveys_id'] = $surveyId;
+        $surveyResposta['users_id'] = $userId;
+        $this->save($surveyResposta);
+
+        $respostaTable = TableRegistry::get('Respostas', []);
+
+        foreach($respostas as $idPergunta => $answer){
+            $resposta = $respostaTable->newEntity([
+                'perguntas_id' => $idPergunta,
+                'resposta' => $answer,
+                'survey_respostas_id' => $surveyResposta->id
+
+            ]);
+            $respostaTable->save($resposta);
+        }
+
+        return $surveyResposta->id;
+
     }
 }

@@ -1,6 +1,5 @@
 <div class="eventos index">
     <h3><?= __('Eventos') ?></h3>
-    <div></div>
     
     <?php foreach ($eventos as $evento): ?>
         <div class='evento'>

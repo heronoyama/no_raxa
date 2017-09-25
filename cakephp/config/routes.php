@@ -192,6 +192,7 @@ Router::prefix('api',function (RouteBuilder $routes){
     Router::connect('/api/users/register', 
         ['controller' => 'Users', 'action' => 'add', 'prefix' => 'api']);
 
+   
     $routes->resources('Eventos');
     $routes->resources('Consumables');
     $routes->resources('Participantes');
@@ -212,6 +213,14 @@ Router::prefix('api',function (RouteBuilder $routes){
                 'pass' => ['idEvento'], 
                 'routeClass' => 'DashedRoute']
             );
+
+    $routes->connect(
+        '/survey/:action/:id',
+        ['controller'=>'SurveyAnswers'],
+        ['id' => '\d+',
+        'pass'=>['id'],
+        'routeClass'=>'DashedRoute']
+    );
     
     $routes->connect(
             '/eventos/:idEvento/divisor/detalhamentoParticipante/:idParticipante', 
