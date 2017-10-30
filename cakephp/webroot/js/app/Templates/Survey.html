@@ -1,5 +1,12 @@
-<!-- ko with: survey -->
+
 <form id='surveyForm'>
+    <!-- ko with: survey -->
     <label> Form bacana </label>
+    <fieldset>
+    <!--ko foreach: perguntas -->
+    <p data-bind='text: pergunta'></p>
+    <input data-bind='attr: { type: getType , name: key}'/>
+    <!-- /ko -->
+    </fieldset>
+    <!-- /ko -->
 </form>
-<!-- /ko -->

@@ -1,6 +1,6 @@
 define(['knockout','components/Survey'],	function(ko,Survey){
 		
-   Survey.load();
+   Survey.load(2);
 	
 
 });

@@ -6,6 +6,6 @@ define(['knockout','models/Pergunta'],function(ko,Pergunta){
         var perguntas = data.perguntas.map(function(element) {
             return new Pergunta(element);
         });
-        self.pergutnas = ko.observableArray(perguntas);
+        self.perguntas = ko.observableArray(perguntas);
     }
 });

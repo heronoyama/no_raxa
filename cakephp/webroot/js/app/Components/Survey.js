@@ -3,16 +3,11 @@ define(['knockout','repository/SurveyRepository','text!templates/Survey.html'],
     function Survey(survey){
         var self = this;
         self.survey = ko.observable(survey);
+        self.dialog = ko.observable();
 
-
-    }
-
-    return {
-        load : function(idSurvey){
-            new SurveyRepository().getSurvey(idSurvey, function(survey){
-                var surveyComponent = new Survey(survey);
-                $('#survey').append(htmlSurvey);
-                var dialog = $("#surveyForm").dialog({
+        function initialize(){
+            $('#survey').append(htmlSurvey);
+                dialog = $("#surveyForm").dialog({
                     autoOpen: false,
                     height: 400,
                     width: 350,
@@ -24,8 +19,22 @@ define(['knockout','repository/SurveyRepository','text!templates/Survey.html'],
                     },
                     close: function() { }
                 });
-                ko.applyBindings(surveyComponent,document.getElementById('survey'));
-                dialog.dialog('open');
+                self.dialog(dialog);
+                self.dialog().dialog('open');
+            
+        }
+
+        initialize();
+
+    }
+
+    return {
+        load : function(idSurvey){
+            new SurveyRepository().getSurvey(idSurvey, function(survey){
+                var surveyComponent = new Survey(survey);
+                
+                ko.applyBindings(surveyComponent,document.getElementById('surveyForm'));
+                
             });
 
         }
