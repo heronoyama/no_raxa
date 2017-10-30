@@ -19,3 +19,10 @@
     </div>
 
 </div>
+<div id='survey'></div>
+
+<script>
+    requirejs(['/js/init.js'],function(){
+       requirejs(['/js/app/Controllers/EventosIndex.js']);
+    });
+</script>

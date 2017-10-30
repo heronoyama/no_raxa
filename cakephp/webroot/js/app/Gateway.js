@@ -141,6 +141,11 @@ define(['knockout'],function(ko){
 			self.callGetJson(url,options.callback);
 		}
 
+		self.getSurvey = function(options){
+			var url = "/api/survey/questions/"+options.idSurvey+".json";
+			self.callGetJson(url,options.callback);
+		}
+
 		self.updateEvento = function(options){
 			var url = self.baseUrl+".json";
 			url = url.replace(":idEvento",options.idEvento);
