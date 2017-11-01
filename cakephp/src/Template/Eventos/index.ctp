@@ -1,4 +1,4 @@
-<div class="eventos index">
+<div class="eventos index" id='eventoIndex'>
     <h3><?= __('Eventos') ?></h3>
     
     <?php foreach ($eventos as $evento): ?>
@@ -19,6 +19,7 @@
     </div>
 
 </div>
+
 <div id='survey'></div>
 
 <script>

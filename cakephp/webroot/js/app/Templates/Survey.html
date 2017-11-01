@@ -1,11 +1,11 @@
 
 <form id='surveyForm'>
     <!-- ko with: survey -->
-    <label> Form bacana </label>
+    <label> Você já atingiu a cota de eventos gratuitos disponíveis. Caso tenha interesse, preencha esse survey que entraremos em contato, caso tenhamos novidades! </label>
     <fieldset>
     <!--ko foreach: perguntas -->
     <p data-bind='text: pergunta'></p>
-    <input data-bind='attr: { type: getType , name: key}'/>
+    <input data-bind='attr: getAttr(), checked: resposta, value:resposta'/>
     <!-- /ko -->
     </fieldset>
     <!-- /ko -->

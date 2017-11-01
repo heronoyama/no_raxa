@@ -6,7 +6,7 @@
             echo $this->Form->control('surveys_id', ['options' => $surveys]);
             echo $this->Form->control('pergunta');
             echo $this->Form->select('tipoResposta',[
-                ['value'=>'Boooleano','text'=>'Booleano'],
+                ['value'=>'Booleano','text'=>'Booleano'],
                 ['value'=>'Numerico','text'=>'Numerico'],
                 ['value'=>'Texto','text'=>'Texto']]);
         ?>

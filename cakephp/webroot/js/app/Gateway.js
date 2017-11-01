@@ -146,6 +146,21 @@ define(['knockout'],function(ko){
 			self.callGetJson(url,options.callback);
 		}
 
+		self.postAnswer = function(options){
+			var url = "/api/survey/register/"+options.idSurvey+".json";
+			var ajaxOptions = {
+					data : options.data,
+					type : 'post',
+					contentType: 'application/json',
+					success: options.callback,
+					error: function(result) { 
+						console.log(result);
+					}
+			}
+			self.callCustomAjax(url,ajaxOptions);
+			
+		}
+
 		self.updateEvento = function(options){
 			var url = self.baseUrl+".json";
 			url = url.replace(":idEvento",options.idEvento);
