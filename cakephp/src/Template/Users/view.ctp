@@ -1,20 +1,4 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\User $user
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="users view large-9 medium-8 columns content">
-    <h3><?= h($user->id) ?></h3>
+<div class="users view">
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Nome') ?></th>
@@ -25,24 +9,41 @@
             <td><?= h($user->email) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Password') ?></th>
-            <td><?= h($user->password) ?></td>
+            <th scope="row"><?= __('Senha') ?></th>
+            <td><?= $this->Html->link("Alterar senha",['controller'=>'Users','action'=>'requestNewPassword'])?></td>
         </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($user->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($user->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($user->modified) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Active') ?></th>
-            <td><?= $user->active ? __('Yes') : __('No'); ?></td>
-        </tr>
+        
     </table>
 </div>
+
+<!--div class="surveys index"  id="SurveysModel">
+    <h4> Respostas dadas para o feedback de uso </h4>
+    <table cellpadding="0" cellspacing="0">
+    <thead>
+            <tr>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- ko foreach: respostasFeedback -->
+            <!--tr class='respostas'>
+                <td>
+                   <p data-bind='text: modified().toLocaleString()'></p>     
+                </td>    
+                <td>
+                    <!-- <input type='hidden' data-bind='value:id'/>
+                    <a data-bind='click: $root.delete.bind(this,$data)'>Deletar</a>
+                    <a data-bind="attr:{href:viewUrl}">View</a> -->
+                <!--/td>
+            </tr>
+        <!-- /ko -->
+        <!--/tbody>
+    </table>
+</div-->
+
+<script>
+    // requirejs(['/js/init.js'],function(){
+    //    requirejs(['/js/app/Controllers/UserView.js']);
+    // });
+</script>

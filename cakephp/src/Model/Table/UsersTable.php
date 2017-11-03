@@ -16,6 +16,12 @@ class UsersTable extends Table {
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->hasMany('SurveyRespostas',[
+            'foreignKey' => 'users_id',
+            'joinType' => 'INNER',
+            'dependent' => true,
+            'cascadeCallbacks'=>true]);
     }
 
     public function validationDefault(Validator $validator) {

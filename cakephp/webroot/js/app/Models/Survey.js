@@ -3,6 +3,7 @@ define(['knockout','models/Pergunta','models/Resposta'],function(ko,Pergunta,Res
         var self = this;
         self.nome = ko.observable(data.nome);
         self.id = ko.observable(data.id);
+        self.modified = ko.observable(new Date(data.modified));
         
         var allPerguntas = data.perguntas? data.perguntas : [];
 

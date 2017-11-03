@@ -36,4 +36,5 @@ class SurveysTable extends Table {
 
         return $validator;
     }
+
 }

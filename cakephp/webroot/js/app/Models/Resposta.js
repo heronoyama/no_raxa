@@ -4,6 +4,7 @@ define(['knockout','models/Pergunta'],function(ko,Pergunta){
         self.pergunta = ko.observable(new Pergunta(data.pergunta));
         self.id = ko.observable(data.id);
         self.resposta = ko.observable(data.resposta);
+        
 
         self.parseResposta = ko.computed(function(){
             if(self.pergunta().tipoResposta() == 'Booleano')

@@ -29,7 +29,7 @@ class UsersController extends AppController {
             'contain' => []
         ]);
 
-        $this->set('user', $user);
+        $this->set(compact('user'));
         $this->set('_serialize', ['user']);
     }
     

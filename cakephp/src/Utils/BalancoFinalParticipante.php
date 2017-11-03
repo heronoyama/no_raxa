@@ -2,9 +2,11 @@
 
 namespace App\Utils;
 use Cake\Datasource\ModelAwareTrait;
+use Cake\Log\LogTrait;
 
 class BalancoFinalParticipante {
     use ModelAwareTrait;
+    use LogTrait;
     
     private $participantes;
     private $consumables;
@@ -39,6 +41,9 @@ class BalancoFinalParticipante {
     }
     
     public function getData(){
+        if(empty($this->participantes))
+            return [];
+
         $result = [];
         foreach($this->participantes as $id => $participante){
             $dataParticipante = [];

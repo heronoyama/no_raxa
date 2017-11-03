@@ -27,7 +27,7 @@
       Você já atingiu o máximo de eventos gratuitos disponíveis, e já nos informou se tem desejo de continuar usando o sistema ou não.
    </p>
    <p>
-      Você pode alterar suas respostas na <?=$this->Html->link("sua página de perfil",['controller'=>'Users','action'=>'view',$this->request->session()->read("Auth.User.id")])?>, ou enviar um e-mail para heron.oyama@gmail.com para saber em que pé estamos com o sistema.
+      Qualquer dúvida, por favor, envie um e-mail para heron.oyama@gmail.com e responderei o mais rápido que puder :).
    </p>
 </div>
 
