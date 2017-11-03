@@ -454,3 +454,7 @@ table tr th , .content h4{
 .podeCriar:hover{
 	background-color:#55ecc3;
 }
+
+.hidden {
+	display: none;
+}

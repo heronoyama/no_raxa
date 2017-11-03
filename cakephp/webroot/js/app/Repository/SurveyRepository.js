@@ -24,5 +24,22 @@ define(['knockout','gateway','models/Survey'],function(ko,Gateway,Survey){
             Gateway.postAnswer(gatewayOptions);
 
         }
+
+        self.allAnswers = function(id,callback){
+            var gatewayOptions = {
+                idSurvey : id,
+                callback: function(result){
+                    var surveys = result.respostas.map(function(surveyResposta){
+                        var data = surveyResposta.survey;
+                        data.respostas = surveyResposta.respostas;
+                        return new Survey(data);
+                    });
+                    callback(surveys);
+                }
+            };
+
+            Gateway.allAsnwers(gatewayOptions);
+        }
+        
     }
 });

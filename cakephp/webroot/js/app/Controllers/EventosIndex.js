@@ -1,8 +1,10 @@
-define(['knockout','components/Survey'],	function(ko,Survey){
+define(['knockout','components/Survey','repository/SurveyRepository'],
+	function(ko,Survey,SurveyRepository){
 
     function EventoIndex(){
         var self = this;
         self.survey = ko.observable();
+        self.repository = new SurveyRepository();
 
         function initialize(){
 
@@ -16,7 +18,22 @@ define(['knockout','components/Survey'],	function(ko,Survey){
         }
 
         self.showSurvey = function(){
-            self.survey().open();            
+            self.repository.allAnswers(2, function(respostas){
+                if(respostas.length <= 0)
+                    self.survey().open();
+                else {
+                    $("#dialog-message").dialog({
+                        modal: true,
+                        buttons : {
+                            OK : function(){
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
+
+            });
+            
             return false;
         }
 

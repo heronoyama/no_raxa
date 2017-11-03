@@ -53,6 +53,12 @@ class SurveyRespostasTable extends Table {
         return $this->exists(['surveys_id' => $idSurvey, 'users_id'=>$userId]);
     }
 
+    public function fromUser($idSurvey,$userId){
+        return $this->find('all')
+                ->where(['surveys_id' => $idSurvey, 'users_id'=>$userId])
+                ->contain(['Surveys','Respostas','Respostas.Perguntas']);
+    }
+
     public function registerAswers($surveyId,$userId,$respostas){
         $surveyResposta = $this->newEntity();
         $surveyResposta['surveys_id'] = $surveyId;

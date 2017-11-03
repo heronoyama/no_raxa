@@ -146,6 +146,11 @@ define(['knockout'],function(ko){
 			self.callGetJson(url,options.callback);
 		}
 
+		self.allAsnwers = function(options){
+			var url = "/api/survey/answers/"+options.idSurvey+".json";
+			self.callGetJson(url,options.callback);
+		}
+
 		self.postAnswer = function(options){
 			var url = "/api/survey/register/"+options.idSurvey+".json";
 			var ajaxOptions = {

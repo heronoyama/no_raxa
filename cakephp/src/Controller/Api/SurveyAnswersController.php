@@ -7,7 +7,7 @@ class SurveyAnswersController extends ApiController {
 
     public function initialize(){
         parent::initialize();
-        $this->Auth->allow(['questions','register']);
+        $this->Auth->allow(['questions','register','answers']);
         $this->loadModel("SurveyRespostas");
         $this->loadModel("Surveys");
     }
@@ -22,6 +22,17 @@ class SurveyAnswersController extends ApiController {
         $this->set(compact(['survey']));
         $this->set('_serialize',['survey']);
         
+    }
+
+    public function answers($id){
+        if (!$this->request->is('get')) {
+            $response = $this->response->withStatus(400)->withStringBody(json_encode(["message"=>"Método não permitido"]));
+            return $response;
+        }
+
+        $respostas = $this->SurveyRespostas->fromUser($id,$this->Auth->user('id'));
+        $this->set(compact(['respostas']));
+        $this->set('_serialize',['respostas']);
     }
 
     public function register($id) {
